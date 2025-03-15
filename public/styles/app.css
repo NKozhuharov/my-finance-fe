@@ -1,0 +1,124 @@
+.data-table-actions {
+    display: flex;
+    flex-direction: row;
+    float: right !important;
+}
+
+.data-table-action-icon {
+    width: 34px;
+    margin-right: 0.25rem !important;
+    color: white !important;
+}
+
+.expense-color {
+    color: #c82333;
+}
+
+.income-color {
+    color: #2e6da4;
+}
+
+.expense-background-color {
+    background-color: #c82333 !important;
+}
+
+.income-background-color {
+    background-color: #2e6da4 !important;
+}
+
+.icon-container {
+    width: 32px; /* Adapt this value to whatever suits you */
+    height: 32px; /* The same height as the width will keep the aspect ratio 1:1 and will look like a circle */
+    border-radius: 50%; /* This will make the image look like a circle */
+    overflow: hidden; /* This will cut off the image parts that exceed our div container */
+    display: flex; /* Flexbox will allow us to center the image both vertically and horizontally */
+    justify-content: center; /* This will center the image horizontally */
+    align-items: center; /* This will center the image vertically */
+}
+
+.icon-container img {
+    width: 32px;
+    height: 32px;
+}
+
+.icon-select {
+    min-width: 110px;
+}
+
+.icon-option {
+    display: flex;
+    align-items: center;
+}
+
+.icon-option img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%; /* This will make the image look like a circle */
+}
+
+.clickable-table tbody tr {
+    cursor: pointer;
+}
+
+.clickable-table tbody tr.dtrg-group {
+    cursor: auto;
+}
+
+.card-header > .card-tools-left {
+    float: left;
+    margin-left: -0.625rem;
+}
+
+footer > .create-transaction-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 24px;
+    line-height: 1;
+}
+
+footer > .create-transaction-button:hover {
+    color: white; /* Change text color to white on hover */
+}
+
+.card-tools .dropdown-menu .dropdown-item {
+    color: #000 !important; /* Ensures the text color is black */
+}
+
+.card-tools .dropdown-menu .dropdown-item:hover {
+    background-color: #f8f9fa; /* Optional: Add a subtle hover effect */
+    color: #000 !important; /* Keeps text color black on hover */
+}
+
+.category-select-button {
+    cursor: pointer;
+}
+
+.category-select-button {
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    line-height: 2;
+    padding: 0.3rem 0.3rem;
+}
+
+.category-selected-label {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+}
+
+.category-wallet {
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+    margin: 0;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
