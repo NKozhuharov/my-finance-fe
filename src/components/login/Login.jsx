@@ -1,9 +1,14 @@
-import { Link, useNavigate } from "react-router";
-import {useEffect} from "react";
+import {Link, useNavigate} from "react-router";
+import {useActionState, useContext, useEffect, useState} from "react";
 import {addBodyClass, removeBodyClass} from "../../utils/helpers.js";
+import {useLogin} from "../../api/authApi.js";
+import {UserContext} from "../../contexts/UserContext.jsx";
 
-export default function Login(onLogin) {
+export default function Login() {
+    const [loginErrors, setLoginErrors] = useState({});
     const navigate = useNavigate();
+    const {userLoginHandler} = useContext(UserContext);
+    const {login} = useLogin();
 
     useEffect(() => {
         addBodyClass('login-page');
@@ -15,14 +20,31 @@ export default function Login(onLogin) {
         };
     }, []);
 
-    const loginAction = (formData) => {
-        const email = formData.get('email');
-        const password = formData.get('password');
+    const loginHandler = async (_, formData) => {
+        setLoginErrors({});
+        const values = Object.fromEntries(formData);
 
-        onLogin(email, password);
+        const authData = await login(values.email, values.password);
 
-        navigate('/home');
-    }
+        if (authData.status === 'error') {
+            if (authData.details) {
+                setLoginErrors(authData.details);
+            } else {
+                alert(authData.message);
+            }
+            console.log(authData);
+
+            return;
+        }
+
+        console.log(authData);
+
+        userLoginHandler(authData);
+
+        navigate('/dashboard');
+    };
+
+    const [_, loginAction, isPending] = useActionState(loginHandler, {email: '', password: ''});
 
     return (
         <div className="login-box">
@@ -35,12 +57,22 @@ export default function Login(onLogin) {
                     <p className="login-box-msg">Sign in to start your session</p>
                     <form action={loginAction}>
                         <div className="input-group mb-3">
-                            <input type="email" className="form-control" placeholder="Email"/>
+                            <input type="email" className={`form-control${loginErrors.email ? ' is-invalid' : ''}`} name="email" placeholder="Email"/>
                             <div className="input-group-text"><span className="bi bi-envelope"></span></div>
+                            {loginErrors.email &&
+                                <span className="invalid-feedback" role="alert">
+                                    <strong>{loginErrors.email}</strong>
+                                </span>
+                            }
                         </div>
                         <div className="input-group mb-3">
-                            <input type="password" className="form-control" placeholder="Password"/>
+                            <input type="password" className={`form-control${loginErrors.password ? ' is-invalid' : ''}`} name="password" placeholder="Password"/>
                             <div className="input-group-text"><span className="bi bi-lock-fill"></span></div>
+                            {loginErrors.password &&
+                                <span className="invalid-feedback" role="alert">
+                                    <strong>{loginErrors.password}</strong>
+                                </span>
+                            }
                         </div>
                         <div className="row">
                             <div className="col-8">
@@ -51,7 +83,7 @@ export default function Login(onLogin) {
                             </div>
                             <div className="col-4">
                                 <div className="d-grid gap-2">
-                                    <button type="submit" className="btn btn-primary">Sign In</button>
+                                    <button type="submit" className="btn btn-primary" disabled={isPending}>Sign In</button>
                                 </div>
                             </div>
                         </div>
