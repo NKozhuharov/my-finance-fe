@@ -1,31 +1,44 @@
-import React, {useActionState, useState} from "react";
+import React, {useActionState, useEffect, useState} from "react";
 import AdminPanelPage from "../../../layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "../../../hooks/useApiClient.js";
 import {Link, useNavigate} from "react-router";
 import {useCurrencies} from "../../../api/CurrenciesApi.js";
 import {useWalletIcons} from "../../../api/IconsApi.js";
 import {useAlert} from "../../../contexts/AlertContext.jsx";
-import Select, {components} from "react-select";
+import Select from "react-select";
 import {CustomSingleValue, IconOption} from "../../../utils/IconComponents.jsx";
-
+import CategoryIcon from "../../category-icon/CategoryIcon.jsx";
 
 export default function WalletCreate() {
-
     const [wallet, setWallet] = useState({
         name: '',
         currency_id: '',
         icon: '',
     });
+    const [walletCategories, setWalletCategories] = useState([]);
     const {currencies} = useCurrencies();
     const {walletIcons} = useWalletIcons();
 
-        const [walletFormErrors, setWalletFormErrors] = useState({});
+    const [walletFormErrors, setWalletFormErrors] = useState({});
 
     const api = useApiClient();
 
     const navigate = useNavigate();
 
     const {setAlert} = useAlert();
+
+    useEffect(() => {
+        const fetchDefaultCategories = async () => {
+            try {
+                const response = await api.get(`/wallets/default-categories`);
+                setWalletCategories(response.data.data || []);
+            } catch (err) {
+                console.error("Error fetching wallet default categories data: ", err);
+            }
+        };
+
+        fetchDefaultCategories();
+    }, [api]);
 
     const walletCreateHandler = async (_, formData) => {
         setWalletFormErrors({});
@@ -119,6 +132,59 @@ export default function WalletCreate() {
                                                 <strong>{walletFormErrors.icon}</strong>
                                             </span>
                                         }
+                                    </div>
+                                </div>
+                                <hr/>
+                                <div className="row">
+                                    <div className="col-lg-6 col-sm-12">
+                                        {/*@error('income-category')*/}
+                                        {/*<span className="text-red">{{$message}}</span>*/}
+                                        {/*@enderror*/}
+                                        <div className="card card-secondary">
+                                            <div className="card-header income-background-color">
+                                                Income Categories
+                                                <div className="float-end">
+                                                    <input type="checkbox" className="form-check-input" id="select-all-income" title="Select all"/>
+                                                </div>
+                                            </div>
+                                            <div className="card-body">
+                                                {walletCategories
+                                                    .filter(category => category.type === 'Income')
+                                                    .map((category, key) => (
+                                                        <div className="form-check" key={key}>
+                                                            <input className="form-check-input income-category-checkbox" type="checkbox" name="categories[]"/>
+                                                            <label className="form-check-label" htmlFor={`category-${category.name}`}>
+                                                                <CategoryIcon category={category}/>
+                                                            </label>
+                                                        </div>
+                                                    ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-6 col-sm-12">
+                                        {/*@error('income-category')*/}
+                                        {/*<span className="text-red">{{$message}}</span>*/}
+                                        {/*@enderror*/}
+                                        <div className="card card-secondary">
+                                            <div className="card-header expense-background-color">
+                                                Expense Categories
+                                                <div className="float-end">
+                                                    <input type="checkbox" className="form-check-input" id="select-all-income" title="Select all"/>
+                                                </div>
+                                            </div>
+                                            <div className="card-body">
+                                                {walletCategories
+                                                    .filter(category => category.type === 'Expense')
+                                                    .map((category, key) => (
+                                                        <div className="form-check" key={key}>
+                                                            <input className="form-check-input income-category-checkbox" type="checkbox" name="categories[]"/>
+                                                            <label className="form-check-label" htmlFor={`category-${category.name}`}>
+                                                                <CategoryIcon category={category}/>
+                                                            </label>
+                                                        </div>
+                                                    ))}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
