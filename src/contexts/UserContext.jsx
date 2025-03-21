@@ -11,6 +11,7 @@ export const UserContext = createContext({
             active_wallet_id: null,
         }
     },
+    isLoggedIn: false,
     userLoginHandler: () => null,
     userLogoutHandler: () => null,
 });

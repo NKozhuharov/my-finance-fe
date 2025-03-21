@@ -32,12 +32,11 @@ export default function Login() {
             } else {
                 alert(authData.message);
             }
-            console.log(authData);
 
             return;
         }
 
-        console.log(authData);
+        authData.isLoggedIn = true;
 
         userLoginHandler(authData);
 

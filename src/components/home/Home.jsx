@@ -1,22 +1,13 @@
-import {Button} from "react-bootstrap";
-import Login from "../login/Login.jsx";
+import {useContext} from "react";
+import {UserContext} from "../../contexts/UserContext.jsx";
+import {Navigate} from "react-router";
 
-export default function Home(email) {
-    return (
+export default function Home() {
+    const authData = useContext(UserContext);
 
-    <div>
-            {email === null ? (
-                // Show login page if email is not set
-                <Login />
-            ) : (
-                // Show main content if email is set
-                <div>
-                    <h1>Welcome Back!</h1>
-                    <p>Your email is {email}</p>
-                    <Button>Logout</Button>
-                </div>
-            )}
-        </div>
+    if (authData?.isLoggedIn) {
+        return <Navigate to="/dashboard" />;
+    }
 
-    );
+    return <Navigate to="/login" />;
 }

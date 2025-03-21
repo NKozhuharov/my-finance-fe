@@ -7,8 +7,7 @@ const baseUrl = 'http://local.my-finance.com/api';
 
 const axiosInstance = axios.create({
     baseURL: baseUrl,
-    timeout: 100000,
-    headers: {'X-Custom-Header': 'foobar'}
+    timeout: 100000
 });
 
 
@@ -41,7 +40,7 @@ export const useLogin = () => {
 
 export const useRegister = () => {
     const register = (email, password) =>
-        axiosInstance.post(`register`, {email, password});
+        axiosInstance.post(`user/register`, {email, password});
 
     return {
         register,
@@ -56,18 +55,30 @@ export const useLogout = () => {
             return;
         }
 
-        const options = {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            }
-        };
+        //@todo - logout is called twice, probably because useEffect deps, investigate
 
-        axiosInstance.post(`logout`, null, options)
-            .then(userLogoutHandler);
+        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+        axiosInstance.post(`user/sign-out`)
+            .then(userLogoutHandler)
+            .catch(function (error) {
+                if (error.response) {
+                    return error.response.data;
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+                console.log(error.config);
+            });
 
     }, [token, userLogoutHandler]);
 
     return {
-        isLoggedOut: !!token,
+        isLoggedOut: true,
     };
 };
