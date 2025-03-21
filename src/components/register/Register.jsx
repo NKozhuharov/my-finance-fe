@@ -77,6 +77,7 @@ export default function Register() {
                                 onChange={(e) => setFormValues({...formValues, first_name: e.target.value})}
                                 className={`form-control${registerErrors.first_name ? ' is-invalid' : ''}`}
                                 placeholder="First Name"
+                                required
                             />
                             <div className="input-group-text"><span className="bi bi-person"></span></div>
                             {registerErrors.first_name &&
@@ -109,6 +110,7 @@ export default function Register() {
                                 onChange={(e) => setFormValues({...formValues, email: e.target.value})}
                                 className={`form-control${registerErrors.email ? ' is-invalid' : ''}`}
                                 placeholder="Email"
+                                required
                             />
                             <div className="input-group-text"><span className="bi bi-envelope"></span></div>
                             {registerErrors.email &&
@@ -125,6 +127,7 @@ export default function Register() {
                                 onChange={(e) => setFormValues({...formValues, password: e.target.value})}
                                 className={`form-control${registerErrors.password ? ' is-invalid' : ''}`}
                                 placeholder="Password"
+                                required
                             />
                             <div className="input-group-text"><span className="bi bi-lock-fill"></span></div>
                             {registerErrors.password &&
@@ -141,6 +144,7 @@ export default function Register() {
                                 onChange={(e) => setFormValues({...formValues, password_confirmation: e.target.value})}
                                 className={`form-control${registerErrors.password_confirmation ? ' is-invalid' : ''}`}
                                 placeholder="Password Confirmation"
+                                required
                             />
                             <div className="input-group-text"><span className="bi bi-lock-fill"></span></div>
                             {registerErrors.password_confirmation &&
