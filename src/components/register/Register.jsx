@@ -152,7 +152,7 @@ export default function Register() {
                         <div className="row">
                             <div className="col-8">
                                 <div className="form-check">
-                                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" required/>
                                     <label className="form-check-label" htmlFor="flexCheckDefault">
                                         I agree to the <Link to={"/terms"}>terms</Link>
                                     </label>
