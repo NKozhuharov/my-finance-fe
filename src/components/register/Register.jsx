@@ -160,7 +160,7 @@ export default function Register() {
                             </div>
                             <div className="col-4">
                                 <div className="d-grid gap-2">
-                                    <button type="submit" className="btn btn-primary" disabled={isPending}>Sign In</button>
+                                    <button type="submit" className="btn btn-primary" disabled={isPending}>Register</button>
                                 </div>
                             </div>
                         </div>
