@@ -29,5 +29,8 @@ export default [
         { allowConstantExport: true },
       ],
     },
+    "globals": {
+      "process": "readonly"
+    }
   },
 ]

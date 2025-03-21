@@ -2,8 +2,7 @@ import {useContext, useEffect} from "react";
 import {UserContext} from "../contexts/UserContext";
 import axios from "axios";
 
-// const baseUrl = 'https://myf.netcube.eu/api';
-const baseUrl = 'http://local.my-finance.com/api';
+const baseUrl = process.env.API_BASE_URL;
 
 const axiosInstance = axios.create({
     baseURL: baseUrl,
