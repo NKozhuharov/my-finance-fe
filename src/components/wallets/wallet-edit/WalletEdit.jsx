@@ -5,6 +5,7 @@ import {Link, useNavigate, useParams} from "react-router";
 import Select, {components} from "react-select";
 import Modal from "react-bootstrap/Modal";
 import {Button} from "react-bootstrap";
+import {useAlert} from "../../../contexts/AlertContext.jsx";
 
 const IconOption = (props) => {
     return (
@@ -39,13 +40,14 @@ export default function WalletEdit() {
     const [icons, setIcons] = useState([]);
 
     const [walletEditErrors, setWalletEditErrors] = useState({});
-    const [walletDeleteError, setWalletDeleteError] = useState('');
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const api = useApiClient();
 
     const navigate = useNavigate();
+
+    const {setAlert} = useAlert();
 
     useEffect(() => {
         const fetchWallet = async () => {
@@ -96,8 +98,10 @@ export default function WalletEdit() {
 
         try {
             await api.patch(`/wallets/${walletId}`, values, {});
+            setAlert({variant: "success", text: "Wallet edited successfully."});
         } catch (err) {
             setWalletEditErrors(err.response.data.details);
+            setAlert({variant: "danger", text: err.response.data.message});
         }
     }
 
@@ -117,12 +121,15 @@ export default function WalletEdit() {
 
         api.delete(`/wallets/${walletId}`, {})
             .then(() => {
+                setAlert({variant: "success", text: "Wallet deleted successfully."});
                 setShowDeleteModal(false);
                 navigate(`/wallets`);
             })
             .catch((error) => {
-                setWalletDeleteError(error.response.data.message);
-            });
+                setAlert({variant: "danger", text: error.response.data.message});
+            }).finally(() => {
+            setShowDeleteModal(false);
+        })
     }
 
     return (
@@ -143,11 +150,6 @@ export default function WalletEdit() {
                             placeholder="Please type 'DELETE' to confirm"
                             required
                         />
-                        {walletDeleteError &&
-                            <span className="text-danger" role="alert">
-                                    <strong>{walletDeleteError}</strong>
-                                </span>
-                        }
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleCloseModal}>
@@ -186,7 +188,6 @@ export default function WalletEdit() {
                                             onChange={(e) => setWallet({...wallet, name: e.target.value})}
                                             className={`form-control${walletEditErrors.name ? ' is-invalid' : ''}`}
                                             placeholder="Name"
-                                            required
 
                                         />
                                         {walletEditErrors.name &&

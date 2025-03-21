@@ -4,6 +4,7 @@ import {useApiClient} from "../../../hooks/useApiClient.js";
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-bs5';
 import {Link, useNavigate} from "react-router";
+import {useAlert} from "../../../contexts/AlertContext.jsx";
 
 DataTable.use(DT);
 
@@ -21,6 +22,8 @@ export default function WalletsList() {
                 const response = await api.get(`/wallets`);
                 setWallets(response.data.data || []); // Save fetched data into state
                 setLoading(false); // Turn off loading
+
+
             } catch (err) {
                 console.error("Error fetching wallet data: ", err);
                 setLoading(false);

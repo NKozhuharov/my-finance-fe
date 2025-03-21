@@ -3,9 +3,13 @@ import {addBodyClass, removeBodyClass} from "../../utils/helpers.js";
 import Header from "../../components/header/Header.jsx";
 import Footer from "../../components/footer/Footer.jsx";
 import Sidebar from "../../components/sidebar/sidebar.jsx";
+import {Alert} from "react-bootstrap";
+import {useAlert} from "../../contexts/AlertContext.jsx";
 
-export default function Dashboard({children}) {
+
+export default function AdminPanelPage({children}) {
     let [sidebarIsShown, setsSidebarIsShown] = useState(true);
+    const {alert, setAlert} = useAlert();
 
     const toggleSidebar = () => {
         setsSidebarIsShown((prevState) => {
@@ -47,6 +51,11 @@ export default function Dashboard({children}) {
 
                 <div className="app-content">
                     <div className="container-fluid">
+                        {alert && alert.text && alert.variant && (
+                            <Alert variant={alert.variant} onClose={() => setAlert({})} dismissible>
+                                {alert.text}
+                            </Alert>
+                        )}
                         {children}
                     </div>
                 </div>

@@ -11,26 +11,29 @@ import GuestGuard from "./guards/GuestGuard.jsx";
 import WalletsList from "./components/wallets/wallets-list/WalletsList.jsx";
 import WalletEdit from "./components/wallets/wallet-edit/WalletEdit.jsx";
 import WalletCreate from "./components/wallets/wallet-create/WalletCreate.jsx";
+import {AlertProvider} from "./providers/AlertProvider.jsx";
 
 function App() {
     return (
         <>
             <UserProvider>
-                <Routes>
-                    <Route index element={<Home/>}/>
-                    <Route element={<AuthGuard/>}>
-                        <Route path="/dashboard" element={<Dashboard/>}/>
-                        <Route path="/wallets" element={<WalletsList/>}/>
-                        <Route path="/wallets/:walletId/edit" element={<WalletEdit/>}/>
-                        <Route path="/wallets/create" element={<WalletCreate/>}/>
-                        <Route path="/logout" element={<Logout/>}/>
-                    </Route>
-                    <Route element={<GuestGuard/>}>
-                        <Route path="/login" element={<Login/>}/>
-                        <Route path="/register" element={<Register/>}/>
-                        <Route path="/terms" element={<Terms/>}/>
-                    </Route>
-                </Routes>
+                <AlertProvider>
+                    <Routes>
+                        <Route index element={<Home/>}/>
+                        <Route element={<AuthGuard/>}>
+                            <Route path="/dashboard" element={<Dashboard/>}/>
+                            <Route path="/wallets" element={<WalletsList/>}/>
+                            <Route path="/wallets/:walletId/edit" element={<WalletEdit/>}/>
+                            <Route path="/wallets/create" element={<WalletCreate/>}/>
+                            <Route path="/logout" element={<Logout/>}/>
+                        </Route>
+                        <Route element={<GuestGuard/>}>
+                            <Route path="/login" element={<Login/>}/>
+                            <Route path="/register" element={<Register/>}/>
+                            <Route path="/terms" element={<Terms/>}/>
+                        </Route>
+                    </Routes>
+                </AlertProvider>
             </UserProvider>
         </>
     )
