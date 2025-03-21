@@ -8,6 +8,9 @@ import UserProvider from "./providers/UserProvider.jsx";
 import Logout from "./components/logout/Logout.jsx";
 import AuthGuard from "./guards/AuthGuard.jsx";
 import GuestGuard from "./guards/GuestGuard.jsx";
+import WalletsList from "./components/wallets/wallets-list/WalletsList.jsx";
+import WalletEdit from "./components/wallets/wallet-edit/WalletEdit.jsx";
+import WalletCreate from "./components/wallets/wallet-create/WalletCreate.jsx";
 
 function App() {
     return (
@@ -17,6 +20,9 @@ function App() {
                     <Route index element={<Home/>}/>
                     <Route element={<AuthGuard/>}>
                         <Route path="/dashboard" element={<Dashboard/>}/>
+                        <Route path="/wallets" element={<WalletsList/>}/>
+                        <Route path="/wallets/:walletId/edit" element={<WalletEdit/>}/>
+                        <Route path="/wallets/create" element={<WalletCreate/>}/>
                         <Route path="/logout" element={<Logout/>}/>
                     </Route>
                     <Route element={<GuestGuard/>}>
