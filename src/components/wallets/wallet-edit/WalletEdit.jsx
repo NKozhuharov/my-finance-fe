@@ -6,27 +6,9 @@ import Select, {components} from "react-select";
 import Modal from "react-bootstrap/Modal";
 import {Button} from "react-bootstrap";
 import {useAlert} from "../../../contexts/AlertContext.jsx";
-
-const IconOption = (props) => {
-    return (
-        <components.Option {...props}>
-            <div className="icon-option">
-                <img src={props.data.url} alt="icon.text"/>&nbsp;{props.data.label}
-            </div>
-        </components.Option>
-    );
-};
-
-// Custom SingleValue component (for selected item)
-const CustomSingleValue = (props) => {
-    return (
-        <components.SingleValue {...props}>
-            <div className="icon-option">
-                <img src={props.data.url} alt="icon.text"/>&nbsp;{props.data.label}
-            </div>
-        </components.SingleValue>
-    );
-};
+import {useCurrencies} from "../../../api/CurrenciesApi.js";
+import {useWalletIcons} from "../../../api/IconsApi.js";
+import {CustomSingleValue, IconOption} from "../../../utils/IconComponents.jsx";
 
 export default function WalletEdit() {
     const {walletId} = useParams();
@@ -36,10 +18,10 @@ export default function WalletEdit() {
         currency_id: '',
         icon: '',
     });
-    const [currencies, setCurrencies] = useState([]);
-    const [icons, setIcons] = useState([]);
+    const {currencies} = useCurrencies();
+    const {walletIcons} = useWalletIcons();
 
-    const [walletEditErrors, setWalletEditErrors] = useState({});
+    const [walletFormErrors, setWalletFormErrors] = useState({});
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -59,48 +41,18 @@ export default function WalletEdit() {
             }
         };
 
-        const fetchCurrencies = async () => {
-            try {
-                const response = await api.get(`/currencies`);
-                setCurrencies(response.data.data.map(currency => {
-                    return {
-                        value: currency.id,
-                        label: currency.name,
-                    }
-                }));
-            } catch (err) {
-                console.error("Error fetching currencies data: ", err);
-            }
-        };
-        const fetchWalletIcons = async () => {
-            try {
-                const response = await api.get(`/wallets/icons`);
-                setIcons(response.data.data.map(icon => {
-                    return {
-                        value: icon,
-                        url: `${import.meta.env.VITE_ICONS_BASE_URL}${icon}`,
-                        label: icon.replace('/images/icons/wallet/', '').replace('.png', '').charAt(0).toUpperCase() + icon.replace('/images/icons/wallet/', '').replace('.png', '').slice(1),
-                    }
-                }));
-            } catch (err) {
-                console.error("Error fetching currencies data: ", err);
-            }
-        };
-
         fetchWallet();
-        fetchCurrencies();
-        fetchWalletIcons();
     }, [api, walletId]);
 
     const walletEditHandler = async (_, formData) => {
-        setWalletEditErrors({});
+        setWalletFormErrors({});
         const values = Object.fromEntries(formData);
 
         try {
             await api.patch(`/wallets/${walletId}`, values, {});
             setAlert({variant: "success", text: "Wallet edited successfully."});
         } catch (err) {
-            setWalletEditErrors(err.response.data.details);
+            setWalletFormErrors(err.response.data.details);
             setAlert({variant: "danger", text: err.response.data.message});
         }
     }
@@ -186,13 +138,13 @@ export default function WalletEdit() {
                                             name="name"
                                             value={wallet.name}
                                             onChange={(e) => setWallet({...wallet, name: e.target.value})}
-                                            className={`form-control${walletEditErrors.name ? ' is-invalid' : ''}`}
+                                            className={`form-control${walletFormErrors.name ? ' is-invalid' : ''}`}
                                             placeholder="Name"
-
+                                            required
                                         />
-                                        {walletEditErrors.name &&
+                                        {walletFormErrors.name &&
                                             <span className="invalid-feedback" role="alert">
-                                                <strong>{walletEditErrors.name}</strong>
+                                                <strong>{walletFormErrors.name}</strong>
                                             </span>
                                         }
                                     </div>
@@ -216,8 +168,8 @@ export default function WalletEdit() {
                                         <label htmlFor="currency_id" className="form-label fw-bold">Icon</label>
                                         <Select
                                             name="icon"
-                                            options={icons}
-                                            value={icons.find(option => option.value === wallet.icon) || null}
+                                            options={walletIcons}
+                                            value={walletIcons.find(option => option.value === wallet.icon) || null}
                                             onChange={(selectedOption) => setWallet({...wallet, icon: selectedOption.value})}
                                             isSearchable={true}
                                             placeholder="Please select"
