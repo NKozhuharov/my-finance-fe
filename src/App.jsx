@@ -3,7 +3,7 @@ import Home from "./components/home/Home.jsx";
 import Register from "./components/register/Register.jsx";
 import Login from "./components/login/Login.jsx";
 import Terms from "./components/terms/terms.jsx";
-import Dashboard from "./components/dashboard/dashboard.jsx";
+import Dashboard from "./components/dashboard/Dashboard.jsx";
 import UserProvider from "./providers/UserProvider.jsx";
 import Logout from "./components/logout/Logout.jsx";
 import AuthGuard from "./guards/AuthGuard.jsx";
