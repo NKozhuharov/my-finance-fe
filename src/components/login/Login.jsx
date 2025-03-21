@@ -5,6 +5,10 @@ import {useLogin} from "../../api/authApi.js";
 import {UserContext} from "../../contexts/UserContext.jsx";
 
 export default function Login() {
+    const [formValues, setFormValues] = useState({
+        email: '',
+        password: '',
+    });
     const [loginErrors, setLoginErrors] = useState({});
     const navigate = useNavigate();
     const {userLoginHandler} = useContext(UserContext);
@@ -23,6 +27,7 @@ export default function Login() {
     const loginHandler = async (_, formData) => {
         setLoginErrors({});
         const values = Object.fromEntries(formData);
+        setFormValues(values);
 
         const authData = await login(values.email, values.password);
 
@@ -56,7 +61,14 @@ export default function Login() {
                     <p className="login-box-msg">Sign in to start your session</p>
                     <form action={loginAction}>
                         <div className="input-group mb-3">
-                            <input type="email" className={`form-control${loginErrors.email ? ' is-invalid' : ''}`} name="email" placeholder="Email"/>
+                            <input
+                                type="email"
+                                name="email"
+                                value={formValues.email}
+                                onChange={(e) => setFormValues({...formValues, email: e.target.value})}
+                                className={`form-control${loginErrors.email ? ' is-invalid' : ''}`}
+                                placeholder="Email"
+                            />
                             <div className="input-group-text"><span className="bi bi-envelope"></span></div>
                             {loginErrors.email &&
                                 <span className="invalid-feedback" role="alert">
@@ -65,7 +77,14 @@ export default function Login() {
                             }
                         </div>
                         <div className="input-group mb-3">
-                            <input type="password" className={`form-control${loginErrors.password ? ' is-invalid' : ''}`} name="password" placeholder="Password"/>
+                            <input
+                                type="password"
+                                name="password"
+                                value={formValues.password}
+                                onChange={(e) => setFormValues({...formValues, password: e.target.value})}
+                                className={`form-control${loginErrors.password ? ' is-invalid' : ''}`}
+                                placeholder="Password"
+                            />
                             <div className="input-group-text"><span className="bi bi-lock-fill"></span></div>
                             {loginErrors.password &&
                                 <span className="invalid-feedback" role="alert">
