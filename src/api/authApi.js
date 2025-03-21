@@ -2,13 +2,12 @@ import {useContext, useEffect} from "react";
 import {UserContext} from "../contexts/UserContext";
 import axios from "axios";
 
-const baseUrl = process.env.API_BASE_URL;
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const axiosInstance = axios.create({
     baseURL: baseUrl,
     timeout: 100000
 });
-
 
 export const useLogin = () => {
     const login = async (email, password) =>
