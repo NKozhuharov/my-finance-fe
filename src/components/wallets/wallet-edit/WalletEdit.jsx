@@ -2,7 +2,7 @@ import React, {useActionState, useEffect, useState} from "react";
 import AdminPanelPage from "../../../layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "../../../hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
-import Select, {components} from "react-select";
+import Select from "react-select";
 import Modal from "react-bootstrap/Modal";
 import {Button} from "react-bootstrap";
 import {useAlert} from "../../../contexts/AlertContext.jsx";
@@ -173,7 +173,7 @@ export default function WalletEdit() {
                                             onChange={(selectedOption) => setWallet({...wallet, icon: selectedOption.value})}
                                             isSearchable={true}
                                             placeholder="Please select"
-                                            components={{Option: IconOption, SingleValue: CustomSingleValue}} // Use the custom Option
+                                            components={{Option: IconOption, SingleValue: CustomSingleValue}}
                                             required
                                         />
                                     </div>

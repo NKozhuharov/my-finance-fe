@@ -10,12 +10,16 @@ import {CustomSingleValue, IconOption} from "../../../utils/IconComponents.jsx";
 import CategoryIcon from "../../category-icon/CategoryIcon.jsx";
 
 export default function WalletCreate() {
+    //@TODO - know issues - select/deselect all not implemented
+    //@TODO - know issues - when form is submitted and there are errors, the checkbox 'checked' is not working correctly
     const [wallet, setWallet] = useState({
         name: '',
         currency_id: '',
         icon: '',
+        income_categories: [],
+        expense_categories: [],
     });
-    const [walletCategories, setWalletCategories] = useState([]);
+    const [defaultWalletCategories, setDefaultWalletCategories] = useState([]);
     const {currencies} = useCurrencies();
     const {walletIcons} = useWalletIcons();
 
@@ -31,7 +35,13 @@ export default function WalletCreate() {
         const fetchDefaultCategories = async () => {
             try {
                 const response = await api.get(`/wallets/default-categories`);
-                setWalletCategories(response.data.data || []);
+                let responseData = response.data.data || [];
+
+                responseData = responseData.map((item) => ({
+                    ...item,
+                    key: crypto.randomUUID()
+                }));
+                setDefaultWalletCategories(responseData);
             } catch (err) {
                 console.error("Error fetching wallet default categories data: ", err);
             }
@@ -40,9 +50,19 @@ export default function WalletCreate() {
         fetchDefaultCategories();
     }, [api]);
 
-    const walletCreateHandler = async (_, formData) => {
+    const walletCreateHandler = async () => {
         setWalletFormErrors({});
-        const values = Object.fromEntries(formData);
+        const values = {...wallet}; // Create a shallow copy to avoid mutating state
+        values.categories = [
+            ...values.income_categories.map(key =>
+                defaultWalletCategories.find(item => item.key === key)
+            ).filter(item => item !== undefined),
+            ...values.expense_categories.map(key =>
+                defaultWalletCategories.find(item => item.key === key)
+            ).filter(item => item !== undefined)
+        ];
+        delete values.income_categories;
+        delete values.expense_categories;
 
         try {
             await api.post(`/wallets`, values);
@@ -81,7 +101,7 @@ export default function WalletCreate() {
                                             type="text"
                                             name="name"
                                             value={wallet.name}
-                                            onChange={(e) => setWallet({...wallet, name: e.target.value})}
+                                            onChange={(e) => setWallet((currentWallet) => ({...currentWallet, name: e.target.value}))}
                                             className={`form-control${walletFormErrors.name ? ' is-invalid' : ''}`}
                                             placeholder="Name"
 
@@ -100,7 +120,7 @@ export default function WalletCreate() {
                                             name="currency_id"
                                             options={currencies}
                                             value={currencies.find(option => option.value === wallet.currency_id) || null}
-                                            onChange={(selectedOption) => setWallet({...wallet, currency_id: selectedOption.value})}
+                                            onChange={(selectedOption) => setWallet((currentWallet) => ({...currentWallet, currency_id: selectedOption.value}))}
                                             className={`${walletFormErrors.currency_id ? ' is-invalid' : ''}`}
                                             isSearchable={true}
                                             placeholder="Please select"
@@ -120,11 +140,11 @@ export default function WalletCreate() {
                                             name="icon"
                                             options={walletIcons}
                                             value={walletIcons.find(option => option.value === wallet.icon) || null}
-                                            onChange={(selectedOption) => setWallet({...wallet, icon: selectedOption.value})}
+                                            onChange={(selectedOption) => setWallet((currentWallet) => ({...currentWallet, icon: selectedOption.value}))}
                                             className={`${walletFormErrors.currency_id ? ' is-invalid' : ''}`}
                                             isSearchable={true}
                                             placeholder="Please select"
-                                            components={{Option: IconOption, SingleValue: CustomSingleValue}} // Use the custom Option
+                                            components={{Option: IconOption, SingleValue: CustomSingleValue}}
 
                                         />
                                         {walletFormErrors.icon &&
@@ -137,9 +157,6 @@ export default function WalletCreate() {
                                 <hr/>
                                 <div className="row">
                                     <div className="col-lg-6 col-sm-12">
-                                        {/*@error('income-category')*/}
-                                        {/*<span className="text-red">{{$message}}</span>*/}
-                                        {/*@enderror*/}
                                         <div className="card card-secondary">
                                             <div className="card-header income-background-color">
                                                 Income Categories
@@ -148,11 +165,25 @@ export default function WalletCreate() {
                                                 </div>
                                             </div>
                                             <div className="card-body">
-                                                {walletCategories
+                                                {defaultWalletCategories
                                                     .filter(category => category.type === 'Income')
-                                                    .map((category, key) => (
-                                                        <div className="form-check" key={key}>
-                                                            <input className="form-check-input income-category-checkbox" type="checkbox" name="categories[]"/>
+                                                    .map((category) => (
+                                                        <div className="form-check" key={category.key}>
+                                                            <input
+                                                                className="form-check-input income-category-checkbox"
+                                                                type="checkbox"
+                                                                name={`categories[${category.key}]`}
+                                                                checked={wallet.income_categories.includes(category.key)}
+                                                                onChange={(e) => {
+                                                                    const isChecked = e.target.checked;
+                                                                    setWallet((prevWallet) => ({
+                                                                        ...prevWallet,
+                                                                        income_categories: isChecked
+                                                                            ? [...prevWallet.income_categories, category.key]
+                                                                            : prevWallet.income_categories.filter((cat) => cat !== category.key),
+                                                                    }));
+                                                                }}
+                                                            />
                                                             <label className="form-check-label" htmlFor={`category-${category.name}`}>
                                                                 <CategoryIcon category={category}/>
                                                             </label>
@@ -160,11 +191,13 @@ export default function WalletCreate() {
                                                     ))}
                                             </div>
                                         </div>
+                                        {walletFormErrors.categories &&
+                                            <span className="text-danger" role="alert">
+                                                <strong>{walletFormErrors.categories}</strong>
+                                            </span>
+                                        }
                                     </div>
                                     <div className="col-lg-6 col-sm-12">
-                                        {/*@error('income-category')*/}
-                                        {/*<span className="text-red">{{$message}}</span>*/}
-                                        {/*@enderror*/}
                                         <div className="card card-secondary">
                                             <div className="card-header expense-background-color">
                                                 Expense Categories
@@ -173,11 +206,25 @@ export default function WalletCreate() {
                                                 </div>
                                             </div>
                                             <div className="card-body">
-                                                {walletCategories
+                                                {defaultWalletCategories
                                                     .filter(category => category.type === 'Expense')
-                                                    .map((category, key) => (
-                                                        <div className="form-check" key={key}>
-                                                            <input className="form-check-input income-category-checkbox" type="checkbox" name="categories[]"/>
+                                                    .map((category) => (
+                                                        <div className="form-check" key={category.key}>
+                                                            <input
+                                                                className="form-check-input income-category-checkbox"
+                                                                type="checkbox"
+                                                                name={`categories[${category.key}]`}
+                                                                checked={wallet.expense_categories.includes(category.key)}
+                                                                onChange={(e) => {
+                                                                    const isChecked = e.target.checked;
+                                                                    setWallet((prevWallet) => ({
+                                                                        ...prevWallet,
+                                                                        expense_categories: isChecked
+                                                                            ? [...prevWallet.expense_categories, category.key]
+                                                                            : prevWallet.expense_categories.filter((cat) => cat !== category.key),
+                                                                    }));
+                                                                }}
+                                                            />
                                                             <label className="form-check-label" htmlFor={`category-${category.name}`}>
                                                                 <CategoryIcon category={category}/>
                                                             </label>
