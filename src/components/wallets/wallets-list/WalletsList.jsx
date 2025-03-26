@@ -4,7 +4,7 @@ import {useApiClient} from "../../../hooks/useApiClient.js";
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-bs5';
 import {Link, useNavigate} from "react-router";
-import {useAlert} from "../../../contexts/AlertContext.jsx";
+import WalletNameCell from "../wallet-name-cell/WalletNameCell.jsx";
 
 DataTable.use(DT);
 
@@ -22,8 +22,6 @@ export default function WalletsList() {
                 const response = await api.get(`/wallets`);
                 setWallets(response.data.data || []); // Save fetched data into state
                 setLoading(false); // Turn off loading
-
-
             } catch (err) {
                 console.error("Error fetching wallet data: ", err);
                 setLoading(false);
@@ -38,14 +36,6 @@ export default function WalletsList() {
         {
             title: "Name",
             data: "name",
-            render: (data, type, row) => {
-                return `<div class="d-flex align-items-center">
-                            <div class="icon-container">
-                                <img class="category-icon" src="${import.meta.env.VITE_ICONS_BASE_URL}${row.icon}" alt="No Icon"/>
-                            </div>
-                            <span class="fw-bold ms-2">${row.name}</span>
-                        </div>`;
-            },
         },
         {
             title: "Balance",
@@ -67,6 +57,11 @@ export default function WalletsList() {
                                 <DataTable
                                     className="table table-striped table-no-bordered table-hover w-100 datatable responsive clickable-table"
                                     data={wallets}
+                                    slots={{
+                                        0: (data, row) => (
+                                            <WalletNameCell {...row} />
+                                        )
+                                    }}
                                     options={{
                                         searching: false,
                                         ordering: false,
