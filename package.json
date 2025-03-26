@@ -17,6 +17,8 @@
     "datatables.net-bs5": "^2.2.2",
     "datatables.net-dt": "^2.2.2",
     "datatables.net-react": "^1.0.0",
+    "datatables.net-rowgroup": "^1.5.1",
+    "datatables.net-rowgroup-bs5": "^1.5.1",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",

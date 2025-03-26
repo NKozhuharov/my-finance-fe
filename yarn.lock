@@ -946,7 +946,7 @@ csstype@^3.0.2:
   resolved "https://registry.npmjs.org/csstype/-/csstype-3.1.3.tgz"
   integrity sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==
 
-datatables.net-bs5@^2.2.2:
+datatables.net-bs5@^2, datatables.net-bs5@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/datatables.net-bs5/-/datatables.net-bs5-2.2.2.tgz#2d23183f6d9892a5518be9d33ef845935d859dba"
   integrity sha512-0mAbpUf0EpnIEc0RlN6vSrSk9y/+NuReiwDpjHYY3RfzdvH6Lt0+7Q9OU5RIbYxaFxES/z60thxdrw7IUFnBhw==
@@ -967,7 +967,24 @@ datatables.net-react@^1.0.0:
   resolved "https://registry.yarnpkg.com/datatables.net-react/-/datatables.net-react-1.0.0.tgz#c1d499f997609922895785b19f24cfb4af00caf9"
   integrity sha512-Rhuxu5KEnEHC8rCbXhwcLZ+tbjWkCiI7X8nj5p6+6UT5RHqJpKYjDxLQZnva0sLLOCSvmjHS+3TatzckTAk+Pw==
 
-datatables.net@2.2.2, datatables.net@^2.2.2:
+datatables.net-rowgroup-bs5@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/datatables.net-rowgroup-bs5/-/datatables.net-rowgroup-bs5-1.5.1.tgz#36b582717421a482e7af12dff77ab97a0482b03d"
+  integrity sha512-WREi7Km2bq1KxQGyEoPCbcXCCVlXQASK8on6+XF2iFoJe2cq+16xDnKHy0CVOMsmaUBNqS8JWVYDNgRV3r4PKg==
+  dependencies:
+    datatables.net-bs5 "^2"
+    datatables.net-rowgroup "1.5.1"
+    jquery ">=1.7"
+
+datatables.net-rowgroup@1.5.1, datatables.net-rowgroup@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/datatables.net-rowgroup/-/datatables.net-rowgroup-1.5.1.tgz#26c8ba39ea749356d0f592d72da8d5dab2772f50"
+  integrity sha512-yDn+UCG9vrztt4obqt0YogyjH/i1D5Fyxnt4r5++T/ZaYhjKLU8zG9hkQXMx81M7RgeOtkv0eEpo/c+72w8T0w==
+  dependencies:
+    datatables.net "^2"
+    jquery ">=1.7"
+
+datatables.net@2.2.2, datatables.net@^2, datatables.net@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/datatables.net/-/datatables.net-2.2.2.tgz#de45c9ef18775499481ffdae81a8de6a10d264a0"
   integrity sha512-gfODIKE3gpgbVeZy2QGj2Dq9roO6hy00S+k1knklrqlMyAMrh1wt0Q6ryBUM7gU96U77ysbq8dYhxFdmcC/oPQ==
