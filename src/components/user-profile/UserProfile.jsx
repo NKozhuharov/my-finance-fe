@@ -1,8 +1,9 @@
-import React, {useActionState, useEffect, useState} from "react";
+import React, {useActionState, useContext, useEffect, useState} from "react";
 import AdminPanelPage from "../../layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "../../hooks/useApiClient.js";
 import {Link, useParams} from "react-router";
 import {useAlert} from "../../contexts/AlertContext.jsx";
+import {UserContext} from "../../contexts/UserContext.jsx";
 
 export default function UserProfile() {
     const {walletId} = useParams();
@@ -20,6 +21,8 @@ export default function UserProfile() {
     const api = useApiClient();
 
     const {setAlert} = useAlert();
+
+    const {userDataChangeHandler} = useContext(UserContext);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -40,6 +43,7 @@ export default function UserProfile() {
 
         try {
             await api.patch(`/user`, values, {});
+            userDataChangeHandler({first_name: values.first_name, last_name: values.last_name});
             setAlert({variant: "success", text: "User edited successfully."});
         } catch (err) {
             setFormErrors(err.response.data.details);

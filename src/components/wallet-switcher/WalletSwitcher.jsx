@@ -10,7 +10,7 @@ export default function WalletSwitcher() {
     const [wallets, setWallets] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    const {user, activeWalletChangeHandler} = useContext(UserContext);
+    const {user, userDataChangeHandler} = useContext(UserContext);
 
     const api = useApiClient();
 
@@ -49,7 +49,7 @@ export default function WalletSwitcher() {
     };
 
     const handleWalletSwitch = (activeWalletId) => {
-        activeWalletChangeHandler(activeWalletId);
+        userDataChangeHandler({active_wallet_id: activeWalletId});
         setShow(false);
     }
 

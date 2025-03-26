@@ -14,21 +14,21 @@ export default function UserProvider({
         setAuthData({});
     };
 
-    const activeWalletChangeHandler = (walletId) => {
+    const userDataChangeHandler = (userData) => {
         setAuthData((prevAuthData) => ({
             ...prevAuthData,
             user: {
                 ...prevAuthData.user,
                 data: {
                     ...prevAuthData.user.data,
-                    active_wallet_id: walletId,
+                    ...userData
                 },
             },
         }));
-    };
+    }
 
     return (
-        <UserContext.Provider value={{ ...authData, userLoginHandler, userLogoutHandler, activeWalletChangeHandler }}>
+        <UserContext.Provider value={{ ...authData, userLoginHandler, userLogoutHandler, userDataChangeHandler }}>
             {children}
         </UserContext.Provider>
     );
