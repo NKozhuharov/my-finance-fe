@@ -13,6 +13,7 @@ import WalletEdit from "./components/wallets/wallet-edit/WalletEdit.jsx";
 import WalletCreate from "./components/wallets/wallet-create/WalletCreate.jsx";
 import {AlertProvider} from "./providers/AlertProvider.jsx";
 import CategoriesList from "./components/categories/categories-list/CategoriesList.jsx";
+import UserProfile from "./components/user-profile/UserProfile.jsx";
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                         <Route index element={<Home/>}/>
                         <Route element={<AuthGuard/>}>
                             <Route path="/dashboard" element={<Dashboard/>}/>
+                            <Route path="/user-profile" element={<UserProfile/>}/>
                             <Route path="/wallets" element={<WalletsList/>}/>
                             <Route path="/wallets/:walletId/edit" element={<WalletEdit/>}/>
                             <Route path="/wallets/create" element={<WalletCreate/>}/>

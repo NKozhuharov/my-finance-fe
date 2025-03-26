@@ -18,7 +18,7 @@ export default function UserMenu({firstName, lastName}) {
                 {`${firstName} ${lastName}`}
             </li>
             <li className="user-footer">
-                <Link to="/profile" className="btn btn-default">Profile</Link>
+                <Link to="/user-profile" className="btn btn-default">Profile</Link>
                 <Link to="/logout" className="btn btn-default float-end">Sign out</Link>
             </li>
         </ul>
