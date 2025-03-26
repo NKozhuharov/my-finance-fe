@@ -1,4 +1,4 @@
-import React, {useActionState, useEffect, useState} from "react";
+import React, {useActionState, useContext, useEffect, useState} from "react";
 import AdminPanelPage from "../../../layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "../../../hooks/useApiClient.js";
 import {Link, useNavigate} from "react-router";
@@ -8,6 +8,7 @@ import {useAlert} from "../../../contexts/AlertContext.jsx";
 import Select from "react-select";
 import {CustomSingleValue, IconOption} from "../../../utils/IconComponents.jsx";
 import CategoryIcon from "../../category-icon/CategoryIcon.jsx";
+import {UserContext} from "../../../contexts/UserContext.jsx";
 
 export default function WalletCreate() {
     //@TODO - know issues - select/deselect all not implemented
@@ -30,6 +31,8 @@ export default function WalletCreate() {
     const navigate = useNavigate();
 
     const {setAlert} = useAlert();
+
+    const {userDataChangeHandler} = useContext(UserContext);
 
     useEffect(() => {
         const fetchDefaultCategories = async () => {
@@ -65,7 +68,8 @@ export default function WalletCreate() {
         delete values.expense_categories;
 
         try {
-            await api.post(`/wallets`, values);
+            const response = await api.post(`/wallets`, values);
+            userDataChangeHandler({active_wallet_id: response.data.data.id});
             setAlert({variant: "success", text: "Wallet created successfully."});
             navigate(`/wallets`);
         } catch (err) {
