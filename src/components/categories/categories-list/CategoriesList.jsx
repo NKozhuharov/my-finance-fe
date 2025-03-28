@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import AdminPanelPage from "../../../layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "../../../hooks/useApiClient.js";
 import DataTable from 'datatables.net-react';
@@ -6,6 +6,7 @@ import DT from 'datatables.net-bs5';
 import "datatables.net-rowgroup-bs5";
 import {Link, useNavigate} from "react-router";
 import CategoryNameCell from "../category-name-cell/CategoryNameCell.jsx";
+import {UserContext} from "../../../contexts/UserContext.jsx";
 
 DataTable.use(DT);
 
@@ -15,6 +16,7 @@ export default function CategoriesList() {
 
     const api = useApiClient();
     const navigate = useNavigate();
+    const {user} = useContext(UserContext);
 
     useEffect(() => {
         // Fetch data from the API
@@ -41,7 +43,7 @@ export default function CategoriesList() {
         };
 
         fetchCategories();
-    }, [api]); // Run once on component mount
+    }, [api, user.data.active_wallet_id]); // Run once on component mount
 
     return (
         <AdminPanelPage>
