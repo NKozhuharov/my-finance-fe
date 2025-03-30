@@ -88,7 +88,7 @@ export default function CategoryShow() {
                     <div className="card card-primary">
                         <div className="card-header">
                             <div className="card-tools-left">
-                                <Link className="btn btn-tool" to={-1} title="Back">
+                                <Link className="btn btn-tool" to="/categories" title="Back">
                                     <i className="bi bi-arrow-left"></i>
                                 </Link>
                             </div>
