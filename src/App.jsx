@@ -15,6 +15,8 @@ import {AlertProvider} from "./providers/AlertProvider.jsx";
 import CategoriesList from "./components/categories/categories-list/CategoriesList.jsx";
 import UserProfile from "./components/user-profile/UserProfile.jsx";
 import CategoryShow from "./components/categories/category-show/CategoryShow.jsx";
+import CategoryEdit from "./components/categories/category-edit/CategoryEdit.jsx";
+import CategoryCreate from "./components/categories/category-create/CategoryCreate.jsx";
 
 function App() {
     return (
@@ -31,8 +33,8 @@ function App() {
                             <Route path="/wallets/create" element={<WalletCreate/>}/>
                             <Route path="/categories" element={<CategoriesList/>}/>
                             <Route path="/categories/:categoryId" element={<CategoryShow/>}/>
-                            {/*<Route path="/categories/:categoryId/edit" element={<WalletEdit/>}/>*/}
-                            {/*<Route path="/categories/create" element={<WalletCreate/>}/>*/}
+                            <Route path="/categories/:categoryId/edit" element={<CategoryEdit/>}/>
+                            <Route path="/categories/create" element={<CategoryCreate/>}/>
                             <Route path="/logout" element={<Logout/>}/>
                         </Route>
                         <Route element={<GuestGuard/>}>
