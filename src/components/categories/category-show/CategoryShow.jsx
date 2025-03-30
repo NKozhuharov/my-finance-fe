@@ -7,6 +7,9 @@ import "datatables.net-rowgroup-bs5";
 import {Link, useNavigate, useParams} from "react-router";
 import {getIncomeExpenseColorClass} from "../../../utils/helpers.js";
 import CategoryNameAndIcon from "../category-name-and-icon/CategoryNameAndIcon.jsx";
+import Modal from "react-bootstrap/Modal";
+import {Button} from "react-bootstrap";
+import {useAlert} from "../../../contexts/AlertContext.jsx";
 
 DataTable.use(DT);
 
@@ -15,9 +18,13 @@ export default function CategoryShow() {
 
     const [category, setCategory] = useState({});
 
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
     const api = useApiClient();
 
     const navigate = useNavigate();
+
+    const {setAlert} = useAlert();
 
     useEffect(() => {
         // Fetch data from the API
@@ -34,16 +41,48 @@ export default function CategoryShow() {
         fetchCategory();
     }, [api, categoryId]);
 
+    const handleCloseModal = () => setShowDeleteModal(false);
+    const handleShowModal = () => setShowDeleteModal(true);
+
     const handleCategoryDelete = (event) => {
         event.preventDefault();
 
-        // todo
-
-        navigate(`/categories`);
+        api.delete(`/categories/${categoryId}`, {})
+            .then(() => {
+                setAlert({variant: "success", text: "Category deleted successfully."});
+                setShowDeleteModal(false);
+                navigate(`/categories`);
+            })
+            .catch((error) => {
+                setAlert({variant: "danger", text: error.response.data.message});
+            }).finally(() => {
+            setShowDeleteModal(false);
+        })
     }
 
     return (
         <AdminPanelPage>
+            <Modal show={showDeleteModal} onHide={handleCloseModal}>
+                <form onSubmit={handleCategoryDelete}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Confirm Deletion</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className="alert alert-danger">
+                            Are you sure you want to delete this category? This action cannot be undone.
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseModal}>
+                            Close
+                        </Button>
+                        <Button type="submit" variant="danger">
+                            Confirm
+                        </Button>
+                    </Modal.Footer>
+                </form>
+            </Modal>
+
             <div className="row mb-3 pt-3">
                 <div className="col-12">
                     <div className="card card-primary">
@@ -56,7 +95,7 @@ export default function CategoryShow() {
                             Category <b>{category.name}</b>
                             <div className="card-tools">
                                 <Link className="btn btn-tool" to={`/categories/${category.id}/edit`} title="Edit"><i className="bi bi-pencil-fill"></i></Link>
-                                <button className="btn btn-tool" title="Delete" onClick={handleCategoryDelete}>
+                                <button className="btn btn-tool" title="Delete" onClick={handleShowModal}>
                                     <i className="bi bi-trash"></i>
                                 </button>
                             </div>
@@ -74,7 +113,8 @@ export default function CategoryShow() {
                                                 {category.parentCategory?.data.id ? (
                                                     <>
                                                         <i className="bi bi-arrow-right ps-2 pe-2 fw-bold"></i>
-                                                        <Link to={`/categories/${category.parentCategory.data.id}`} className="text-decoration-none" title={`View Category ${category.parentCategory.data.name}`}>
+                                                        <Link to={`/categories/${category.parentCategory.data.id}`} className="text-decoration-none"
+                                                              title={`View Category ${category.parentCategory.data.name}`}>
                                                             <strong className={getIncomeExpenseColorClass(category.type)}>
                                                                 {category.parentCategory.data.name}
                                                             </strong>
