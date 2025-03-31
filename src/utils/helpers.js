@@ -6,7 +6,7 @@ export function removeBodyClass(className) {
     document.body.classList.remove(className);
 }
 
-export function getIncomeExpenseColorClass(value) {
+export function getIncomeExpenseColorClassFromType(value) {
     if (value === undefined) {
         return '';
     }

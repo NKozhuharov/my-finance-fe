@@ -5,7 +5,7 @@ import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-bs5';
 import "datatables.net-rowgroup-bs5";
 import {Link, useNavigate, useParams} from "react-router";
-import {getIncomeExpenseColorClass} from "../../../utils/helpers.js";
+import {getIncomeExpenseColorClassFromType} from "../../../utils/helpers.js";
 import CategoryNameAndIcon from "../category-name-and-icon/CategoryNameAndIcon.jsx";
 import Modal from "react-bootstrap/Modal";
 import {Button} from "react-bootstrap";
@@ -107,7 +107,7 @@ export default function CategoryShow() {
                                         <h5>
                                             <div className="d-flex align-items-center">
                                                 <i className="bi bi-arrow-right pe-2 fw-bold"></i>
-                                                <strong className={getIncomeExpenseColorClass(category.type)}>
+                                                <strong className={getIncomeExpenseColorClassFromType(category.type)}>
                                                     {category.type}
                                                 </strong>
                                                 {category.parentCategory?.data.id ? (
@@ -115,7 +115,7 @@ export default function CategoryShow() {
                                                         <i className="bi bi-arrow-right ps-2 pe-2 fw-bold"></i>
                                                         <Link to={`/categories/${category.parentCategory.data.id}`} className="text-decoration-none"
                                                               title={`View Category ${category.parentCategory.data.name}`}>
-                                                            <strong className={getIncomeExpenseColorClass(category.type)}>
+                                                            <strong className={getIncomeExpenseColorClassFromType(category.type)}>
                                                                 {category.parentCategory.data.name}
                                                             </strong>
                                                         </Link>
