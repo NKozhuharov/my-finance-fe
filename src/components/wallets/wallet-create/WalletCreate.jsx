@@ -9,6 +9,7 @@ import Select from "react-select";
 import {CustomSingleValue, IconOption} from "@utils/IconComponents.jsx";
 import CategoryIcon from "@components/category-icon/CategoryIcon.jsx";
 import {UserContext} from "@contexts/UserContext.jsx";
+import CategoryNameAndIcon from "@components/categories/category-name-and-icon/CategoryNameAndIcon.jsx";
 
 export default function WalletCreate() {
     //@TODO - know issues - select/deselect all not implemented
@@ -189,7 +190,9 @@ export default function WalletCreate() {
                                                                 }}
                                                             />
                                                             <label className="form-check-label" htmlFor={`category-${category.name}`}>
-                                                                <CategoryIcon category={category}/>
+                                                                <div className="d-flex align-items-center">
+                                                                    <CategoryNameAndIcon {...category}/>
+                                                                </div>
                                                             </label>
                                                         </div>
                                                     ))}
@@ -230,7 +233,9 @@ export default function WalletCreate() {
                                                                 }}
                                                             />
                                                             <label className="form-check-label" htmlFor={`category-${category.name}`}>
-                                                                <CategoryIcon category={category}/>
+                                                                <div className="d-flex align-items-center">
+                                                                    <CategoryNameAndIcon {...category}/>
+                                                                </div>
                                                             </label>
                                                         </div>
                                                     ))}
