@@ -1,12 +1,12 @@
 import React, {useActionState, useState} from "react";
-import AdminPanelPage from "../../../layouts/admin-panel-page/AdminPanelPage";
-import {useApiClient} from "../../../hooks/useApiClient.js";
+import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
+import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate} from "react-router";
 import Select from "react-select";
-import {useAlert} from "../../../contexts/AlertContext.jsx";
-import {useCategoryIcons} from "../../../api/IconsApi.js";
-import {CustomSingleValue, IconOption} from "../../../utils/IconComponents.jsx";
-import CategorySelector from "../category-selector/CategorySelector.jsx";
+import {useAlert} from "@contexts/AlertContext.jsx";
+import {useCategoryIcons} from "@api/IconsApi.js";
+import {CustomSingleValue, IconOption} from "@utils/IconComponents.jsx";
+import CategorySelector from "@components/categories/category-selector/CategorySelector.jsx";
 
 export default function CategoryCreate() {
     const [category, setCategory] = useState({

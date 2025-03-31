@@ -1,6 +1,6 @@
-import UserMenu from "../user-menu/UserMenu.jsx";
-import WalletSwitcher from "../wallet-switcher/WalletSwitcher.jsx";
-import {UserContext} from "../../contexts/UserContext.jsx";
+import UserMenu from "@components/user-menu/UserMenu.jsx";
+import WalletSwitcher from "@components/wallet-switcher/WalletSwitcher.jsx";
+import {UserContext} from "@contexts/UserContext.jsx";
 import {useContext} from "react";
 
 export default function Header({toggleSidebar}) {

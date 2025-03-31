@@ -1,8 +1,8 @@
 import {useContext, useEffect, useState} from 'react';
 import Modal from 'react-bootstrap/Modal';
-import {useApiClient} from "../../hooks/useApiClient.js";
-import {UserContext} from "../../contexts/UserContext.jsx";
-import WalletSwitcherRow from "./wallet-switcher-row/WalletSwitcherRow.jsx";
+import {useApiClient} from "@hooks/useApiClient.js";
+import {UserContext} from "@contexts/UserContext.jsx";
+import WalletSwitcherRow from "@components/wallet-switcher/wallet-switcher-row/WalletSwitcherRow.jsx";
 
 export default function WalletSwitcher() {
     const [show, setShow] = useState(false);

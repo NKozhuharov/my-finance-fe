@@ -1,8 +1,8 @@
 import {Link, useNavigate} from "react-router";
 import {useActionState, useContext, useEffect, useState} from "react";
-import {addBodyClass, removeBodyClass} from "../../utils/helpers.js";
-import {UserContext} from "../../contexts/UserContext.jsx";
-import {useRegister} from "../../api/authApi.js";
+import {addBodyClass, removeBodyClass} from "@utils/helpers.js";
+import {UserContext} from "@contexts/UserContext.jsx";
+import {useRegister} from "@api/authApi.js";
 
 export default function Register() {
     const [formValues, setFormValues] = useState({

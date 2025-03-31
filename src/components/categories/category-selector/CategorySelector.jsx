@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {useApiClient} from "../../../hooks/useApiClient.js";
+import {useApiClient} from "@hooks/useApiClient.js";
 import "datatables.net-rowgroup-bs5";
 import Modal from "react-bootstrap/Modal";
-import CategoryNameAndIcon from "../category-name-and-icon/CategoryNameAndIcon.jsx";
+import CategoryNameAndIcon from "@components/categories/category-name-and-icon/CategoryNameAndIcon.jsx";
 
 
 export default function CategorySelector({

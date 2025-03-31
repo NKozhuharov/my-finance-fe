@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
-import AdminPanelPage from "../../../layouts/admin-panel-page/AdminPanelPage";
-import {useApiClient} from "../../../hooks/useApiClient.js";
+import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
+import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
-import {getIncomeExpenseColorClassFromType} from "../../../utils/helpers.js";
-import CategoryNameAndIcon from "../category-name-and-icon/CategoryNameAndIcon.jsx";
+import {getIncomeExpenseColorClassFromType} from "@utils/helpers.js";
+import CategoryNameAndIcon from "@components/categories/category-name-and-icon/CategoryNameAndIcon.jsx";
 import Modal from "react-bootstrap/Modal";
 import {Button} from "react-bootstrap";
-import {useAlert} from "../../../contexts/AlertContext.jsx";
+import {useAlert} from "@contexts/AlertContext.jsx";
 
 export default function CategoryShow() {
     const {categoryId} = useParams();

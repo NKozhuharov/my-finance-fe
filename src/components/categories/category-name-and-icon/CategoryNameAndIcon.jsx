@@ -1,4 +1,4 @@
-import {getIncomeExpenseColorClassFromType} from "../../../utils/helpers.js";
+import {getIncomeExpenseColorClassFromType} from "@utils/helpers.js";
 
 export default function CategoryNameAndIcon({name, icon, type}) {
     return (

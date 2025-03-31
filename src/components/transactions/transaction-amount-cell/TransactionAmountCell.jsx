@@ -1,7 +1,7 @@
-import {getIncomeExpenseColorClassFromAmount} from "../../../utils/helpers.js";
+import {getIncomeExpenseColorClassFromAmount} from "@utils/helpers.js";
 
-export default function TransactionAmountCell({amount, formattedtAmount}) {
+export default function TransactionAmountCell({amount, formattedAmount}) {
     return (
-        <span className={`fw-bold float-end ${getIncomeExpenseColorClassFromAmount(amount)}`}>{formattedtAmount}</span>
+        <span className={`fw-bold float-end ${getIncomeExpenseColorClassFromAmount(amount)}`}>{formattedAmount}</span>
     );
 };

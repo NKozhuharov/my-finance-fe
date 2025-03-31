@@ -1,14 +1,14 @@
 import React, {useActionState, useContext, useEffect, useState} from "react";
-import AdminPanelPage from "../../../layouts/admin-panel-page/AdminPanelPage";
-import {useApiClient} from "../../../hooks/useApiClient.js";
+import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
+import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate} from "react-router";
-import {useCurrencies} from "../../../api/CurrenciesApi.js";
-import {useWalletIcons} from "../../../api/IconsApi.js";
-import {useAlert} from "../../../contexts/AlertContext.jsx";
+import {useCurrencies} from "@api/CurrenciesApi.js";
+import {useWalletIcons} from "@api/IconsApi.js";
+import {useAlert} from "@contexts/AlertContext.jsx";
 import Select from "react-select";
-import {CustomSingleValue, IconOption} from "../../../utils/IconComponents.jsx";
-import CategoryIcon from "../../category-icon/CategoryIcon.jsx";
-import {UserContext} from "../../../contexts/UserContext.jsx";
+import {CustomSingleValue, IconOption} from "@utils/IconComponents.jsx";
+import CategoryIcon from "@components/category-icon/CategoryIcon.jsx";
+import {UserContext} from "@contexts/UserContext.jsx";
 
 export default function WalletCreate() {
     //@TODO - know issues - select/deselect all not implemented

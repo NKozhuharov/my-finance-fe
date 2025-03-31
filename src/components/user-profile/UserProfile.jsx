@@ -1,9 +1,9 @@
 import React, {useActionState, useContext, useEffect, useState} from "react";
-import AdminPanelPage from "../../layouts/admin-panel-page/AdminPanelPage";
-import {useApiClient} from "../../hooks/useApiClient.js";
+import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
+import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useParams} from "react-router";
-import {useAlert} from "../../contexts/AlertContext.jsx";
-import {UserContext} from "../../contexts/UserContext.jsx";
+import {useAlert} from "@contexts/AlertContext.jsx";
+import {UserContext} from "@contexts/UserContext.jsx";
 
 export default function UserProfile() {
     const {walletId} = useParams();

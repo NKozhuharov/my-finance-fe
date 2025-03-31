@@ -1,4 +1,4 @@
-import AdminPanelPage from "../../layouts/admin-panel-page/AdminPanelPage";
+import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
 
 export default function Dashboard() {
     return (

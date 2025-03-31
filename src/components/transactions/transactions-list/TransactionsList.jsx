@@ -1,13 +1,13 @@
 import React, {useContext, useEffect, useState} from "react";
-import AdminPanelPage from "../../../layouts/admin-panel-page/AdminPanelPage";
-import {useApiClient} from "../../../hooks/useApiClient.js";
+import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
+import {useApiClient} from "@hooks/useApiClient.js";
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-bs5';
 import "datatables.net-rowgroup-bs5";
 import {Link, useNavigate} from "react-router";
-import {UserContext} from "../../../contexts/UserContext.jsx";
-import CategoryNameCell from "../../categories/category-name-cell/CategoryNameCell.jsx";
-import TransactionAmountCell from "../transaction-amount-cell/TransactionAmountCell.jsx";
+import {UserContext} from "@contexts/UserContext.jsx";
+import CategoryNameCell from "@components/categories/category-name-cell/CategoryNameCell.jsx";
+import TransactionAmountCell from "@components/transactions/transaction-amount-cell/TransactionAmountCell.jsx";
 import {endOfMonth, format, startOfMonth, subMonths, addMonths} from 'date-fns';
 
 DataTable.use(DT);
@@ -117,7 +117,7 @@ export default function TransactionsList() {
                                             <CategoryNameCell {...{...row.category.data, parent_category_id: undefined}} />
                                         ),
                                         1: (data, row) => (
-                                            <TransactionAmountCell amount={row.amount} formattedtAmount={row.amount_formatted}/>
+                                            <TransactionAmountCell amount={row.amount} formattedAmount={row.amount_formatted}/>
                                         )
                                     }}
                                     options={{

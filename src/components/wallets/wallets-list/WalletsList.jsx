@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
-import AdminPanelPage from "../../../layouts/admin-panel-page/AdminPanelPage";
-import {useApiClient} from "../../../hooks/useApiClient.js";
+import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
+import {useApiClient} from "@hooks/useApiClient.js";
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-bs5';
 import {Link, useNavigate} from "react-router";
-import WalletNameCell from "../wallet-name-cell/WalletNameCell.jsx";
+import WalletNameCell from "@components/wallets/wallet-name-cell/WalletNameCell.jsx";
 
 DataTable.use(DT);
 

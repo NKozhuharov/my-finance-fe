@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
-import AdminPanelPage from "../../../layouts/admin-panel-page/AdminPanelPage";
-import {useApiClient} from "../../../hooks/useApiClient.js";
+import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
+import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
 import Modal from "react-bootstrap/Modal";
 import {Button} from "react-bootstrap";
-import {useAlert} from "../../../contexts/AlertContext.jsx";
-import CategoryNameAndIcon from "../../categories/category-name-and-icon/CategoryNameAndIcon.jsx";
+import {useAlert} from "@contexts/AlertContext.jsx";
+import CategoryNameAndIcon from "@components/categories/category-name-and-icon/CategoryNameAndIcon.jsx";
 
 export default function TransactionShow() {
     const {transactionId} = useParams();

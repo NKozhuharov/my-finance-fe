@@ -1,12 +1,12 @@
 import React, {useContext, useEffect, useState} from "react";
-import AdminPanelPage from "../../../layouts/admin-panel-page/AdminPanelPage";
-import {useApiClient} from "../../../hooks/useApiClient.js";
+import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
+import {useApiClient} from "@hooks/useApiClient.js";
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-bs5';
 import "datatables.net-rowgroup-bs5";
 import {Link, useNavigate} from "react-router";
-import CategoryNameCell from "../category-name-cell/CategoryNameCell.jsx";
-import {UserContext} from "../../../contexts/UserContext.jsx";
+import CategoryNameCell from "@components/categories/category-name-cell/CategoryNameCell.jsx";
+import {UserContext} from "@contexts/UserContext.jsx";
 
 DataTable.use(DT);
 

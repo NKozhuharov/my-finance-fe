@@ -1,14 +1,14 @@
 import React, {useActionState, useEffect, useState} from "react";
-import AdminPanelPage from "../../../layouts/admin-panel-page/AdminPanelPage";
-import {useApiClient} from "../../../hooks/useApiClient.js";
+import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
+import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
 import Select from "react-select";
 import Modal from "react-bootstrap/Modal";
 import {Button} from "react-bootstrap";
-import {useAlert} from "../../../contexts/AlertContext.jsx";
-import {useCurrencies} from "../../../api/CurrenciesApi.js";
-import {useWalletIcons} from "../../../api/IconsApi.js";
-import {CustomSingleValue, IconOption} from "../../../utils/IconComponents.jsx";
+import {useAlert} from "@contexts/AlertContext.jsx";
+import {useCurrencies} from "@api/CurrenciesApi.js";
+import {useWalletIcons} from "@api/IconsApi.js";
+import {CustomSingleValue, IconOption} from "@utils/IconComponents.jsx";
 
 export default function WalletEdit() {
     const {walletId} = useParams();

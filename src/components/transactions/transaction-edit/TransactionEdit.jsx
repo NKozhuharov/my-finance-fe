@@ -1,9 +1,9 @@
 import React, {useActionState, useEffect, useState} from "react";
-import AdminPanelPage from "../../../layouts/admin-panel-page/AdminPanelPage";
-import {useApiClient} from "../../../hooks/useApiClient.js";
+import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
+import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
-import {useAlert} from "../../../contexts/AlertContext.jsx";
-import CategorySelector from "../../categories/category-selector/CategorySelector.jsx";
+import {useAlert} from "@contexts/AlertContext.jsx";
+import CategorySelector from "@components/categories/category-selector/CategorySelector.jsx";
 
 //possible date picker - https://www.npmjs.com/package/react-date-range
 export default function TransactionEdit() {

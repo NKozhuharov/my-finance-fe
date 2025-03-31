@@ -1,5 +1,5 @@
-import {getIncomeExpenseColorClassFromType} from "../../../utils/helpers.js";
-import CategoryNameAndIcon from "../category-name-and-icon/CategoryNameAndIcon.jsx";
+import {getIncomeExpenseColorClassFromType} from "@utils/helpers.js";
+import CategoryNameAndIcon from "@components/categories/category-name-and-icon/CategoryNameAndIcon.jsx";
 
 export default function CategoryNameCell({name, icon, type, parent_category_id}) {
     return (

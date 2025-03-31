@@ -1,8 +1,8 @@
 import {Link, useNavigate} from "react-router";
 import {useActionState, useContext, useEffect, useState} from "react";
-import {addBodyClass, removeBodyClass} from "../../utils/helpers.js";
-import {useLogin} from "../../api/authApi.js";
-import {UserContext} from "../../contexts/UserContext.jsx";
+import {addBodyClass, removeBodyClass} from "@utils/helpers.js";
+import {useLogin} from "@api/authApi.js";
+import {UserContext} from "@contexts/UserContext.jsx";
 
 export default function Login() {
     const [formValues, setFormValues] = useState({
