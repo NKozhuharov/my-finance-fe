@@ -27,7 +27,9 @@ export default function WalletSwitcher() {
             }
         };
 
-        fetchWallet();
+        if (user.data.active_wallet_id) {
+            fetchWallet();
+        }
 
         return () => controller.abort(); // Cleanup: Cancel the request on unmount
     }, [api, user.data.active_wallet_id]);

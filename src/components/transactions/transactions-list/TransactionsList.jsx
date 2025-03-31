@@ -27,7 +27,12 @@ export default function TransactionsList() {
         // Fetch data from the API
         const fetchTransactions = async () => {
             try {
-                const response = await api.get(`/transactions?resolve[]=category&limit=all&filters[date][gte]=${createdAtFrom}&filters[date][lte]=${createdAtTo}`);
+                let url = `/transactions?resolve[]=category&limit=all&filters[date][gte]=${createdAtFrom}&filters[date][lte]=${createdAtTo}`;
+                if (!user.data.active_wallet_id) {
+                    //resolve wallet to show it in the list of categories
+                    url += '&resolve[]=category-wallet';
+                }
+                const response = await api.get(url);
 
                 setTransactions(response.data.data);
                 setLoading(false);

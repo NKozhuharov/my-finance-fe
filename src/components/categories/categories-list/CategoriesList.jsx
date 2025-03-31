@@ -22,7 +22,12 @@ export default function CategoriesList() {
         // Fetch data from the API
         const fetchCategories = async () => {
             try {
-                const response = await api.get(`/categories?limit=all&filters[parent_category_id][is]=null&resolve[]=children&orderby=name&sort=asc`);
+                let url = `/categories?limit=all&filters[parent_category_id][is]=null&resolve[]=children&orderby=name&sort=asc`;
+                if (!user.data.active_wallet_id) {
+                    //resolve wallet to show it in the list of categories
+                    url += '&resolve[]=wallet';
+                }
+                const response = await api.get(url);
                 const categoryArray = [];
                 (response.data.data || []).forEach((category) => {
                     categoryArray.push(category);

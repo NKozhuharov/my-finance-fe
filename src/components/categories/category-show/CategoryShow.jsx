@@ -25,7 +25,7 @@ export default function CategoryShow() {
         // Fetch data from the API
         const fetchCategory = async () => {
             try {
-                const response = await api.get(`/categories/${categoryId}?resolve[]=children&resolve[]=parentCategory`);
+                const response = await api.get(`/categories/${categoryId}?resolve[]=children&resolve[]=parentCategory&resolve[]=wallet`);
 
                 setCategory(response.data.data);
             } catch (err) {

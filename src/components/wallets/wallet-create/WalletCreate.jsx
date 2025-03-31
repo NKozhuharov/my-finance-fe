@@ -7,7 +7,6 @@ import {useWalletIcons} from "@api/IconsApi.js";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import Select from "react-select";
 import {CustomSingleValue, IconOption} from "@utils/IconComponents.jsx";
-import CategoryIcon from "@components/category-icon/CategoryIcon.jsx";
 import {UserContext} from "@contexts/UserContext.jsx";
 import CategoryNameAndIcon from "@components/categories/category-name-and-icon/CategoryNameAndIcon.jsx";
 
@@ -33,7 +32,7 @@ export default function WalletCreate() {
 
     const {setAlert} = useAlert();
 
-    const {userDataChangeHandler} = useContext(UserContext);
+    const {user, userDataChangeHandler} = useContext(UserContext);
 
     useEffect(() => {
         const fetchDefaultCategories = async () => {
@@ -70,7 +69,9 @@ export default function WalletCreate() {
 
         try {
             const response = await api.post(`/wallets`, values);
-            userDataChangeHandler({active_wallet_id: response.data.data.id});
+            if (!user.data.active_wallet_id) {
+                userDataChangeHandler({active_wallet_id: response.data.data.id});
+            }
             setAlert({variant: "success", text: "Wallet created successfully."});
             navigate(`/wallets`);
         } catch (err) {

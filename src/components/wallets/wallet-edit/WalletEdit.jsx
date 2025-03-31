@@ -1,4 +1,4 @@
-import React, {useActionState, useEffect, useState} from "react";
+import React, {useActionState, useContext, useEffect, useState} from "react";
 import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
@@ -9,6 +9,7 @@ import {useAlert} from "@contexts/AlertContext.jsx";
 import {useCurrencies} from "@api/CurrenciesApi.js";
 import {useWalletIcons} from "@api/IconsApi.js";
 import {CustomSingleValue, IconOption} from "@utils/IconComponents.jsx";
+import {UserContext} from "@contexts/UserContext.jsx";
 
 export default function WalletEdit() {
     const {walletId} = useParams();
@@ -22,8 +23,9 @@ export default function WalletEdit() {
     const {walletIcons} = useWalletIcons();
 
     const [walletFormErrors, setWalletFormErrors] = useState({});
-
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+    const {user, userDataChangeHandler} = useContext(UserContext);
 
     const api = useApiClient();
 
@@ -73,6 +75,9 @@ export default function WalletEdit() {
 
         api.delete(`/wallets/${walletId}`, {})
             .then(() => {
+                if (parseInt(walletId) === parseInt(user.data.active_wallet_id)) {
+                    userDataChangeHandler({active_wallet_id: null});
+                }
                 setAlert({variant: "success", text: "Wallet deleted successfully."});
                 setShowDeleteModal(false);
                 navigate(`/wallets`);

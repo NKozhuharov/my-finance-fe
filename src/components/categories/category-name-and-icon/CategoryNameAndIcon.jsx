@@ -1,6 +1,6 @@
 import {getIncomeExpenseColorClassFromType} from "@utils/helpers.js";
 
-export default function CategoryNameAndIcon({name, icon, type}) {
+export default function CategoryNameAndIcon({name, icon, type, wallet}) {
     return (
         <>
             <div className="icon-container">
@@ -10,7 +10,12 @@ export default function CategoryNameAndIcon({name, icon, type}) {
                     alt="No Icon"
                 />
             </div>
-            <span className={`fw-bold ms-2 ${getIncomeExpenseColorClassFromType(type)}`}>{name}</span>
+            <div className="ms-2">
+                <span className={`fw-bold ${getIncomeExpenseColorClassFromType(type)}`}>{name}</span>
+                {wallet && (
+                    <p className="category-wallet">{wallet.data.name}</p>
+                )}
+            </div>
         </>
     );
 };
