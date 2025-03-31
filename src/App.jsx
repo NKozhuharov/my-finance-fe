@@ -17,6 +17,7 @@ import UserProfile from "./components/user-profile/UserProfile.jsx";
 import CategoryShow from "./components/categories/category-show/CategoryShow.jsx";
 import CategoryEdit from "./components/categories/category-edit/CategoryEdit.jsx";
 import CategoryCreate from "./components/categories/category-create/CategoryCreate.jsx";
+import TransactionCreate from "./components/transactions/transaction-create/TransactionCreate.jsx";
 
 function App() {
     return (
@@ -35,6 +36,10 @@ function App() {
                             <Route path="/categories/:categoryId" element={<CategoryShow/>}/>
                             <Route path="/categories/:categoryId/edit" element={<CategoryEdit/>}/>
                             <Route path="/categories/create" element={<CategoryCreate/>}/>
+                            {/*<Route path="/transactions" element={<CategoriesList/>}/>*/}
+                            {/*<Route path="/transactions/:transactionId" element={<CategoryShow/>}/>*/}
+                            {/*<Route path="/transactions/:transactionId/edit" element={<CategoryEdit/>}/>*/}
+                            <Route path="/transactions/create" element={<TransactionCreate/>}/>
                             <Route path="/logout" element={<Logout/>}/>
                         </Route>
                         <Route element={<GuestGuard/>}>
