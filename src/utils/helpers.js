@@ -19,3 +19,15 @@ export function getIncomeExpenseColorClassFromType(value) {
             return '';
     }
 }
+
+export function getIncomeExpenseColorClassFromAmount(amount) {
+    if (amount === undefined) {
+        return '';
+    }
+
+    if (amount >= 0) {
+        return "income-color";
+    }
+
+    return "expense-color";
+}
