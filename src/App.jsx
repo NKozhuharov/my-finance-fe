@@ -19,6 +19,8 @@ import CategoryEdit from "./components/categories/category-edit/CategoryEdit.jsx
 import CategoryCreate from "./components/categories/category-create/CategoryCreate.jsx";
 import TransactionCreate from "./components/transactions/transaction-create/TransactionCreate.jsx";
 import TransactionsList from "./components/transactions/transactions-list/TransactionsList.jsx";
+import TransactionShow from "./components/transactions/transaction-show/TransactionShow.jsx";
+import TransactionEdit from "./components/transactions/transaction-edit/TransactionEdit.jsx";
 
 function App() {
     return (
@@ -38,8 +40,8 @@ function App() {
                             <Route path="/categories/:categoryId/edit" element={<CategoryEdit/>}/>
                             <Route path="/categories/create" element={<CategoryCreate/>}/>
                             <Route path="/transactions" element={<TransactionsList/>}/>
-                            {/*<Route path="/transactions/:transactionId" element={<CategoryShow/>}/>*/}
-                            {/*<Route path="/transactions/:transactionId/edit" element={<CategoryEdit/>}/>*/}
+                            <Route path="/transactions/:transactionId" element={<TransactionShow/>}/>
+                            <Route path="/transactions/:transactionId/edit" element={<TransactionEdit/>}/>
                             <Route path="/transactions/create" element={<TransactionCreate/>}/>
                             <Route path="/logout" element={<Logout/>}/>
                         </Route>

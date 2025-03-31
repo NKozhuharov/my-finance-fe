@@ -5,11 +5,18 @@ import Modal from "react-bootstrap/Modal";
 import CategoryNameAndIcon from "../category-name-and-icon/CategoryNameAndIcon.jsx";
 
 
-export default function CategorySelector({type, onlyParents, withChildren, onCategorySelect, defaultTitle = 'Select Category', disabled=false}) {
-
+export default function CategorySelector({
+                                             type,
+                                             onlyParents,
+                                             withChildren,
+                                             onCategorySelect,
+                                             defaultTitle = 'Select Category',
+                                             disabled = false,
+                                             preSelectedCategory // New prop to accept a pre-selected category
+                                         }) {
     const [categories, setCategories] = useState([]);
     const [showCategorySelectModal, setShowCategorySelectModal] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState({
+    const [selectedCategory, setSelectedCategory] = useState(preSelectedCategory || {
         name: defaultTitle,
         icon: `/images/icons/Category Select.png`,
     });
@@ -94,6 +101,7 @@ export default function CategorySelector({type, onlyParents, withChildren, onCat
                                         <i className="bi bi-arrow-return-right ps-3 pe-2 fw-bold"></i>
                                     }
                                     <CategoryNameAndIcon {...category} />
+                                    {selectedCategory.id === category.id && <i className="bi bi-check ps-2 pe-2 fw-bold ms-auto text-success" style={{fontSize: '1.5rem'}}></i>}
                                 </div>
                             </div>
                         ))}
@@ -114,6 +122,7 @@ export default function CategorySelector({type, onlyParents, withChildren, onCat
                                         <i className="bi bi-arrow-return-right ps-3 pe-2 fw-bold"></i>
                                     }
                                     <CategoryNameAndIcon {...category} />
+                                    {selectedCategory.id === category.id && <i className="bi bi-check ps-2 pe-2 fw-bold ms-auto text-success" style={{fontSize: '1.5rem'}}></i>}
                                 </div>
                             </div>
                         ))}
