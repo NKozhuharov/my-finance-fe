@@ -50,7 +50,14 @@ export default function CategoriesList() {
             <div className="row mb-3 pt-3">
                 <div className="col-12">
                     <div className="card card-primary">
-                        <div className="card-header">Categories</div>
+                        <div className="card-header">
+                            Categories
+                            <div className="card-tools">
+                                <Link to="/categories/create" className="btn btn-tool fw-bold" title="Create Category">
+                                    <i className="bi bi-plus"></i>
+                                </Link>
+                            </div>
+                        </div>
                         <div className="card-body">
                             {loading ? (
                                 <p>Loading...</p> // If loading, show a spinner or message
