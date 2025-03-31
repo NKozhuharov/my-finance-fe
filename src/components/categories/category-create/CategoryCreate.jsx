@@ -6,11 +6,13 @@ import Select from "react-select";
 import {useAlert} from "../../../contexts/AlertContext.jsx";
 import {useCategoryIcons} from "../../../api/IconsApi.js";
 import {CustomSingleValue, IconOption} from "../../../utils/IconComponents.jsx";
+import CategorySelector from "../category-selector/CategorySelector.jsx";
 
 export default function CategoryCreate() {
     const [category, setCategory] = useState({
         name: '',
-        type: '',
+        parentCategory: {},
+        type: null,
         icon: '',
     });
     const {categoryIcons} = useCategoryIcons();
@@ -26,6 +28,10 @@ export default function CategoryCreate() {
     const navigate = useNavigate();
 
     const {setAlert} = useAlert();
+
+    const handleCategorySelect = (category) => {
+        category.parentCategory = category;
+    };
 
     const categoryEditHandler = async (_, formData) => {
         setFormErrors({});
@@ -82,7 +88,7 @@ export default function CategoryCreate() {
                                 </div>
                                 <div className="row mb-2">
                                     <div className="col-12">
-                                        <label htmlFor="currency_id" className="form-label fw-bold">Type</label>
+                                        <label htmlFor="type" className="form-label fw-bold">Type</label>
                                         <Select
                                             name="type"
                                             options={categoryTypes}
@@ -97,6 +103,12 @@ export default function CategoryCreate() {
                                                 <strong>{formErrors.type}</strong>
                                             </span>
                                         }
+                                    </div>
+                                </div>
+                                <div className="row mb-2">
+                                    <div className="col-12">
+                                        <label htmlFor="parent_category_id" className="form-label fw-bold">Parent Category</label>
+                                        <CategorySelector onlyParents={true} withChildren={false} onCategorySelect={handleCategorySelect} type={category.type} disabled={category.type === null}/>
                                     </div>
                                 </div>
                                 <div className="row mb-2">
