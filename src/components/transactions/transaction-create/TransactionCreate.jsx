@@ -1,4 +1,4 @@
-import React, {useActionState, useState} from "react";
+import React, {useActionState, useEffect, useState} from "react";
 import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate} from "react-router";
@@ -21,6 +21,10 @@ export default function TransactionCreate() {
     const navigate = useNavigate();
 
     const {setAlert} = useAlert();
+
+    useEffect(() => {
+        document.title = "Create Transaction";
+    });
 
     const handleCategorySelect = (category) => {
         transaction.category = category;

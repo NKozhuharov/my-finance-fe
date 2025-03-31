@@ -51,6 +51,7 @@ export default function WalletCreate() {
         };
 
         fetchDefaultCategories();
+        document.title = "Create Wallet";
     }, [api]);
 
     const walletCreateHandler = async () => {

@@ -41,6 +41,7 @@ export default function TransactionEdit() {
         };
 
         fetchTransaction();
+        document.title = "Edit Transaction";
     }, [api, transactionId]);
 
     const handleCategorySelect = (category) => {
@@ -76,7 +77,7 @@ export default function TransactionEdit() {
                                         <i className="bi bi-arrow-left"></i>
                                     </Link>
                                 </div>
-                                Update Transaction
+                                Edit Transaction
                                 <div className="card-tools">
                                     <button className="btn btn-tool fw-bold" type="submit" title="Save" disabled={isPending}>SAVE</button>
                                 </div>

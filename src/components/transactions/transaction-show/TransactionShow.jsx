@@ -41,6 +41,7 @@ export default function TransactionShow() {
         };
 
         fetchTransaction();
+        document.title = "View Transaction";
     }, [api, transactionId]);
 
     const handleCloseModal = () => setShowDeleteModal(false);

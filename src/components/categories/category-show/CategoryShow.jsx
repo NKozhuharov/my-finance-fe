@@ -34,6 +34,7 @@ export default function CategoryShow() {
         };
 
         fetchCategory();
+        document.title = `View Category`;
     }, [api, categoryId]);
 
     const handleCloseModal = () => setShowDeleteModal(false);

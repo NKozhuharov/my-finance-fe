@@ -1,6 +1,11 @@
 import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
+import {useEffect} from "react";
 
 export default function Dashboard() {
+    useEffect(() => {
+        document.title = "MyFinance";
+    });
+
     return (
         <AdminPanelPage>
             <div className="row">

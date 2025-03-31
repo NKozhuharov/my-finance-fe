@@ -29,6 +29,7 @@ export default function WalletsList() {
         };
 
         fetchWallets();
+        document.title = "Wallets";
     }, [api]); // Run once on component mount
 
     // Define DataTable columns

@@ -43,6 +43,7 @@ export default function TransactionsList() {
         };
 
         fetchTransactions();
+        document.title = "Transactions";
     }, [api, user.data.active_wallet_id, createdAtFrom, createdAtTo]);
 
     const handleSetPrevMonth = () => {

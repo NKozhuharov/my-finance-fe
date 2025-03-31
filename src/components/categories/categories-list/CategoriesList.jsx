@@ -48,6 +48,7 @@ export default function CategoriesList() {
         };
 
         fetchCategories();
+        document.title = "Categories";
     }, [api, user.data.active_wallet_id]); // Run once on component mount
 
     return (

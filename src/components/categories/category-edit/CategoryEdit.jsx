@@ -34,6 +34,7 @@ export default function CategoryEdit() {
         };
 
         fetchCategory();
+        document.title = "Edit Category";
     }, [api, categoryId]);
 
     const categoryEditHandler = async (_, formData) => {

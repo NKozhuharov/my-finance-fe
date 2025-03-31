@@ -44,6 +44,7 @@ export default function WalletEdit() {
         };
 
         fetchWallet();
+        document.title = "Edit Wallet";
     }, [api, walletId]);
 
     const walletEditHandler = async (_, formData) => {
