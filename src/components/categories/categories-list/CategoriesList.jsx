@@ -22,7 +22,7 @@ export default function CategoriesList() {
         // Fetch data from the API
         const fetchCategories = async () => {
             try {
-                const response = await api.get(`/categories?limit=all&filters[parent_category_id][is]=null&resolve[]=children&showMeta=1&orderby=name&sort=asc`);
+                const response = await api.get(`/categories?limit=all&filters[parent_category_id][is]=null&resolve[]=children&orderby=name&sort=asc`);
                 const categoryArray = [];
                 (response.data.data || []).forEach((category) => {
                     categoryArray.push(category);
