@@ -3,6 +3,10 @@ import {useActionState, useContext, useEffect, useState} from "react";
 import {addBodyClass, removeBodyClass} from "@utils/helpers.js";
 import {useLogin} from "@api/authApi.js";
 import {UserContext} from "@contexts/UserContext.jsx";
+import {Button, Card, CardBody, Col, FormCheck, FormControl, InputGroup, Row} from "react-bootstrap";
+import InputGroupText from "react-bootstrap/InputGroupText";
+import FormCheckInput from "react-bootstrap/FormCheckInput";
+import FormCheckLabel from "react-bootstrap/FormCheckLabel";
 
 export default function Login() {
     const [formValues, setFormValues] = useState({
@@ -56,63 +60,69 @@ export default function Login() {
                 <b>MyFinance</b>
             </div>
 
-            <div className="card">
-                <div className="card-body login-card-body">
+            <Card>
+                <CardBody>
                     <p className="login-box-msg">Sign in to start your session</p>
                     <form action={loginAction}>
-                        <div className="input-group mb-3">
-                            <input
-                                type="email"
-                                name="email"
-                                value={formValues.email}
-                                onChange={(e) => setFormValues({...formValues, email: e.target.value})}
-                                className={`form-control${loginErrors.email ? ' is-invalid' : ''}`}
-                                placeholder="Email"
-                                required
-                            />
-                            <div className="input-group-text"><span className="bi bi-envelope"></span></div>
-                            {loginErrors.email &&
-                                <span className="text-danger" role="alert">
-                                    <strong>{loginErrors.email}</strong>
-                                </span>
-                            }
-                        </div>
-                        <div className="input-group mb-3">
-                            <input
-                                type="password"
-                                name="password"
-                                value={formValues.password}
-                                onChange={(e) => setFormValues({...formValues, password: e.target.value})}
-                                className={`form-control${loginErrors.password ? ' is-invalid' : ''}`}
-                                placeholder="Password"
-                                required
-                            />
-                            <div className="input-group-text"><span className="bi bi-lock-fill"></span></div>
-                            {loginErrors.password &&
-                                <span className="text-danger" role="alert">
-                                    <strong>{loginErrors.password}</strong>
-                                </span>
-                            }
-                        </div>
-                        <div className="row">
-                            <div className="col-8">
-                                <div className="form-check">
-                                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-                                    <label className="form-check-label" htmlFor="flexCheckDefault"> Remember Me </label>
-                                </div>
-                            </div>
-                            <div className="col-4">
+                        <Row>
+                            <Col>
+                                <InputGroup className="mb-3">
+                                    <FormControl
+                                        type="email"
+                                        name="email"
+                                        value={formValues.email}
+                                        onChange={(e) => setFormValues({...formValues, email: e.target.value})}
+                                        className={`form-control${loginErrors.email ? ' is-invalid' : ''}`}
+                                        placeholder="Email"
+                                        required
+                                    />
+                                    <InputGroupText><i className="bi bi-envelope"></i></InputGroupText>
+                                    {loginErrors.email &&
+                                        <span className="text-danger" role="alert">
+                                            <strong>{loginErrors.email}</strong>
+                                        </span>
+                                    }
+                                </InputGroup>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <InputGroup className="mb-3">
+                                    <FormControl
+                                        type="password"
+                                        name="password"
+                                        value={formValues.password}
+                                        onChange={(e) => setFormValues({...formValues, password: e.target.value})}
+                                        className={`form-control${loginErrors.password ? ' is-invalid' : ''}`}
+                                        placeholder="Password"
+                                        required
+                                    />
+                                    <InputGroupText><i className="bi bi-lock-fill"></i></InputGroupText>
+                                    {loginErrors.password &&
+                                        <span className="text-danger" role="alert">
+                                            <strong>{loginErrors.password}</strong>
+                                        </span>
+                                    }
+                                </InputGroup>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={8}>
+                                <FormCheck>
+                                    <FormCheckInput name="rembember" value="" id="flexCheckDefault"/>
+                                    <FormCheckLabel htmlFor="rembember">Remember Me</FormCheckLabel>
+                                </FormCheck>
+                            </Col>
+                            <Col sm={4}>
                                 <div className="d-grid gap-2">
-                                    <button type="submit" className="btn btn-primary" disabled={isPending}>Sign In</button>
+                                    <Button type="submit" className="btn-primary" disabled={isPending}>Sign In</Button>
                                 </div>
-                            </div>
-                        </div>
+                            </Col>
+                        </Row>
                     </form>
-                    <p className="mb-0">
-                        <Link to="/register">Register a new membership</Link>
-                    </p>
-                </div>
-            </div>
+                    <Link to="/register">Register a new membership</Link>
+                </CardBody>
+            </Card>
         </div>
     );
 }
