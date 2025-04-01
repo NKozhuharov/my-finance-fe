@@ -16,6 +16,9 @@ export default function TransactionsList() {
     DataTable.use(DT);
 
     const [transactions, setTransactions] = useState([]);
+    const [inflow, setInflow] = useState(0);
+    const [outflow, setOutflow] = useState(0);
+    const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(true);
 
     const api = useApiClient();
@@ -28,14 +31,19 @@ export default function TransactionsList() {
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                let url = `/transactions?resolve[]=category&limit=all&filters[date][gte]=${createdAtFrom}&filters[date][lte]=${createdAtTo}`;
+                let url = `/transactions?resolve[]=category&limit=all&filters[date][gte]=${createdAtFrom}&filters[date][lte]=${createdAtTo}&aggregate[]=totals`;
                 if (!user.data.active_wallet_id) {
                     //resolve wallet to show it in the list of categories
                     url += '&resolve[]=category-wallet';
                 }
                 const response = await api.get(url);
+                const responseData = response.data;
 
-                setTransactions(response.data.data);
+                setTransactions(responseData.data);
+                console.log(responseData.meta.aggregate.totals);
+                setInflow(responseData.meta.aggregate.totals.income)
+                setOutflow(responseData.meta.aggregate.totals.expense)
+                setTotal(responseData.meta.aggregate.totals.balance)
                 setLoading(false);
             } catch (err) {
                 console.error("Error fetching transactions data: ", err);
@@ -139,10 +147,22 @@ export default function TransactionsList() {
                                             row.onclick = () => {
                                                 navigate(`/transactions/${data.id}`);
                                             };
-                                        },
+                                        }
                                     }}
                                 >
                                     <thead>
+                                    <tr>
+                                        <th>Inflow</th>
+                                        <th className="text-right"><TransactionAmountCell amount={inflow.total} formattedAmount={inflow.formatted}/></th>
+                                    </tr>
+                                    <tr>
+                                        <th>Outflow</th>
+                                        <th className="text-right"><TransactionAmountCell amount={outflow.total} formattedAmount={outflow.formatted}/></th>
+                                    </tr>
+                                    <tr>
+                                        <th>Total</th>
+                                        <th className="text-right"><TransactionAmountCell amount={total.total} formattedAmount={total.formatted}/></th>
+                                    </tr>
                                     </thead>
                                 </DataTable>
                             )}
