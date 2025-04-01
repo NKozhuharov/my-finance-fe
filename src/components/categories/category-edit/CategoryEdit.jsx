@@ -6,15 +6,21 @@ import Select from "react-select";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import {useCategoryIcons} from "@api/IconsApi.js";
 import {CustomSingleValue, IconOption} from "@utils/IconComponents.jsx";
+import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, FormText, Row} from "react-bootstrap";
+import CategorySelector from "@components/categories/category-selector/CategorySelector.jsx";
 
 export default function CategoryEdit() {
     const {categoryId} = useParams();
 
     const [category, setCategory] = useState({
         name: '',
-        type: '',
+        parent_category_id: '',
+        parentCategory: {},
+        type: null,
         icon: '',
     });
+    const [loading, setLoading] = useState(true);
+
     const {categoryIcons} = useCategoryIcons();
 
     const [formErrors, setFormErrors] = useState({});
@@ -26,10 +32,14 @@ export default function CategoryEdit() {
     useEffect(() => {
         const fetchCategory = async () => {
             try {
-                const response = await api.get(`/categories/${categoryId}`);
-                setCategory(response.data.data || []);
+                const response = await api.get(`/categories/${categoryId}?resolve[]=parentCategory`);
+                let categoryData = response.data.data;
+                categoryData.parentCategory = categoryData.parentCategory.data.length > 0 ? categoryData.parentCategory.data : undefined;
+                setCategory(categoryData);
             } catch (err) {
                 console.error("Error fetching category data: ", err);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -37,12 +47,16 @@ export default function CategoryEdit() {
         document.title = "Edit Category";
     }, [api, categoryId]);
 
-    const categoryEditHandler = async (_, formData) => {
+    const handleCategorySelect = (selectedCategory) => {
+        category.parent_category_id = selectedCategory.id;
+        category.parentCategory = selectedCategory;
+    };
+
+    const submitHandler = async () => {
         setFormErrors({});
-        const values = Object.fromEntries(formData);
 
         try {
-            await api.patch(`/categories/${categoryId}`, values, {});
+            await api.patch(`/categories/${categoryId}`, category, {});
             setAlert({variant: "success", text: "Category edited successfully."});
         } catch (err) {
             setFormErrors(err.response.data.details);
@@ -50,15 +64,15 @@ export default function CategoryEdit() {
         }
     }
 
-    const [_, editAction, isPending] = useActionState(categoryEditHandler, {...category});
+    const [_, submitAction, isPending] = useActionState(submitHandler, {...category});
 
     return (
         <AdminPanelPage>
-            <div className="row mb-3 pt-3">
-                <div className="col-12">
-                    <form action={editAction}>
-                        <div className="card card-primary">
-                            <div className="card-header">
+            <Row>
+                <Col>
+                    <form action={submitAction}>
+                        <Card className="card-primary">
+                            <CardHeader>
                                 <div className="card-tools-left">
                                     <Link className="btn btn-tool" to={`/categories/${categoryId}`} title="Back">
                                         <i className="bi bi-arrow-left"></i>
@@ -66,63 +80,85 @@ export default function CategoryEdit() {
                                 </div>
                                 Edit Category
                                 <div className="card-tools">
-                                    <button className="btn btn-tool fw-bold" type="submit" title="Save" disabled={isPending}>SAVE</button>
+                                    <Button className="btn-tool fw-bold" type="submit" title="Save" disabled={isPending || loading}>SAVE</Button>
                                 </div>
-                            </div>
-                            <div className="card-body">
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="name" className="form-label fw-bold">Name</label>
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            value={category.name}
-                                            onChange={(e) => setCategory({...category, name: e.target.value})}
-                                            className={`form-control${formErrors.name ? ' is-invalid' : ''}`}
-                                            placeholder="Name"
-                                            required
-                                        />
-                                        {formErrors.name &&
-                                            <span className="invalid-feedback" role="alert">
-                                                <strong>{formErrors.name}</strong>
-                                            </span>
-                                        }
-                                    </div>
-                                </div>
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="type" className="form-label fw-bold">Type</label>
-                                        <input
-                                            type="text"
-                                            name="type"
-                                            value={category.type}
-                                            onChange={(e) => setCategory({...category, type: e.target.value})}
-                                            className={`form-control${formErrors.type ? ' is-invalid' : ''}`}
-                                            placeholder="Type"
-                                            disabled
-                                        />
-                                    </div>
-                                </div>
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="currency_id" className="form-label fw-bold">Icon</label>
-                                        <Select
-                                            name="icon"
-                                            options={categoryIcons}
-                                            value={categoryIcons.find(option => option.value === category.icon) || null}
-                                            onChange={(selectedOption) => setCategory({...category, icon: selectedOption.value})}
-                                            isSearchable={true}
-                                            placeholder="Please select"
-                                            components={{Option: IconOption, SingleValue: CustomSingleValue}}
-                                            required
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            </CardHeader>
+                            <CardBody>
+                                {loading ? (
+                                    <FormText>Loading...</FormText>
+                                ) : (
+                                    <>
+                                        <Row>
+                                            <Col>
+                                                <FormLabel htmlFor="name" className="fw-bold" column={true}>Name</FormLabel>
+                                                <FormControl
+                                                    name="name"
+                                                    value={category.name}
+                                                    onChange={(e) => setCategory({...category, name: e.target.value})}
+                                                    className={formErrors.name ? ' is-invalid' : ''}
+                                                    placeholder="Name"
+                                                    required
+                                                />
+                                                {formErrors.name &&
+                                                    <span className="text-danger" role="alert">
+                                                        <strong>{formErrors.name}</strong>
+                                                    </span>
+                                                }
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <FormLabel htmlFor="type" className="fw-bold" column={true}>Type</FormLabel>
+                                                <input
+                                                    type="text"
+                                                    name="type"
+                                                    value={category.type}
+                                                    onChange={(e) => setCategory({...category, type: e.target.value})}
+                                                    className={`form-control${formErrors.type ? ' is-invalid' : ''}`}
+                                                    placeholder="Type"
+                                                    disabled
+                                                />
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <FormLabel htmlFor="parent_category_id" className="fw-bold" column={true}>Parent Category</FormLabel>
+                                                <CategorySelector
+                                                    onlyParents={true}
+                                                    withChildren={false}
+                                                    onCategorySelect={handleCategorySelect}
+                                                    type={category.type}
+                                                    preSelectedCategory={category.parentCategory}
+                                                />
+                                                {formErrors.parent_category_id &&
+                                                    <span className="text-danger" role="alert">
+                                                        <strong>{formErrors.parent_category_id}</strong>
+                                                    </span>
+                                                }
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <FormLabel htmlFor="icon" className="fw-bold" column={true}>Icon</FormLabel>
+                                                <Select
+                                                    name="icon"
+                                                    options={categoryIcons}
+                                                    value={categoryIcons.find(option => option.value === category.icon) || null}
+                                                    onChange={(selectedOption) => setCategory({...category, icon: selectedOption.value})}
+                                                    isSearchable={true}
+                                                    placeholder="Please select"
+                                                    components={{Option: IconOption, SingleValue: CustomSingleValue}}
+                                                    required
+                                                />
+                                            </Col>
+                                        </Row>
+                                    </>
+                                )}
+                            </CardBody>
+                        </Card>
                     </form>
-                </div>
-            </div>
+                </Col>
+            </Row>
         </AdminPanelPage>
     );
 }

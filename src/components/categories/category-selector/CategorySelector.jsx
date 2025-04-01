@@ -3,7 +3,7 @@ import {useApiClient} from "@hooks/useApiClient.js";
 import "datatables.net-rowgroup-bs5";
 import Modal from "react-bootstrap/Modal";
 import CategoryNameAndIcon from "@components/categories/category-name-and-icon/CategoryNameAndIcon.jsx";
-
+import {Col, Row} from "react-bootstrap";
 
 export default function CategorySelector({
                                              type,
@@ -12,7 +12,7 @@ export default function CategorySelector({
                                              onCategorySelect,
                                              defaultTitle = 'Select Category',
                                              disabled = false,
-                                             preSelectedCategory // New prop to accept a pre-selected category
+                                             preSelectedCategory
                                          }) {
     const [categories, setCategories] = useState([]);
     const [showCategorySelectModal, setShowCategorySelectModal] = useState(false);
@@ -85,49 +85,54 @@ export default function CategorySelector({
                     <Modal.Title>Select Category</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="row">
+                    <Row>
                         {categories.some(category => category.type === 'Expense') && (
                             <>
-                                <div className="col-12">
+                                <Col>
                                     <h4 className="expense-color">Expense</h4>
-                                </div>
+                                </Col>
                                 <hr/>
                             </>
                         )}
                         {categories.filter(category => category.type === 'Expense').map((category) => (
-                            <div className="col-12 pb-1 mb-2 border-bottom" key={category.id}>
-                                <div className="d-flex align-items-center cursor-pointer" title={`Select ${category.name}`} onClick={() => handleCategorySelect(category)}>
-                                    {category.parent_category_id &&
-                                        <i className="bi bi-arrow-return-right ps-3 pe-2 fw-bold"></i>
-                                    }
-                                    <CategoryNameAndIcon {...category} />
-                                    {selectedCategory.id === category.id && <i className="bi bi-check ps-2 pe-2 fw-bold ms-auto text-success" style={{fontSize: '1.5rem'}}></i>}
-                                </div>
-                            </div>
+                            <Row>
+                                <Col className="pb-1 mb-2 border-bottom" key={category.id}>
+                                    <div className="d-flex align-items-center cursor-pointer" title={`Select ${category.name}`} onClick={() => handleCategorySelect(category)}>
+                                        {category.parent_category_id &&
+                                            <i className="bi bi-arrow-return-right ps-3 pe-2 fw-bold"></i>
+                                        }
+                                        <CategoryNameAndIcon {...category} />
+                                        {selectedCategory.id === category.id && <i className="bi bi-check ps-2 pe-2 fw-bold ms-auto text-success" style={{fontSize: '1.5rem'}}></i>}
+                                    </div>
+                                </Col>
+                            </Row>
                         ))}
-                    </div>
-                    <div className="row">
+                    </Row>
+                    <Row>
                         {categories.some(category => category.type === 'Income') && (
                             <>
-                                <div className="col-12">
+                                <Col>
                                     <h4 className="income-color">Income</h4>
-                                </div>
+                                </Col>
                                 <hr/>
                             </>
                         )}
                         {categories.filter(category => category.type === 'Income').map((category) => (
-                            <div className="col-12 pb-1 mb-2 border-bottom" key={category.id}>
-                                <div className="d-flex align-items-center cursor-pointer" title={`Select ${category.name}`} onClick={() => handleCategorySelect(category)}>
-                                    {category.parent_category_id &&
-                                        <i className="bi bi-arrow-return-right ps-3 pe-2 fw-bold"></i>
-                                    }
-                                    <CategoryNameAndIcon {...category} />
-                                    {selectedCategory.id === category.id && <i className="bi bi-check ps-2 pe-2 fw-bold ms-auto text-success" style={{fontSize: '1.5rem'}}></i>}
-                                </div>
-                            </div>
+                            <Row>
+                                <Col className="pb-1 mb-2 border-bottom" key={category.id}>
+                                    <div className="d-flex align-items-center cursor-pointer" title={`Select ${category.name}`} onClick={() => handleCategorySelect(category)}>
+                                        {category.parent_category_id &&
+                                            <i className="bi bi-arrow-return-right ps-3 pe-2 fw-bold"></i>
+                                        }
+                                        <CategoryNameAndIcon {...category} />
+                                        {selectedCategory.id === category.id && <i className="bi bi-check ps-2 pe-2 fw-bold ms-auto text-success" style={{fontSize: '1.5rem'}}></i>}
+                                    </div>
+                                </Col>
+                            </Row>
                         ))}
-                    </div>
+                    </Row>
                 </Modal.Body>
-            </Modal></>
+            </Modal>
+        </>
     );
 }

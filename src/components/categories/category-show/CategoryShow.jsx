@@ -5,13 +5,14 @@ import {Link, useNavigate, useParams} from "react-router";
 import {getIncomeExpenseColorClassFromType} from "@utils/helpers.js";
 import CategoryNameAndIcon from "@components/categories/category-name-and-icon/CategoryNameAndIcon.jsx";
 import Modal from "react-bootstrap/Modal";
-import {Button} from "react-bootstrap";
+import {Button, Card, CardBody, CardFooter, CardHeader, Col, FormText, Row} from "react-bootstrap";
 import {useAlert} from "@contexts/AlertContext.jsx";
 
 export default function CategoryShow() {
     const {categoryId} = useParams();
 
     const [category, setCategory] = useState({});
+    const [loading, setLoading] = useState(true);
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -30,6 +31,8 @@ export default function CategoryShow() {
                 setCategory(response.data.data);
             } catch (err) {
                 console.error("Error fetching category data: ", err);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -79,10 +82,10 @@ export default function CategoryShow() {
                 </form>
             </Modal>
 
-            <div className="row mb-3 pt-3">
-                <div className="col-12">
-                    <div className="card card-primary">
-                        <div className="card-header">
+            <Row>
+                <Col>
+                    <Card className="card-primary">
+                        <CardHeader>
                             <div className="card-tools-left">
                                 <Link className="btn btn-tool" to="/categories" title="Back">
                                     <i className="bi bi-arrow-left"></i>
@@ -91,70 +94,74 @@ export default function CategoryShow() {
                             Category <b>{category.name}</b>
                             <div className="card-tools">
                                 <Link className="btn btn-tool" to={`/categories/${category.id}/edit`} title="Edit"><i className="bi bi-pencil-fill"></i></Link>
-                                <button className="btn btn-tool" title="Delete" onClick={handleShowModal}>
+                                <button className="btn btn-tool" title="Delete" onClick={handleShowModal} disabled={loading}>
                                     <i className="bi bi-trash"></i>
                                 </button>
                             </div>
-                        </div>
-                        <div className="card-body">
-                            <div className="row mb-2">
-                                <div className="col-12">
-                                    <div className="form-inline">
-                                        <h5>
+                        </CardHeader>
+                        <CardBody>
+                            {loading ? (
+                                <FormText>Loading...</FormText>
+                            ) : (
+                                <>
+                                    <Row>
+                                        <Col>
+                                            <h5>
+                                                <div className="d-flex align-items-center">
+                                                    <i className="bi bi-arrow-right pe-2 fw-bold"></i>
+                                                    <strong className={getIncomeExpenseColorClassFromType(category.type)}>
+                                                        {category.type}
+                                                    </strong>
+                                                    {category.parentCategory?.data.id ? (
+                                                        <>
+                                                            <i className="bi bi-arrow-right ps-2 pe-2 fw-bold"></i>
+                                                            <Link to={`/categories/${category.parentCategory.data.id}`} className="text-decoration-none"
+                                                                  title={`View Category ${category.parentCategory.data.name}`}>
+                                                                <strong className={getIncomeExpenseColorClassFromType(category.type)}>
+                                                                    {category.parentCategory.data.name}
+                                                                </strong>
+                                                            </Link>
+                                                        </>
+                                                    ) : ''}
+                                                </div>
+                                            </h5>
+                                        </Col>
+                                    </Row>
+                                    <Row className="mt-1">
+                                        <Col>
                                             <div className="d-flex align-items-center">
-                                                <i className="bi bi-arrow-right pe-2 fw-bold"></i>
-                                                <strong className={getIncomeExpenseColorClassFromType(category.type)}>
-                                                    {category.type}
-                                                </strong>
-                                                {category.parentCategory?.data.id ? (
-                                                    <>
-                                                        <i className="bi bi-arrow-right ps-2 pe-2 fw-bold"></i>
-                                                        <Link to={`/categories/${category.parentCategory.data.id}`} className="text-decoration-none"
-                                                              title={`View Category ${category.parentCategory.data.name}`}>
-                                                            <strong className={getIncomeExpenseColorClassFromType(category.type)}>
-                                                                {category.parentCategory.data.name}
-                                                            </strong>
-                                                        </Link>
-                                                    </>
-                                                ) : ''}
+                                                <i className="bi bi-arrow-return-right ps-3 pe-2 fw-bold"></i>
+                                                <CategoryNameAndIcon {...category} />
                                             </div>
-                                        </h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row mb-2">
-                                <div className="col-12">
-                                    <div className="d-flex align-items-center">
-                                        <i className="bi bi-arrow-return-right ps-3 pe-2 fw-bold"></i>
-                                        <CategoryNameAndIcon {...category} />
-                                    </div>
-                                </div>
-                            </div>
+                                        </Col>
+                                    </Row>
 
-                            {category.children?.data?.map((childCategory) => (
-                                <div key={childCategory.id} className="row mb-2">
-                                    <div className="col-12">
-                                        <Link to={`/categories/${childCategory.id}`} className="text-decoration-none" title={`View Category ${childCategory.name}`}>
-                                            <div className="d-flex align-items-center">
-                                                <i className="bi bi-arrow-return-right ps-5 pe-2 text-black"></i>
-                                                <CategoryNameAndIcon {...childCategory} />
-                                            </div>
-                                        </Link>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="card-footer">
+                                    {category.children?.data?.map((childCategory) => (
+                                        <Row key={childCategory.id} className="mt-2">
+                                            <Col>
+                                                <Link to={`/categories/${childCategory.id}`} className="text-decoration-none" title={`View Category ${childCategory.name}`}>
+                                                    <div className="d-flex align-items-center">
+                                                        <i className="bi bi-arrow-return-right ps-5 pe-2 text-black"></i>
+                                                        <CategoryNameAndIcon {...childCategory} />
+                                                    </div>
+                                                </Link>
+                                            </Col>
+                                        </Row>
+                                    ))}
+                                </>
+                            )}
+                        </CardBody>
+                        <CardFooter>
                             <Link to="#TODO" className="btn btn-success float-start">
                                 Create Sub-Category
                             </Link>
                             <Link to="#TODO" className="btn btn-success float-end">
                                 Merge Category
                             </Link>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </CardFooter>
+                    </Card>
+                </Col>
+            </Row>
         </AdminPanelPage>
     );
 }

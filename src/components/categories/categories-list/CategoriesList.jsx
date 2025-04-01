@@ -7,19 +7,19 @@ import "datatables.net-rowgroup-bs5";
 import {Link, useNavigate} from "react-router";
 import CategoryNameCell from "@components/categories/category-name-cell/CategoryNameCell.jsx";
 import {UserContext} from "@contexts/UserContext.jsx";
-
-DataTable.use(DT);
+import {Card, CardBody, CardFooter, CardHeader, Col, FormText, Row} from "react-bootstrap";
 
 export default function CategoriesList() {
-    const [categories, setCategories] = useState([]); // State to store table data
-    const [loading, setLoading] = useState(true); // Track loading state
+    DataTable.use(DT);
+
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const api = useApiClient();
     const navigate = useNavigate();
     const {user} = useContext(UserContext);
 
     useEffect(() => {
-        // Fetch data from the API
         const fetchCategories = async () => {
             try {
                 let url = `/categories?limit=all&filters[parent_category_id][is]=null&resolve[]=children&orderby=name&sort=asc`;
@@ -39,34 +39,34 @@ export default function CategoriesList() {
                 });
 
                 categoryArray.sort((a, b) => a.type.localeCompare(b.type, undefined, {sensitivity: 'base'}));
-                setCategories(categoryArray); // Save fetched data into state
-                setLoading(false); // Turn off loading
+                setCategories(categoryArray);
             } catch (err) {
                 console.error("Error fetching category data: ", err);
+            } finally {
                 setLoading(false);
             }
         };
 
         fetchCategories();
         document.title = "Categories";
-    }, [api, user.data.active_wallet_id]); // Run once on component mount
+    }, [api, user.data.active_wallet_id]); // Run once on component mount and if active wallet is changed
 
     return (
         <AdminPanelPage>
-            <div className="row mb-3 pt-3">
-                <div className="col-12">
-                    <div className="card card-primary">
-                        <div className="card-header">
+            <Row>
+                <Col>
+                    <Card className="card-primary">
+                        <CardHeader>
                             Categories
                             <div className="card-tools">
                                 <Link to="/categories/create" className="btn btn-tool fw-bold" title="Create Category">
                                     <i className="bi bi-plus"></i>
                                 </Link>
                             </div>
-                        </div>
-                        <div className="card-body">
+                        </CardHeader>
+                        <CardBody>
                             {loading ? (
-                                <p>Loading...</p> // If loading, show a spinner or message
+                                <FormText>Loading...</FormText>
                             ) : (
                                 <DataTable
                                     className="table table-striped table-no-bordered table-hover w-100 datatable responsive clickable-table"
@@ -97,15 +97,15 @@ export default function CategoriesList() {
                                     </thead>
                                 </DataTable>
                             )}
-                        </div>
-                        <div className="card-footer">
+                        </CardBody>
+                        <CardFooter>
                             <Link to="/categories/create" className="btn btn-success float-end">
                                 Create Category
                             </Link>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </CardFooter>
+                    </Card>
+                </Col>
+            </Row>
         </AdminPanelPage>
     );
 }

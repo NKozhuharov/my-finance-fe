@@ -7,10 +7,12 @@ import {useAlert} from "@contexts/AlertContext.jsx";
 import {useCategoryIcons} from "@api/IconsApi.js";
 import {CustomSingleValue, IconOption} from "@utils/IconComponents.jsx";
 import CategorySelector from "@components/categories/category-selector/CategorySelector.jsx";
+import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, Row} from "react-bootstrap";
 
 export default function CategoryCreate() {
     const [category, setCategory] = useState({
         name: '',
+        parent_category_id: '',
         parentCategory: {},
         type: null,
         icon: '',
@@ -33,16 +35,14 @@ export default function CategoryCreate() {
         document.title = "Create Category";
     });
 
-    const handleCategorySelect = (category) => {
-        category.parentCategory = category;
+    const handleCategorySelect = (selectedCategory) => {
+        category.parent_category_id = selectedCategory.id;
+        category.parentCategory = selectedCategory;
     };
 
-    const categoryEditHandler = async (_, formData) => {
-        setFormErrors({});
-        const values = Object.fromEntries(formData);
-
+    const submitHandler = async () => {
         try {
-            await api.post(`/categories`, values, {});
+            await api.post(`/categories`, category, {});
             setAlert({variant: "success", text: "Category created successfully."});
             navigate(`/categories`);
         } catch (err) {
@@ -51,15 +51,15 @@ export default function CategoryCreate() {
         }
     }
 
-    const [_, editAction, isPending] = useActionState(categoryEditHandler, {...category});
+    const [_, submitAction, isPending] = useActionState(submitHandler, {...category});
 
     return (
         <AdminPanelPage>
-            <div className="row mb-3 pt-3">
-                <div className="col-12">
-                    <form action={editAction}>
-                        <div className="card card-primary">
-                            <div className="card-header">
+            <Row>
+                <Col>
+                    <form action={submitAction}>
+                        <Card className="card-primary">
+                            <CardHeader>
                                 <div className="card-tools-left">
                                     <Link className="btn btn-tool" to={`/categories`} title="Back">
                                         <i className="bi bi-arrow-left"></i>
@@ -67,32 +67,31 @@ export default function CategoryCreate() {
                                 </div>
                                 Create Category
                                 <div className="card-tools">
-                                    <button className="btn btn-tool fw-bold" type="submit" title="Save" disabled={isPending}>SAVE</button>
+                                    <Button className="btn-tool fw-bold" type="submit" title="Save" disabled={isPending}>SAVE</Button>
                                 </div>
-                            </div>
-                            <div className="card-body">
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="name" className="form-label fw-bold">Name</label>
-                                        <input
-                                            type="text"
+                            </CardHeader>
+                            <CardBody>
+                                <Row>
+                                    <Col>
+                                        <FormLabel htmlFor="name" className="fw-bold" column={true}>Name</FormLabel>
+                                        <FormControl
                                             name="name"
                                             value={category.name}
                                             onChange={(e) => setCategory({...category, name: e.target.value})}
-                                            className={`form-control${formErrors.name ? ' is-invalid' : ''}`}
+                                            className={formErrors.name ? ' is-invalid' : ''}
                                             placeholder="Name"
                                             required
                                         />
                                         {formErrors.name &&
-                                            <span className="invalid-feedback" role="alert">
+                                            <span className="text-danger" role="alert">
                                                 <strong>{formErrors.name}</strong>
                                             </span>
                                         }
-                                    </div>
-                                </div>
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="type" className="form-label fw-bold">Type</label>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <FormLabel htmlFor="type" className="fw-bold" column={true}>Type</FormLabel>
                                         <Select
                                             name="type"
                                             options={categoryTypes}
@@ -103,21 +102,32 @@ export default function CategoryCreate() {
                                             required
                                         />
                                         {formErrors.type &&
-                                            <span className="invalid-feedback" role="alert">
+                                            <span className="text-danger" role="alert">
                                                 <strong>{formErrors.type}</strong>
                                             </span>
                                         }
-                                    </div>
-                                </div>
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="parent_category_id" className="form-label fw-bold">Parent Category</label>
-                                        <CategorySelector onlyParents={true} withChildren={false} onCategorySelect={handleCategorySelect} type={category.type} disabled={category.type === null}/>
-                                    </div>
-                                </div>
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="currency_id" className="form-label fw-bold">Icon</label>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <FormLabel htmlFor="parent_category_id" className="fw-bold" column={true}>Parent Category</FormLabel>
+                                        <CategorySelector
+                                            onlyParents={true}
+                                            withChildren={false}
+                                            onCategorySelect={handleCategorySelect}
+                                            type={category.type}
+                                            disabled={category.type === null}
+                                        />
+                                        {formErrors.parent_category_id &&
+                                            <span className="text-danger" role="alert">
+                                                <strong>{formErrors.parent_category_id}</strong>
+                                            </span>
+                                        }
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <FormLabel htmlFor="icon" className="fw-bold" column={true}>Icon</FormLabel>
                                         <Select
                                             name="icon"
                                             options={categoryIcons}
@@ -128,13 +138,13 @@ export default function CategoryCreate() {
                                             components={{Option: IconOption, SingleValue: CustomSingleValue}}
                                             required
                                         />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                    </Col>
+                                </Row>
+                            </CardBody>
+                        </Card>
                     </form>
-                </div>
-            </div>
+                </Col>
+            </Row>
         </AdminPanelPage>
     );
 }
