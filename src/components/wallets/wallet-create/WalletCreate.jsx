@@ -9,6 +9,9 @@ import Select from "react-select";
 import {CustomSingleValue, IconOption} from "@utils/IconComponents.jsx";
 import {UserContext} from "@contexts/UserContext.jsx";
 import CategoryNameAndIcon from "@components/categories/category-name-and-icon/CategoryNameAndIcon.jsx";
+import {Button, Card, CardBody, CardHeader, Col, FormCheck, FormControl, FormLabel, FormText, Row} from "react-bootstrap";
+import FormCheckInput from "react-bootstrap/FormCheckInput";
+import FormCheckLabel from "react-bootstrap/FormCheckLabel";
 
 export default function WalletCreate() {
     //@TODO - know issues - select/deselect all not implemented
@@ -20,6 +23,7 @@ export default function WalletCreate() {
         income_categories: [],
         expense_categories: [],
     });
+    const [loading, setLoading] = useState(true);
     const [defaultWalletCategories, setDefaultWalletCategories] = useState([]);
     const {currencies} = useCurrencies();
     const {walletIcons} = useWalletIcons();
@@ -42,11 +46,13 @@ export default function WalletCreate() {
 
                 responseData = responseData.map((item) => ({
                     ...item,
-                    key: crypto.randomUUID()
+                    categoryKey: crypto.randomUUID()
                 }));
                 setDefaultWalletCategories(responseData);
             } catch (err) {
                 console.error("Error fetching wallet default categories data: ", err);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -58,11 +64,11 @@ export default function WalletCreate() {
         setWalletFormErrors({});
         const values = {...wallet}; // Create a shallow copy to avoid mutating state
         values.categories = [
-            ...values.income_categories.map(key =>
-                defaultWalletCategories.find(item => item.key === key)
+            ...values.income_categories.map(categoryKey =>
+                defaultWalletCategories.find(item => item.categoryKey === categoryKey)
             ).filter(item => item !== undefined),
-            ...values.expense_categories.map(key =>
-                defaultWalletCategories.find(item => item.key === key)
+            ...values.expense_categories.map(categoryKey =>
+                defaultWalletCategories.find(item => item.categoryKey === categoryKey)
             ).filter(item => item !== undefined)
         ];
         delete values.income_categories;
@@ -81,15 +87,15 @@ export default function WalletCreate() {
         }
     }
 
-    const [_, createAction, isPending] = useActionState(walletCreateHandler, {...wallet});
+    const [_, submitAction, isPending] = useActionState(walletCreateHandler, {...wallet});
 
     return (
         <AdminPanelPage>
-            <div className="row mb-3 pt-3">
-                <div className="col-12">
-                    <form action={createAction}>
-                        <div className="card card-primary">
-                            <div className="card-header">
+            <Row>
+                <Col>
+                    <form action={submitAction}>
+                        <Card className="card-primary">
+                            <CardHeader>
                                 <div className="card-tools-left">
                                     <Link className="btn btn-tool" to="/wallets" title="Back">
                                         <i className="bi bi-arrow-left"></i>
@@ -97,32 +103,31 @@ export default function WalletCreate() {
                                 </div>
                                 Create Wallet
                                 <div className="card-tools">
-                                    <button className="btn btn-tool fw-bold" type="submit" title="Save" disabled={isPending}>SAVE</button>
+                                    <Button className="btn btn-tool fw-bold" type="submit" title="Save" disabled={isPending || loading}>SAVE</Button>
                                 </div>
-                            </div>
-                            <div className="card-body">
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="name" className="form-label fw-bold">Name</label>
-                                        <input
-                                            type="text"
+                            </CardHeader>
+                            <CardBody>
+                                <Row>
+                                    <Col>
+                                        <FormLabel htmlFor="name" className="fw-bold" column={true}>Name</FormLabel>
+                                        <FormControl
                                             name="name"
                                             value={wallet.name}
                                             onChange={(e) => setWallet((currentWallet) => ({...currentWallet, name: e.target.value}))}
-                                            className={`form-control${walletFormErrors.name ? ' is-invalid' : ''}`}
+                                            className={walletFormErrors.name ? ' is-invalid' : ''}
                                             placeholder="Name"
-
+                                            required
                                         />
                                         {walletFormErrors.name &&
                                             <span className="invalid-feedback" role="alert">
                                                 <strong>{walletFormErrors.name}</strong>
                                             </span>
                                         }
-                                    </div>
-                                </div>
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="currency_id" className="form-label fw-bold">Currency</label>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <FormLabel htmlFor="currency_id" className="fw-bold" column={true}>Currency</FormLabel>
                                         <Select
                                             name="currency_id"
                                             options={currencies}
@@ -131,18 +136,18 @@ export default function WalletCreate() {
                                             className={`${walletFormErrors.currency_id ? ' is-invalid' : ''}`}
                                             isSearchable={true}
                                             placeholder="Please select"
-
+                                            required
                                         />
                                         {walletFormErrors.currency_id &&
                                             <span className="invalid-feedback" role="alert">
                                                 <strong>{walletFormErrors.currency_id}</strong>
                                             </span>
                                         }
-                                    </div>
-                                </div>
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="currency_id" className="form-label fw-bold">Icon</label>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <FormLabel htmlFor="icon" className="fw-bold" column={true}>Icon</FormLabel>
                                         <Select
                                             name="icon"
                                             options={walletIcons}
@@ -152,104 +157,108 @@ export default function WalletCreate() {
                                             isSearchable={true}
                                             placeholder="Please select"
                                             components={{Option: IconOption, SingleValue: CustomSingleValue}}
-
+                                            required
                                         />
                                         {walletFormErrors.icon &&
                                             <span className="invalid-feedback" role="alert">
                                                 <strong>{walletFormErrors.icon}</strong>
                                             </span>
                                         }
-                                    </div>
-                                </div>
+                                    </Col>
+                                </Row>
                                 <hr/>
-                                <div className="row">
-                                    <div className="col-lg-6 col-sm-12">
-                                        <div className="card card-secondary">
-                                            <div className="card-header income-background-color">
-                                                Income Categories
+                                <Row>
+                                    <Col lg={6} sm={12}>
+                                        <Card className="card-secondary">
+                                            <CardHeader className="income-background-color">
+                                                Select Income Categories
                                                 <div className="float-end">
-                                                    <input type="checkbox" className="form-check-input" id="select-all-income" title="Select all"/>
+                                                    <FormCheckInput id="select-all-income" title="Select all"/>
                                                 </div>
-                                            </div>
-                                            <div className="card-body">
-                                                {defaultWalletCategories
-                                                    .filter(category => category.type === 'Income')
-                                                    .map((category) => (
-                                                        <div className="form-check" key={category.key}>
-                                                            <input
-                                                                className="form-check-input income-category-checkbox"
-                                                                type="checkbox"
-                                                                name={`categories[${category.key}]`}
-                                                                checked={wallet.income_categories.includes(category.key)}
-                                                                onChange={(e) => {
-                                                                    const isChecked = e.target.checked;
-                                                                    setWallet((prevWallet) => ({
-                                                                        ...prevWallet,
-                                                                        income_categories: isChecked
-                                                                            ? [...prevWallet.income_categories, category.key]
-                                                                            : prevWallet.income_categories.filter((cat) => cat !== category.key),
-                                                                    }));
-                                                                }}
-                                                            />
-                                                            <label className="form-check-label" htmlFor={`category-${category.name}`}>
-                                                                <div className="d-flex align-items-center">
-                                                                    <CategoryNameAndIcon {...category}/>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                    ))}
-                                            </div>
-                                        </div>
+                                            </CardHeader>
+                                            <CardBody>
+                                                {loading ? (
+                                                    <FormText>Loading income categories...</FormText>
+                                                ) : (
+                                                    defaultWalletCategories
+                                                        .filter(category => category.type === 'Income')
+                                                        .map((category) => (
+                                                            <FormCheck key={category.categoryKey}>
+                                                                <FormCheckInput
+                                                                    name={`categories[${category.categoryKey}]`}
+                                                                    checked={wallet.income_categories.includes(category.categoryKey)}
+                                                                    onChange={(e) => {
+                                                                        const isChecked = e.target.checked;
+                                                                        setWallet((prevWallet) => ({
+                                                                            ...prevWallet,
+                                                                            income_categories: isChecked
+                                                                                ? [...prevWallet.income_categories, category.categoryKey]
+                                                                                : prevWallet.income_categories.filter((cat) => cat !== category.categoryKey),
+                                                                        }));
+                                                                    }}
+                                                                />
+                                                                <FormCheckLabel htmlFor={`category-${category.name}`}>
+                                                                    <div className="d-flex align-items-center">
+                                                                        <CategoryNameAndIcon {...category}/>
+                                                                    </div>
+                                                                </FormCheckLabel>
+                                                            </FormCheck>
+                                                        ))
+                                                )}
+                                            </CardBody>
+                                        </Card>
                                         {walletFormErrors.categories &&
                                             <span className="text-danger" role="alert">
                                                 <strong>{walletFormErrors.categories}</strong>
                                             </span>
                                         }
-                                    </div>
-                                    <div className="col-lg-6 col-sm-12">
-                                        <div className="card card-secondary">
-                                            <div className="card-header expense-background-color">
-                                                Expense Categories
+                                    </Col>
+                                   <Col lg={6} sm={12}>
+                                        <Card className="card-secondary">
+                                            <CardHeader className="expense-background-color">
+                                                Select Expense Categories
                                                 <div className="float-end">
-                                                    <input type="checkbox" className="form-check-input" id="select-all-income" title="Select all"/>
+                                                    <FormCheckInput id="select-all-income" title="Select all"/>
                                                 </div>
-                                            </div>
-                                            <div className="card-body">
-                                                {defaultWalletCategories
-                                                    .filter(category => category.type === 'Expense')
-                                                    .map((category) => (
-                                                        <div className="form-check" key={category.key}>
-                                                            <input
-                                                                className="form-check-input income-category-checkbox"
-                                                                type="checkbox"
-                                                                name={`categories[${category.key}]`}
-                                                                checked={wallet.expense_categories.includes(category.key)}
-                                                                onChange={(e) => {
-                                                                    const isChecked = e.target.checked;
-                                                                    setWallet((prevWallet) => ({
-                                                                        ...prevWallet,
-                                                                        expense_categories: isChecked
-                                                                            ? [...prevWallet.expense_categories, category.key]
-                                                                            : prevWallet.expense_categories.filter((cat) => cat !== category.key),
-                                                                    }));
-                                                                }}
-                                                            />
-                                                            <label className="form-check-label" htmlFor={`category-${category.name}`}>
-                                                                <div className="d-flex align-items-center">
-                                                                    <CategoryNameAndIcon {...category}/>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                    ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                            </CardHeader>
+                                            <CardBody>
+                                                {loading ? (
+                                                    <FormText>Loading expense categories...</FormText>
+                                                ) : (
+                                                    defaultWalletCategories
+                                                        .filter(category => category.type === 'Expense')
+                                                        .map((category) => (
+                                                            <FormCheck key={category.categoryKey}>
+                                                                <FormCheckInput
+                                                                    name={`categories[${category.categoryKey}]`}
+                                                                    checked={wallet.expense_categories.includes(category.categoryKey)}
+                                                                    onChange={(e) => {
+                                                                        const isChecked = e.target.checked;
+                                                                        setWallet((prevWallet) => ({
+                                                                            ...prevWallet,
+                                                                            expense_categories: isChecked
+                                                                                ? [...prevWallet.expense_categories, category.categoryKey]
+                                                                                : prevWallet.expense_categories.filter((cat) => cat !== category.categoryKey),
+                                                                        }));
+                                                                    }}
+                                                                />
+                                                                <FormCheckLabel htmlFor={`category-${category.name}`}>
+                                                                    <div className="d-flex align-items-center">
+                                                                        <CategoryNameAndIcon {...category}/>
+                                                                    </div>
+                                                                </FormCheckLabel>
+                                                            </FormCheck>
+                                                        ))
+                                                )}
+                                            </CardBody>
+                                        </Card>
+                                    </Col>
+                                </Row>
+                            </CardBody>
+                        </Card>
                     </form>
-                </div>
-            </div>
+                </Col>
+            </Row>
         </AdminPanelPage>
     );
 }

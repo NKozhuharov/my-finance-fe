@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import {useApiClient} from "@hooks/useApiClient.js";
 import {UserContext} from "@contexts/UserContext.jsx";
 import WalletSwitcherRow from "@components/wallet-switcher/wallet-switcher-row/WalletSwitcherRow.jsx";
+import {FormText} from "react-bootstrap";
 
 export default function WalletSwitcher() {
     const [show, setShow] = useState(false);
@@ -16,7 +17,7 @@ export default function WalletSwitcher() {
 
     useEffect(() => {
         const controller = new AbortController(); // Create an AbortController for request cancellation
-        const fetchWallet = async () => {
+        const fetchActiveWallet = async () => {
             try {
                 const response = await api.get(`/wallets/${user.data.active_wallet_id}`, {signal: controller.signal});
                 setActiveWallet(response.data.data);
@@ -28,7 +29,7 @@ export default function WalletSwitcher() {
         };
 
         if (user.data.active_wallet_id) {
-            fetchWallet();
+            fetchActiveWallet();
         }
 
         return () => controller.abort(); // Cleanup: Cancel the request on unmount
@@ -62,7 +63,7 @@ export default function WalletSwitcher() {
             </Modal.Header>
             <Modal.Body>
                 {isLoading ? (
-                    <h3>Loading...</h3>
+                    <FormText>Loading...</FormText>
                 ) : wallets.length > 0 ? (
                     wallets.map(wallet => (
                         <WalletSwitcherRow

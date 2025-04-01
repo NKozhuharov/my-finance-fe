@@ -5,25 +5,25 @@ import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-bs5';
 import {Link, useNavigate} from "react-router";
 import WalletNameCell from "@components/wallets/wallet-name-cell/WalletNameCell.jsx";
-
-DataTable.use(DT);
+import {Card, CardBody, CardFooter, CardHeader, Col, FormText, Row} from "react-bootstrap";
 
 export default function WalletsList() {
-    const [wallets, setWallets] = useState([]); // State to store table data
-    const [loading, setLoading] = useState(true); // Track loading state
+    DataTable.use(DT);
+
+    const [wallets, setWallets] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const api = useApiClient();
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Fetch data from the API
         const fetchWallets = async () => {
             try {
                 const response = await api.get(`/wallets`);
-                setWallets(response.data.data || []); // Save fetched data into state
-                setLoading(false); // Turn off loading
+                setWallets(response.data.data || []);
             } catch (err) {
                 console.error("Error fetching wallet data: ", err);
+            } finally {
                 setLoading(false);
             }
         };
@@ -47,13 +47,15 @@ export default function WalletsList() {
 
     return (
         <AdminPanelPage>
-            <div className="row mb-3 pt-3">
-                <div className="col-12">
-                    <div className="card card-primary">
-                        <div className="card-header">Wallets</div>
-                        <div className="card-body">
+            <Row>
+                <Col>
+                    <Card className="card-primary">
+                        <CardHeader>
+                            Wallets
+                        </CardHeader>
+                        <CardBody>
                             {loading ? (
-                                <p>Loading...</p> // If loading, show a spinner or message
+                                <FormText>Loading...</FormText>
                             ) : (
                                 <DataTable
                                     className="table table-striped table-no-bordered table-hover w-100 datatable responsive clickable-table"
@@ -86,15 +88,15 @@ export default function WalletsList() {
                                     </thead>
                                 </DataTable>
                             )}
-                        </div>
-                        <div className="card-footer">
+                        </CardBody>
+                        <CardFooter>
                             <Link to="/wallets/create" className="btn btn-success float-end">
                                 Create Wallet
                             </Link>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </CardFooter>
+                    </Card>
+                </Col>
+            </Row>
         </AdminPanelPage>
     );
 }

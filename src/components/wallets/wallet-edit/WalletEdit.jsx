@@ -4,7 +4,7 @@ import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
 import Select from "react-select";
 import Modal from "react-bootstrap/Modal";
-import {Button} from "react-bootstrap";
+import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, FormText, Row} from "react-bootstrap";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import {useCurrencies} from "@api/CurrenciesApi.js";
 import {useWalletIcons} from "@api/IconsApi.js";
@@ -19,11 +19,13 @@ export default function WalletEdit() {
         currency_id: '',
         icon: '',
     });
-    const {currencies} = useCurrencies();
-    const {walletIcons} = useWalletIcons();
 
     const [walletFormErrors, setWalletFormErrors] = useState({});
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    const {currencies} = useCurrencies();
+    const {walletIcons} = useWalletIcons();
 
     const {user, userDataChangeHandler} = useContext(UserContext);
 
@@ -40,6 +42,8 @@ export default function WalletEdit() {
                 setWallet(response.data.data || []);
             } catch (err) {
                 console.error("Error fetching wallet data: ", err);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -60,11 +64,11 @@ export default function WalletEdit() {
         }
     }
 
-    const [_, editAction, isPending] = useActionState(walletEditHandler, {...wallet});
+    const [_, submitAction, isPending] = useActionState(walletEditHandler, {...wallet});
 
     const handleCloseModal = () => setShowDeleteModal(false);
     const handleShowModal = () => setShowDeleteModal(true);
-    const handleConfirmModal = (event) => {
+    const handleWalletDeletion = (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
 
@@ -93,7 +97,7 @@ export default function WalletEdit() {
     return (
         <AdminPanelPage>
             <Modal show={showDeleteModal} onHide={handleCloseModal}>
-                <form onSubmit={handleConfirmModal}>
+                <form onSubmit={handleWalletDeletion}>
                     <Modal.Header closeButton>
                         <Modal.Title>Confirm Deletion</Modal.Title>
                     </Modal.Header>
@@ -101,8 +105,7 @@ export default function WalletEdit() {
                         <div className="alert alert-danger">
                             Are you sure you want to delete this wallet? This action cannot be undone.
                         </div>
-                        <input
-                            type="text"
+                        <FormControl
                             name="confirmation"
                             className="form-control"
                             placeholder="Please type 'DELETE' to confirm"
@@ -120,11 +123,11 @@ export default function WalletEdit() {
                 </form>
             </Modal>
 
-            <div className="row mb-3 pt-3">
-                <div className="col-12">
-                    <form action={editAction}>
-                        <div className="card card-primary">
-                            <div className="card-header">
+            <Row>
+                <Col>
+                    <form action={submitAction}>
+                        <Card className="card-primary">
+                            <CardHeader>
                                 <div className="card-tools-left">
                                     <Link className="btn btn-tool" to="/wallets" title="Back">
                                         <i className="bi bi-arrow-left"></i>
@@ -132,69 +135,73 @@ export default function WalletEdit() {
                                 </div>
                                 Edit Wallet
                                 <div className="card-tools">
-                                    <button className="btn btn-tool fw-bold" type="submit" title="Save" disabled={isPending}>SAVE</button>
+                                    <button className="btn btn-tool fw-bold" type="submit" title="Save" disabled={isPending || loading}>SAVE</button>
                                 </div>
-                            </div>
-                            <div className="card-body">
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="name" className="form-label fw-bold">Name</label>
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            value={wallet.name}
-                                            onChange={(e) => setWallet({...wallet, name: e.target.value})}
-                                            className={`form-control${walletFormErrors.name ? ' is-invalid' : ''}`}
-                                            placeholder="Name"
-                                            required
-                                        />
-                                        {walletFormErrors.name &&
-                                            <span className="invalid-feedback" role="alert">
-                                                <strong>{walletFormErrors.name}</strong>
-                                            </span>
-                                        }
-                                    </div>
-                                </div>
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="currency_id" className="form-label fw-bold">Currency</label>
-                                        <Select
-                                            name="currency_id"
-                                            options={currencies}
-                                            value={currencies.find(option => option.value === wallet.currency_id) || null}
-                                            onChange={(selectedOption) => setWallet({...wallet, currency_id: selectedOption.value})}
-                                            isSearchable={true}
-                                            placeholder="Please select"
-                                            required
-                                        />
-                                    </div>
-                                </div>
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="currency_id" className="form-label fw-bold">Icon</label>
-                                        <Select
-                                            name="icon"
-                                            options={walletIcons}
-                                            value={walletIcons.find(option => option.value === wallet.icon) || null}
-                                            onChange={(selectedOption) => setWallet({...wallet, icon: selectedOption.value})}
-                                            isSearchable={true}
-                                            placeholder="Please select"
-                                            components={{Option: IconOption, SingleValue: CustomSingleValue}}
-                                            required
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                            </CardHeader>
+                            <CardBody>
+                                {loading ? (
+                                    <FormText>Loading...</FormText>
+                                ) : (
+                                    <>
+                                        <Row className="row mb-2">
+                                            <Col>
+                                                <FormLabel htmlFor="name" className="fw-bold" column={true}>Name</FormLabel>
+                                                <FormControl
+                                                    name="name"
+                                                    value={wallet.name}
+                                                    onChange={(e) => setWallet({...wallet, name: e.target.value})}
+                                                    className={`form-control${walletFormErrors.name ? ' is-invalid' : ''}`}
+                                                    placeholder="Name"
+                                                    required
+                                                />
+                                                {walletFormErrors.name &&
+                                                    <span className="invalid-feedback" role="alert">
+                                                        <strong>{walletFormErrors.name}</strong>
+                                                    </span>
+                                                }
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <FormLabel htmlFor="currency_id" className="fw-bold" column={true}>Currency</FormLabel>
+                                                <Select
+                                                    name="currency_id"
+                                                    options={currencies}
+                                                    value={currencies.find(option => option.value === wallet.currency_id) || null}
+                                                    onChange={(selectedOption) => setWallet({...wallet, currency_id: selectedOption.value})}
+                                                    isSearchable={true}
+                                                    placeholder="Please select"
+                                                    required
+                                                />
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <FormLabel htmlFor="currency_id" className="fw-bold" column={true}>Icon</FormLabel>
+                                                <Select
+                                                    name="icon"
+                                                    options={walletIcons}
+                                                    value={walletIcons.find(option => option.value === wallet.icon) || null}
+                                                    onChange={(selectedOption) => setWallet({...wallet, icon: selectedOption.value})}
+                                                    isSearchable={true}
+                                                    placeholder="Please select"
+                                                    components={{Option: IconOption, SingleValue: CustomSingleValue}}
+                                                    required
+                                                />
+                                            </Col>
+                                        </Row>
+                                    </>
+                                )}
+                            </CardBody>
                             <div className="card-footer">
-                                <a href="#" className="btn btn-danger float-end" type="button" title="Delete Wallet" onClick={handleShowModal}>
+                                <Button className="btn btn-danger float-end" title="Delete Wallet" onClick={handleShowModal} disabled={isPending || loading}>
                                     <i className="bi bi-trash"></i>&nbsp;Delete Wallet
-                                </a>
+                                </Button>
                             </div>
-                        </div>
+                        </Card>
                     </form>
-                </div>
-            </div>
+                </Col>
+            </Row>
         </AdminPanelPage>
-    )
-        ;
+    );
 }

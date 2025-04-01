@@ -1,6 +1,7 @@
 import {useApiClient} from "@hooks/useApiClient.js";
 import {useContext} from "react";
 import {UserContext} from "@contexts/UserContext.jsx";
+import {Col, Row} from "react-bootstrap";
 
 export default function WalletSwitcherRow(
     {
@@ -32,12 +33,11 @@ export default function WalletSwitcherRow(
     };
 
     return (
-        <div className="row my-3">
-            <div className="col-12">
+        <Row className="pb-2 pt-2 border-bottom">
+            <Col>
                 <div
                     className="d-flex align-items-center justify-content-between text-decoration-none"
                     onClick={handleWalletSwitch}
-                    role="button"
                     style={{cursor: user.data.active_wallet_id !== id ? "pointer" : "default"}}
                 >
                     <div className="d-flex align-items-center">
@@ -47,12 +47,13 @@ export default function WalletSwitcherRow(
                                 src={`${import.meta.env.VITE_ICONS_BASE_URL}${icon}`}
                                 alt="No Icon"
                                 style={{width: "32px", height: "32px"}}
-                            /></div>
+                            />
+                        </div>
                         <span className={`fw-bold ${user.data.active_wallet_id !== id ? ' text-primary' : ''}`}>{name}</span>
                     </div>
                     <b className="ms-auto">{total_formatted}</b>
                 </div>
-            </div>
-        </div>
+            </Col>
+        </Row>
     );
 }
