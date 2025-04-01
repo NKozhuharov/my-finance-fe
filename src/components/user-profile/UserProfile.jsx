@@ -4,6 +4,7 @@ import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useParams} from "react-router";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import {UserContext} from "@contexts/UserContext.jsx";
+import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, FormText, Row} from "react-bootstrap";
 
 export default function UserProfile() {
     const {walletId} = useParams();
@@ -15,7 +16,7 @@ export default function UserProfile() {
         password: '',
         password_confirmation: '',
     });
-
+    const [loading, setLoading] = useState(true);
     const [formErrors, setFormErrors] = useState({});
 
     const api = useApiClient();
@@ -31,6 +32,8 @@ export default function UserProfile() {
                 setUserData(response.data.data || []);
             } catch (err) {
                 console.error("Error fetching user data: ", err);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -51,15 +54,15 @@ export default function UserProfile() {
         }
     }
 
-    const [_, editAction, isPending] = useActionState(userEditHandler, {...userData});
+    const [_, submitAction, isPending] = useActionState(userEditHandler, {...userData});
 
     return (
         <AdminPanelPage>
-            <div className="row mb-3 pt-3">
-                <div className="col-12">
-                    <form action={editAction} autoComplete="off">
-                        <div className="card card-primary">
-                            <div className="card-header">
+            <Row>
+                <Col>
+                    <form action={submitAction} autoComplete="off">
+                        <Card className="card-primary">
+                            <CardHeader>
                                 <div className="card-tools-left">
                                     <Link className="btn btn-tool" to="/dashboard" title="Back">
                                         <i className="bi bi-arrow-left"></i>
@@ -67,101 +70,103 @@ export default function UserProfile() {
                                 </div>
                                 Edit User {userData.first_name} {userData.last_name}
                                 <div className="card-tools">
-                                    <button className="btn btn-tool fw-bold" type="submit" title="Save" disabled={isPending}>SAVE</button>
+                                    <Button className="btn-tool fw-bold" type="submit" title="Save" disabled={isPending || loading}>SAVE</Button>
                                 </div>
-                            </div>
-                            <div className="card-body">
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="first_name" className="form-label fw-bold">First Name</label>
-                                        <input
-                                            type="text"
-                                            name="first_name"
-                                            value={userData.first_name}
-                                            onChange={(e) => setUserData({...userData, first_name: e.target.value})}
-                                            className={`form-control${formErrors.first_name ? ' is-invalid' : ''}`}
-                                            placeholder="First Name"
-                                            required
-                                        />
-                                        {formErrors.first_name &&
-                                            <span className="invalid-feedback" role="alert">
+                            </CardHeader>
+                            <CardBody>
+                                {loading ? (
+                                    <FormText>Loading user...</FormText>
+                                ) : (
+                                    <>
+                                        <Row>
+                                            <Col>
+                                                <FormLabel htmlFor="first_name" className="fw-bold" column={true}>First Name</FormLabel>
+                                                <FormControl
+                                                    name="first_name"
+                                                    value={userData.first_name}
+                                                    onChange={(e) => setUserData({...userData, first_name: e.target.value})}
+                                                    className={formErrors.first_name ? ' is-invalid' : ''}
+                                                    placeholder="First Name"
+                                                    required
+                                                />
+                                                {formErrors.first_name &&
+                                                    <span className="invalid-feedback" role="alert">
                                                 <strong>{formErrors.first_name}</strong>
                                             </span>
-                                        }
-                                    </div>
-                                </div>
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="last_name" className="form-label fw-bold">Last Name</label>
-                                        <input
-                                            type="text"
-                                            name="last_name"
-                                            value={userData.last_name}
-                                            onChange={(e) => setUserData({...userData, last_name: e.target.value})}
-                                            className={`form-control${formErrors.last_name ? ' is-invalid' : ''}`}
-                                            placeholder="Last Name"
-                                        />
-                                        {formErrors.last_name &&
-                                            <span className="invalid-feedback" role="alert">
+                                                }
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <FormLabel htmlFor="last_name" className="fw-bold" column={true}>Last Name</FormLabel>
+                                                <FormControl
+                                                    name="last_name"
+                                                    value={userData.last_name}
+                                                    onChange={(e) => setUserData({...userData, last_name: e.target.value})}
+                                                    className={formErrors.last_name ? ' is-invalid' : ''}
+                                                    placeholder="Last Name"
+                                                />
+                                                {formErrors.last_name &&
+                                                    <span className="invalid-feedback" role="alert">
                                                 <strong>{formErrors.last_name}</strong>
                                             </span>
-                                        }
-                                    </div>
-                                </div>
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="email" className="form-label fw-bold">Email</label>
-                                        <input
-                                            type="text"
-                                            name="email"
-                                            value={userData.email}
-                                            className={`form-control`}
-                                            disabled
-                                        />
-                                    </div>
-                                </div>
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="email" className="form-label fw-bold">Change Password</label>
-                                        <input
-                                            type="password"
-                                            name="password"
-                                            value={userData.password}
-                                            onChange={(e) => setUserData({...userData, password: e.target.value})}
-                                            className={`form-control${formErrors.password ? ' is-invalid' : ''}`}
-                                            placeholder="Password"
-                                        />
-                                        {formErrors.password &&
-                                            <span className="invalid-feedback" role="alert">
+                                                }
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <FormLabel htmlFor="email" className="fw-bold" column={true}>Email</FormLabel>
+                                                <FormControl
+                                                    name="email"
+                                                    value={userData.email}
+                                                    className={`form-control`}
+                                                    disabled
+                                                />
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <FormLabel htmlFor="email" className="fw-bold" column={true}>Change Password</FormLabel>
+                                                <FormControl
+                                                    type="password"
+                                                    name="password"
+                                                    value={userData.password}
+                                                    onChange={(e) => setUserData({...userData, password: e.target.value})}
+                                                    className={formErrors.password ? ' is-invalid' : ''}
+                                                    placeholder="Password"
+                                                />
+                                                {formErrors.password &&
+                                                    <span className="invalid-feedback" role="alert">
                                             <strong>{formErrors.password}</strong>
                                         </span>
-                                        }
-                                    </div>
-                                </div>
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <label htmlFor="email" className="form-label fw-bold">Password Confirmation</label>
-                                        <input
-                                            type="password"
-                                            name="password_confirmation"
-                                            value={userData.password_confirmation}
-                                            onChange={(e) => setUserData({...userData, password_confirmation: e.target.value})}
-                                            className={`form-control${formErrors.password_confirmation ? ' is-invalid' : ''}`}
-                                            placeholder="Password Confirmation"
-                                        />
-                                        {formErrors.password_confirmation &&
-                                            <span className="invalid-feedback" role="alert">
+                                                }
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <FormLabel htmlFor="email" className="fw-bold" column={true}>Password Confirmation</FormLabel>
+                                                <FormControl
+                                                    type="password"
+                                                    name="password_confirmation"
+                                                    value={userData.password_confirmation}
+                                                    onChange={(e) => setUserData({...userData, password_confirmation: e.target.value})}
+                                                    className={formErrors.password_confirmation ? ' is-invalid' : ''}
+                                                    placeholder="Password Confirmation"
+                                                />
+                                                {formErrors.password_confirmation &&
+                                                    <span className="invalid-feedback" role="alert">
                                             <strong>{formErrors.password_confirmation}</strong>
                                         </span>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                                }
+                                            </Col>
+                                        </Row>
+                                    </>
+                                )}
+                            </CardBody>
+                        </Card>
                     </form>
-                </div>
-            </div>
+                </Col>
+            </Row>
         </AdminPanelPage>
-    )
-        ;
+    );
 }
