@@ -72,7 +72,7 @@ export default function Login() {
                                         name="email"
                                         value={formValues.email}
                                         onChange={(e) => setFormValues({...formValues, email: e.target.value})}
-                                        className={`form-control${loginErrors.email ? ' is-invalid' : ''}`}
+                                        className={loginErrors.email ? ' is-invalid' : ''}
                                         placeholder="Email"
                                         required
                                     />
@@ -93,7 +93,7 @@ export default function Login() {
                                         name="password"
                                         value={formValues.password}
                                         onChange={(e) => setFormValues({...formValues, password: e.target.value})}
-                                        className={`form-control${loginErrors.password ? ' is-invalid' : ''}`}
+                                        className={loginErrors.password ? ' is-invalid' : ''}
                                         placeholder="Password"
                                         required
                                     />
