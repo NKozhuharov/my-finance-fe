@@ -90,7 +90,7 @@ export default function UserProfile() {
                                                     required
                                                 />
                                                 {formErrors.first_name &&
-                                                    <span className="invalid-feedback" role="alert">
+                                                    <span className="text-danger" role="alert">
                                                 <strong>{formErrors.first_name}</strong>
                                             </span>
                                                 }
@@ -107,7 +107,7 @@ export default function UserProfile() {
                                                     placeholder="Last Name"
                                                 />
                                                 {formErrors.last_name &&
-                                                    <span className="invalid-feedback" role="alert">
+                                                    <span className="text-danger" role="alert">
                                                 <strong>{formErrors.last_name}</strong>
                                             </span>
                                                 }
@@ -136,7 +136,7 @@ export default function UserProfile() {
                                                     placeholder="Password"
                                                 />
                                                 {formErrors.password &&
-                                                    <span className="invalid-feedback" role="alert">
+                                                    <span className="text-danger" role="alert">
                                             <strong>{formErrors.password}</strong>
                                         </span>
                                                 }
@@ -154,7 +154,7 @@ export default function UserProfile() {
                                                     placeholder="Password Confirmation"
                                                 />
                                                 {formErrors.password_confirmation &&
-                                                    <span className="invalid-feedback" role="alert">
+                                                    <span className="text-danger" role="alert">
                                             <strong>{formErrors.password_confirmation}</strong>
                                         </span>
                                                 }

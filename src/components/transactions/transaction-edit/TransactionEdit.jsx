@@ -104,7 +104,7 @@ export default function TransactionEdit() {
                                                         required
                                                     />
                                                     {formErrors.amount &&
-                                                        <span className="invalid-feedback" role="alert">
+                                                        <span className="text-danger" role="alert">
                                                             <strong>{formErrors.amount}</strong>
                                                         </span>
                                                     }
@@ -129,7 +129,7 @@ export default function TransactionEdit() {
                                                     required
                                                 />
                                                 {formErrors.date &&
-                                                    <span className="invalid-feedback" role="alert">
+                                                    <span className="text-danger" role="alert">
                                                         <strong>{formErrors.date}</strong>
                                                     </span>
                                                 }

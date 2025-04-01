@@ -72,7 +72,7 @@ export default function Login() {
                             />
                             <div className="input-group-text"><span className="bi bi-envelope"></span></div>
                             {loginErrors.email &&
-                                <span className="invalid-feedback" role="alert">
+                                <span className="text-danger" role="alert">
                                     <strong>{loginErrors.email}</strong>
                                 </span>
                             }
@@ -89,7 +89,7 @@ export default function Login() {
                             />
                             <div className="input-group-text"><span className="bi bi-lock-fill"></span></div>
                             {loginErrors.password &&
-                                <span className="invalid-feedback" role="alert">
+                                <span className="text-danger" role="alert">
                                     <strong>{loginErrors.password}</strong>
                                 </span>
                             }

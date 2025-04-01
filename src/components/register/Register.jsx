@@ -81,7 +81,7 @@ export default function Register() {
                             />
                             <div className="input-group-text"><span className="bi bi-person"></span></div>
                             {registerErrors.first_name &&
-                                <span className="invalid-feedback" role="alert">
+                                <span className="text-danger" role="alert">
                                 <strong>{registerErrors.first_name}</strong>
                             </span>
                             }
@@ -97,7 +97,7 @@ export default function Register() {
                             />
                             <div className="input-group-text"><span className="bi bi-person"></span></div>
                             {registerErrors.last_name &&
-                                <span className="invalid-feedback" role="alert">
+                                <span className="text-danger" role="alert">
                                 <strong>{registerErrors.last_name}</strong>
                             </span>
                             }
@@ -114,7 +114,7 @@ export default function Register() {
                             />
                             <div className="input-group-text"><span className="bi bi-envelope"></span></div>
                             {registerErrors.email &&
-                                <span className="invalid-feedback" role="alert">
+                                <span className="text-danger" role="alert">
                                 <strong>{registerErrors.email}</strong>
                             </span>
                             }
@@ -131,7 +131,7 @@ export default function Register() {
                             />
                             <div className="input-group-text"><span className="bi bi-lock-fill"></span></div>
                             {registerErrors.password &&
-                                <span className="invalid-feedback" role="alert">
+                                <span className="text-danger" role="alert">
                                 <strong>{registerErrors.password}</strong>
                             </span>
                             }
@@ -148,7 +148,7 @@ export default function Register() {
                             />
                             <div className="input-group-text"><span className="bi bi-lock-fill"></span></div>
                             {registerErrors.password_confirmation &&
-                                <span className="invalid-feedback" role="alert">
+                                <span className="text-danger" role="alert">
                                 <strong>{registerErrors.password_confirmation}</strong>
                             </span>
                             }

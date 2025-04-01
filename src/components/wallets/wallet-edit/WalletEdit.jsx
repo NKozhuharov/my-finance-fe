@@ -155,7 +155,7 @@ export default function WalletEdit() {
                                                     required
                                                 />
                                                 {walletFormErrors.name &&
-                                                    <span className="invalid-feedback" role="alert">
+                                                    <span className="text-danger" role="alert">
                                                         <strong>{walletFormErrors.name}</strong>
                                                     </span>
                                                 }

@@ -119,7 +119,7 @@ export default function WalletCreate() {
                                             required
                                         />
                                         {walletFormErrors.name &&
-                                            <span className="invalid-feedback" role="alert">
+                                            <span className="text-danger" role="alert">
                                                 <strong>{walletFormErrors.name}</strong>
                                             </span>
                                         }
@@ -139,7 +139,7 @@ export default function WalletCreate() {
                                             required
                                         />
                                         {walletFormErrors.currency_id &&
-                                            <span className="invalid-feedback" role="alert">
+                                            <span className="text-danger" role="alert">
                                                 <strong>{walletFormErrors.currency_id}</strong>
                                             </span>
                                         }
@@ -160,7 +160,7 @@ export default function WalletCreate() {
                                             required
                                         />
                                         {walletFormErrors.icon &&
-                                            <span className="invalid-feedback" role="alert">
+                                            <span className="text-danger" role="alert">
                                                 <strong>{walletFormErrors.icon}</strong>
                                             </span>
                                         }
