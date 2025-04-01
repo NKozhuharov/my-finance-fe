@@ -8,11 +8,13 @@ import {Link, useNavigate} from "react-router";
 import {UserContext} from "@contexts/UserContext.jsx";
 import CategoryNameCell from "@components/categories/category-name-cell/CategoryNameCell.jsx";
 import TransactionAmountCell from "@components/transactions/transaction-amount-cell/TransactionAmountCell.jsx";
-import {endOfMonth, format, startOfMonth, subMonths, addMonths} from 'date-fns';
-
-DataTable.use(DT);
+import {addMonths, endOfMonth, format, startOfMonth, subMonths} from 'date-fns';
+import {Button, Card, CardBody, CardHeader, Col, FormControl, FormGroup, FormText, InputGroup, Row} from "react-bootstrap";
+import InputGroupText from "react-bootstrap/InputGroupText";
 
 export default function TransactionsList() {
+    DataTable.use(DT);
+
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -20,11 +22,10 @@ export default function TransactionsList() {
     const navigate = useNavigate();
     const {user} = useContext(UserContext);
 
-    const [createdAtFrom, setCreatedAtFrom] = useState("2025-01-01");
-    const [createdAtTo, setCreatedAtTo] = useState("2025-01-31");
+    const [createdAtFrom, setCreatedAtFrom] = useState(format(startOfMonth(new Date()), 'yyyy-MM-dd'));
+    const [createdAtTo, setCreatedAtTo] = useState(format(endOfMonth(new Date()), 'yyyy-MM-dd'));
 
     useEffect(() => {
-        // Fetch data from the API
         const fetchTransactions = async () => {
             try {
                 let url = `/transactions?resolve[]=category&limit=all&filters[date][gte]=${createdAtFrom}&filters[date][lte]=${createdAtTo}`;
@@ -70,49 +71,49 @@ export default function TransactionsList() {
 
     return (
         <AdminPanelPage>
-            <div className="row mb-3 pt-3">
-                <div className="col-12">
-                    <div className="card card-primary">
-                        <div className="card-header">
+            <Row>
+                <Col>
+                    <Card className="card-primary">
+                        <CardHeader>
                             Transactions
                             <div className="card-tools">
                                 <Link to="/transactions/create" className="btn btn-tool fw-bold" title="Create Transaction">
                                     <i className="bi bi-plus"></i>
                                 </Link>
                             </div>
-                        </div>
-                        <div className="card-body">
-                            <div className="row">
-                                <div className="form-group col-6 col-md-3 col-lg-2">
-                                    <div className="input-group">
+                        </CardHeader>
+                        <CardBody>
+                            <Row>
+                                <FormGroup className="col-6 col-md-3 col-lg-2">
+                                    <InputGroup>
                                         <div className="input-group-prepend">
-                                            <span className="input-group-text">From</span>
+                                            <InputGroupText>From</InputGroupText>
                                         </div>
-                                        <input type="date" name="created_at_from" value={createdAtFrom} className="form-control" onChange={(e) => setCreatedAtFrom(e.target.value)}/>
-                                    </div>
-                                </div>
-                                <div className="form-group col-6 col-md-3 col-lg-2">
-                                    <div className="input-group">
+                                        <FormControl type="date" name="created_at_from" value={createdAtFrom} className="form-control" onChange={(e) => setCreatedAtFrom(e.target.value)}/>
+                                    </InputGroup>
+                                </FormGroup>
+                                <FormGroup className="col-6 col-md-3 col-lg-2">
+                                    <InputGroup>
                                         <div className="input-group-prepend">
-                                            <span className="input-group-text">To</span>
+                                            <InputGroupText>To</InputGroupText>
                                         </div>
-                                        <input type="date" name="created_at_to" value={createdAtTo} className="form-control" onChange={(e) => setCreatedAtTo(e.target.value)}/>
-                                    </div>
-                                </div>
-                                <div className="form-group col-6 col-md-3 col-lg-1">
-                                    <button type="button" id="set-prev-month" className="btn btn-primary w-100" title="Previous month" onClick={handleSetPrevMonth}>
+                                        <FormControl type="date" name="created_at_to" value={createdAtTo} className="form-control" onChange={(e) => setCreatedAtTo(e.target.value)}/>
+                                    </InputGroup>
+                                </FormGroup>
+                                <FormGroup className="col-6 col-md-3 col-lg-1">
+                                    <Button className="btn-primary w-100" title="Previous month" onClick={handleSetPrevMonth}>
                                         <i className="bi bi-arrow-left"></i>
-                                    </button>
-                                </div>
-                                <div className="form-group col-6 col-md-3 col-lg-1">
-                                    <button type="button" id="set-next-month" className="btn btn-primary w-100" title="Next month" onClick={handleSetNextMonth}>
+                                    </Button>
+                                </FormGroup>
+                                <FormGroup className="col-6 col-md-3 col-lg-1">
+                                    <Button className="btn-primary w-100" title="Next month" onClick={handleSetNextMonth}>
                                         <i className="bi bi-arrow-right"></i>
-                                    </button>
-                                </div>
-                            </div>
+                                    </Button>
+                                </FormGroup>
+                            </Row>
 
                             {loading ? (
-                                <p>Loading...</p>
+                                <FormText>Loading...</FormText>
                             ) : (
                                 <DataTable
                                     className="table table-striped table-no-bordered table-hover w-100 datatable responsive clickable-table"
@@ -135,23 +136,20 @@ export default function TransactionsList() {
                                             dataSrc: 'date'
                                         },
                                         rowCallback: (row, data) => {
-
-                                            // Add a click event to each row
                                             row.onclick = () => {
                                                 navigate(`/transactions/${data.id}`);
                                             };
                                         },
                                     }}
-
                                 >
                                     <thead>
                                     </thead>
                                 </DataTable>
                             )}
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </CardBody>
+                    </Card>
+                </Col>
+            </Row>
         </AdminPanelPage>
     );
 }

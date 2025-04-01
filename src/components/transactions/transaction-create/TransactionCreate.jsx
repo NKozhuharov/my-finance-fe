@@ -4,6 +4,8 @@ import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate} from "react-router";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import CategorySelector from "@components/categories/category-selector/CategorySelector.jsx";
+import {Button, Card, CardBody, CardHeader, Col, FormControl, InputGroup, Row} from "react-bootstrap";
+import InputGroupText from "react-bootstrap/InputGroupText";
 
 //possible date picker - https://www.npmjs.com/package/react-date-range
 export default function TransactionCreate() {
@@ -26,8 +28,8 @@ export default function TransactionCreate() {
         document.title = "Create Transaction";
     });
 
-    const handleCategorySelect = (category) => {
-        transaction.category = category;
+    const handleCategorySelect = (selectedCategory) => {
+        transaction.category = selectedCategory;
     };
 
     const submitHandler = async (_, formData) => {
@@ -49,11 +51,11 @@ export default function TransactionCreate() {
 
     return (
         <AdminPanelPage>
-            <div className="row mb-3 pt-3">
-                <div className="col-12">
+            <Row>
+                <Col>
                     <form action={submitAction}>
-                        <div className="card card-primary">
-                            <div className="card-header">
+                        <Card className="card-primary">
+                            <CardHeader>
                                 <div className="card-tools-left">
                                     <Link className="btn btn-tool" to={`/transactions`} title="Back">
                                         <i className="bi bi-arrow-left"></i>
@@ -61,17 +63,17 @@ export default function TransactionCreate() {
                                 </div>
                                 Create Transaction
                                 <div className="card-tools">
-                                    <button className="btn btn-tool fw-bold" type="submit" title="Save" disabled={isPending}>SAVE</button>
+                                    <Button className="btn-tool fw-bold" type="submit" title="Save" disabled={isPending}>SAVE</Button>
                                 </div>
-                            </div>
-                            <div className="card-body">
-                                <div className="row mb-2">
-                                    <div className="col-12">
-                                        <div className="input-group">
+                            </CardHeader>
+                            <CardBody>
+                                <Row className="mb-2">
+                                    <Col>
+                                        <InputGroup>
                                             <div className="input-group-prepend">
-                                                <span className="input-group-text">лв.</span>
+                                                <InputGroupText>лв.</InputGroupText>
                                             </div>
-                                            <input
+                                            <FormControl
                                                 type="number"
                                                 name="amount"
                                                 value={transaction.amount}
@@ -83,22 +85,22 @@ export default function TransactionCreate() {
                                             />
                                             {formErrors.amount &&
                                                 <span className="text-danger" role="alert">
-                                                <strong>{formErrors.amount}</strong>
-                                            </span>
+                                                    <strong>{formErrors.amount}</strong>
+                                                </span>
                                             }
-                                        </div>
-                                    </div>
-                                </div>
+                                        </InputGroup>
+                                    </Col>
+                                </Row>
                                 <hr/>
-                                <div className="row mb-2">
-                                    <div className="col-12">
+                                <Row className="mb-2">
+                                    <Col>
                                         <CategorySelector onlyParents={true} withChildren={true} onCategorySelect={handleCategorySelect}/>
-                                    </div>
-                                </div>
-                                <div className="row mb-2">
-                                    <div className="col-12">
+                                    </Col>
+                                </Row>
+                                <Row className="mb-2">
+                                    <Col>
                                         <label htmlFor="date" className="form-label fw-bold">Date</label>
-                                        <input
+                                        <FormControl
                                             type="date"
                                             name="date"
                                             value={transaction.date}
@@ -111,10 +113,10 @@ export default function TransactionCreate() {
                                                 <strong>{formErrors.date}</strong>
                                             </span>
                                         }
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-12">
+                                    </Col>
+                                </Row>
+                                <Row className="row">
+                                    <Col>
                                         <label htmlFor="note" className="form-label fw-bold">Note</label>
                                         <textarea
                                             className="form-control"
@@ -122,13 +124,13 @@ export default function TransactionCreate() {
                                             value={transaction.note}
                                             onChange={(e) => setTransaction({...transaction, note: e.target.value})}
                                         />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                    </Col>
+                                </Row>
+                            </CardBody>
+                        </Card>
                     </form>
-                </div>
-            </div>
+                </Col>
+            </Row>
         </AdminPanelPage>
     );
 }

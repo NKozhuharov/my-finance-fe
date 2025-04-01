@@ -4,6 +4,8 @@ import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import CategorySelector from "@components/categories/category-selector/CategorySelector.jsx";
+import {Button, Card, CardBody, CardHeader, Col, FormControl, FormText, InputGroup, Row} from "react-bootstrap";
+import InputGroupText from "react-bootstrap/InputGroupText";
 
 //possible date picker - https://www.npmjs.com/package/react-date-range
 export default function TransactionEdit() {
@@ -33,9 +35,9 @@ export default function TransactionEdit() {
                 transactionData.category = transactionData.category.data;
 
                 setTransaction(transactionData);
-                setLoading(false);
             } catch (err) {
                 console.error("Error fetching transaction data: ", err);
+            } finally {
                 setLoading(false);
             }
         };
@@ -44,8 +46,8 @@ export default function TransactionEdit() {
         document.title = "Edit Transaction";
     }, [api, transactionId]);
 
-    const handleCategorySelect = (category) => {
-        transaction.category = category;
+    const handleCategorySelect = (selectedCategory) => {
+        transaction.category = selectedCategory;
     };
 
     const submitHandler = async (_, formData) => {
@@ -67,11 +69,11 @@ export default function TransactionEdit() {
 
     return (
         <AdminPanelPage>
-            <div className="row mb-3 pt-3">
-                <div className="col-12">
+            <Row>
+                <Col>
                     <form action={submitAction}>
-                        <div className="card card-primary">
-                            <div className="card-header">
+                        <Card className="card-primary">
+                            <CardHeader>
                                 <div className="card-tools-left">
                                     <Link className="btn btn-tool" to={`/transactions/${transactionId}`} title="Back">
                                         <i className="bi bi-arrow-left"></i>
@@ -79,21 +81,21 @@ export default function TransactionEdit() {
                                 </div>
                                 Edit Transaction
                                 <div className="card-tools">
-                                    <button className="btn btn-tool fw-bold" type="submit" title="Save" disabled={isPending}>SAVE</button>
+                                    <Button className="btn btn-tool fw-bold" type="submit" title="Save" disabled={isPending || loading}>SAVE</Button>
                                 </div>
-                            </div>
-                            <div className="card-body">
+                            </CardHeader>
+                            <CardBody>
                                 {loading ? (
-                                    <p>Loading...</p>
+                                    <FormText>Loading...</FormText>
                                 ) : (
                                     <>
-                                        <div className="row mb-2">
-                                            <div className="col-12">
-                                                <div className="input-group">
+                                        <Row>
+                                            <Col>
+                                                <InputGroup>
                                                     <div className="input-group-prepend">
-                                                        <span className="input-group-text">лв.</span>
+                                                        <InputGroupText>лв.</InputGroupText>
                                                     </div>
-                                                    <input
+                                                    <FormControl
                                                         type="number"
                                                         name="amount"
                                                         value={transaction.amount}
@@ -108,17 +110,17 @@ export default function TransactionEdit() {
                                                             <strong>{formErrors.amount}</strong>
                                                         </span>
                                                     }
-                                                </div>
-                                            </div>
-                                        </div>
+                                                </InputGroup>
+                                            </Col>
+                                        </Row>
                                         <hr/>
-                                        <div className="row mb-2">
-                                            <div className="col-12">
+                                        <Row className="mb-2">
+                                            <Col>
                                                 <CategorySelector onlyParents={true} withChildren={true} onCategorySelect={handleCategorySelect} preSelectedCategory={transaction.category}/>
-                                            </div>
-                                        </div>
-                                        <div className="row mb-2">
-                                            <div className="col-12">
+                                            </Col>
+                                        </Row>
+                                        <Row className="mb-2">
+                                            <Col>
                                                 <label htmlFor="date" className="form-label fw-bold">Date</label>
                                                 <input
                                                     type="date"
@@ -133,10 +135,10 @@ export default function TransactionEdit() {
                                                         <strong>{formErrors.date}</strong>
                                                     </span>
                                                 }
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-12">
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>
                                                 <label htmlFor="note" className="form-label fw-bold">Note</label>
                                                 <textarea
                                                     className="form-control"
@@ -144,15 +146,15 @@ export default function TransactionEdit() {
                                                     value={transaction.note}
                                                     onChange={(e) => setTransaction({...transaction, note: e.target.value})}
                                                 />
-                                            </div>
-                                        </div>
+                                            </Col>
+                                        </Row>
                                     </>
                                 )}
-                            </div>
-                        </div>
+                            </CardBody>
+                        </Card>
                     </form>
-                </div>
-            </div>
+                </Col>
+            </Row>
         </AdminPanelPage>
     );
 }

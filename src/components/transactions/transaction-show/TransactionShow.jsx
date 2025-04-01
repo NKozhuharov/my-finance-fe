@@ -3,9 +3,10 @@ import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
 import Modal from "react-bootstrap/Modal";
-import {Button} from "react-bootstrap";
+import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, FormText, InputGroup, Row} from "react-bootstrap";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import CategoryNameAndIcon from "@components/categories/category-name-and-icon/CategoryNameAndIcon.jsx";
+import InputGroupText from "react-bootstrap/InputGroupText";
 
 export default function TransactionShow() {
     const {transactionId} = useParams();
@@ -22,7 +23,6 @@ export default function TransactionShow() {
     const {setAlert} = useAlert();
 
     useEffect(() => {
-        // Fetch data from the API
         const fetchTransaction = async () => {
             try {
                 const response = await api.get(`/transactions/${transactionId}?resolve[]=category`);
@@ -86,10 +86,10 @@ export default function TransactionShow() {
                 </form>
             </Modal>
 
-            <div className="row mb-3 pt-3">
-                <div className="col-12">
-                    <div className="card card-primary">
-                        <div className="card-header">
+            <Row>
+                <Col>
+                    <Card className="card-primary">
+                        <CardHeader>
                             <div className="card-tools-left">
                                 <Link className="btn btn-tool" to="/transactions" title="Back">
                                     <i className="bi bi-arrow-left"></i>
@@ -97,50 +97,52 @@ export default function TransactionShow() {
                             </div>
                             <div className="card-tools">
                                 <Link className="btn btn-tool" to={`/transactions/${transaction.id}/edit`} title="Edit"><i className="bi bi-pencil-fill"></i></Link>
-                                <button className="btn btn-tool" title="Delete" onClick={handleShowModal}>
+                                <Button className="btn-tool" title="Delete" onClick={handleShowModal} disabled={loading}>
                                     <i className="bi bi-trash"></i>
-                                </button>
+                                </Button>
                             </div>
-                        </div>
-                        <div className="card-body">
+                        </CardHeader>
+                        <CardBody>
                             {loading ? (
-                                <p>Loading...</p>
+                                <FormText>Loading...</FormText>
                             ) : (
                                 <>
-                                    <div className="row mb-2">
-                                        <div className="col-12">
+                                    <Row className="mb-2">
+                                        <Col>
                                             <div className="d-flex align-items-center">
                                                 <CategoryNameAndIcon {...transaction.category.data} />
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-12 mb-2">
-                                        <label htmlFor="date" className="form-label fw-bold">Amount</label>
-                                        <div className="input-group">
-                                            <div className="input-group-prepend">
-                                                <span className="input-group-text">€</span>
-                                            </div>
-                                            <input className="form-control" type="text" name="amount" value={transaction.amount} disabled/>
-                                        </div>
-                                    </div>
-                                    <div className="col-12 mb-2">
-                                        <label htmlFor="date" className="form-label fw-bold">Date</label>
-                                        <input className="form-control" type="date" name="date" value={transaction.date} disabled/>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <label htmlFor="note" className="form-label fw-bold">Note</label>
-                                            <div className="input-group">
-                                                <textarea className="form-control" name="note" value={transaction.note ?? ''} disabled></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col className="mb-2">
+                                            <FormLabel htmlFor="date" className="form-label fw-bold" column={true}>Amount</FormLabel>
+                                            <InputGroup>
+                                                <div className="input-group-prepend">
+                                                    <InputGroupText>€</InputGroupText>
+                                                </div>
+                                                <FormControl name="amount" value={transaction.amount} disabled/>
+                                            </InputGroup>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col className="mb-2">
+                                            <FormLabel htmlFor="date" className="form-label fw-bold" column={true}>Date</FormLabel>
+                                            <FormControl type="date" name="date" value={transaction.date} disabled/>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                            <FormLabel htmlFor="note" className="form-label fw-bold" column={true}>Note</FormLabel>
+                                            <textarea className="form-control" name="note" value={transaction.note ?? ''} disabled></textarea>
+                                        </Col>
+                                    </Row>
                                 </>
                             )}
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </CardBody>
+                    </Card>
+                </Col>
+            </Row>
         </AdminPanelPage>
     );
 }
