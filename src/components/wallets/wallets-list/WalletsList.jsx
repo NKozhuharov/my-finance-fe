@@ -11,6 +11,7 @@ export default function WalletsList() {
     DataTable.use(DT);
 
     const [wallets, setWallets] = useState([]);
+    const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(true);
 
     const api = useApiClient();
@@ -19,8 +20,10 @@ export default function WalletsList() {
     useEffect(() => {
         const fetchWallets = async () => {
             try {
-                const response = await api.get(`/wallets`);
-                setWallets(response.data.data || []);
+                const response = await api.get(`/wallets?aggregate[]=total`);
+                const responseData = response.data;
+                setWallets(responseData.data || []);
+                setTotal(responseData.meta.aggregate.total.total_formatted)
             } catch (err) {
                 console.error("Error fetching wallet data: ", err);
             } finally {
@@ -77,6 +80,9 @@ export default function WalletsList() {
                                                 navigate(`/wallets/${data.id}/edit`);
                                             };
                                         },
+                                        footerCallback: function () {
+                                            this.find('tfoot tr:eq(0) th:eq(1)').html(total);
+                                        }
                                     }}
 
                                 >
@@ -86,6 +92,12 @@ export default function WalletsList() {
                                         <th className="text-end">Balance</th>
                                     </tr>
                                     </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th>Total</th>
+                                        <th className="text-right"></th>
+                                    </tr>
+                                    </tfoot>
                                 </DataTable>
                             )}
                         </CardBody>
