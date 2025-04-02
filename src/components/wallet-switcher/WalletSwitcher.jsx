@@ -73,7 +73,7 @@ export default function WalletSwitcher() {
         </Modal>
 
         <li id="switch-wallet-button" className="nav-item">
-            <a className="nav-link" href="#" onClick={handleShowModal}>
+            <a className="nav-link" href="#" onClick={handleShowModal} title="Switch Wallet">
                 <i className="bi bi-wallet"></i>&nbsp; {activeWallet ? `${activeWallet.name} ${activeWallet.total_formatted}` : 'Select Wallet'}
             </a>
         </li>
