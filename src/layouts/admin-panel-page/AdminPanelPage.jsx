@@ -8,7 +8,7 @@ import {useAlert} from "@contexts/AlertContext.jsx";
 import {Outlet} from "react-router";
 
 
-export default function AdminPanelPage({children}) {
+export default function AdminPanelPage() {
     let [sidebarIsShown, setsSidebarIsShown] = useState(true);
     const {alert, setAlert} = useAlert();
 
