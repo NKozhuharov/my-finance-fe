@@ -1,10 +1,11 @@
 import {useEffect, useState} from "react";
-import {addBodyClass, removeBodyClass} from "../../utils/helpers.js";
-import Header from "../../components/header/Header.jsx";
-import Footer from "../../components/footer/Footer.jsx";
-import Sidebar from "../../components/sidebar/sidebar.jsx";
+import {addBodyClass, removeBodyClass} from "@utils/helpers.js";
+import Header from "@components/header/Header.jsx";
+import Footer from "@components/footer/Footer.jsx";
+import Sidebar from "@components/sidebar/sidebar.jsx";
 import {Alert} from "react-bootstrap";
-import {useAlert} from "../../contexts/AlertContext.jsx";
+import {useAlert} from "@contexts/AlertContext.jsx";
+import {Outlet} from "react-router";
 
 
 export default function AdminPanelPage({children}) {
@@ -56,7 +57,7 @@ export default function AdminPanelPage({children}) {
                                 {alert.text}
                             </Alert>
                         )}
-                        {children}
+                        <Outlet />
                     </div>
                 </div>
             </main>

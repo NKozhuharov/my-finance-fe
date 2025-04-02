@@ -54,7 +54,7 @@ export default function CategoryCreate() {
     const [_, submitAction, isPending] = useActionState(submitHandler, {...category});
 
     return (
-        <AdminPanelPage>
+        <>
             <Row>
                 <Col>
                     <form action={submitAction}>
@@ -145,6 +145,6 @@ export default function CategoryCreate() {
                     </form>
                 </Col>
             </Row>
-        </AdminPanelPage>
+        </>
     );
 }

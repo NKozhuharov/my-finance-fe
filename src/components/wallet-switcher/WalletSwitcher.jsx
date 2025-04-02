@@ -9,36 +9,30 @@ export default function WalletSwitcher() {
     const [show, setShow] = useState(false);
     const [activeWallet, setActiveWallet] = useState(null);
     const [wallets, setWallets] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const {user, userDataChangeHandler} = useContext(UserContext);
 
     const api = useApiClient();
 
     useEffect(() => {
-        const controller = new AbortController(); // Create an AbortController for request cancellation
         const fetchActiveWallet = async () => {
             try {
-                const response = await api.get(`/wallets/${user.data.active_wallet_id}`, {signal: controller.signal});
+                const response = await api.get(`/wallets/${user.data.active_wallet_id}`);
                 setActiveWallet(response.data.data);
             } catch (err) {
-                if (err.name !== "AbortError") {
-                    console.error(err);
-                }
+                console.error(err);
             }
         };
 
         if (user.data.active_wallet_id) {
             fetchActiveWallet();
         }
-
-        return () => controller.abort(); // Cleanup: Cancel the request on unmount
     }, [api, user.data.active_wallet_id]);
 
     const handleCloseModal = () => setShow(false);
     const handleShowModal = async () => {
         setShow(true);
-        setIsLoading(true);
         try {
             const response = await api.get(`/wallets`);
             setWallets(response.data.data);

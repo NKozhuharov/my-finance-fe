@@ -90,7 +90,7 @@ export default function WalletCreate() {
     const [_, submitAction, isPending] = useActionState(walletCreateHandler, {...wallet});
 
     return (
-        <AdminPanelPage>
+        <>
             <Row>
                 <Col>
                     <form action={submitAction}>
@@ -259,6 +259,6 @@ export default function WalletCreate() {
                     </form>
                 </Col>
             </Row>
-        </AdminPanelPage>
+        </>
     );
 }

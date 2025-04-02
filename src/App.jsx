@@ -21,6 +21,7 @@ import TransactionCreate from "./components/transactions/transaction-create/Tran
 import TransactionsList from "./components/transactions/transactions-list/TransactionsList.jsx";
 import TransactionShow from "./components/transactions/transaction-show/TransactionShow.jsx";
 import TransactionEdit from "./components/transactions/transaction-edit/TransactionEdit.jsx";
+import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage.jsx";
 
 function App() {
     return (
@@ -30,19 +31,21 @@ function App() {
                     <Routes>
                         <Route index element={<Home/>}/>
                         <Route element={<AuthGuard/>}>
-                            <Route path="/dashboard" element={<Dashboard/>}/>
-                            <Route path="/user-profile" element={<UserProfile/>}/>
-                            <Route path="/wallets" element={<WalletsList/>}/>
-                            <Route path="/wallets/:walletId/edit" element={<WalletEdit/>}/>
-                            <Route path="/wallets/create" element={<WalletCreate/>}/>
-                            <Route path="/categories" element={<CategoriesList/>}/>
-                            <Route path="/categories/:categoryId" element={<CategoryShow/>}/>
-                            <Route path="/categories/:categoryId/edit" element={<CategoryEdit/>}/>
-                            <Route path="/categories/create" element={<CategoryCreate/>}/>
-                            <Route path="/transactions" element={<TransactionsList/>}/>
-                            <Route path="/transactions/:transactionId" element={<TransactionShow/>}/>
-                            <Route path="/transactions/:transactionId/edit" element={<TransactionEdit/>}/>
-                            <Route path="/transactions/create" element={<TransactionCreate/>}/>
+                            <Route element={<AdminPanelPage/>}>
+                                <Route path="/dashboard" element={<Dashboard/>}/>
+                                <Route path="/user-profile" element={<UserProfile/>}/>
+                                <Route path="/wallets" element={<WalletsList/>}/>
+                                <Route path="/wallets/:walletId/edit" element={<WalletEdit/>}/>
+                                <Route path="/wallets/create" element={<WalletCreate/>}/>
+                                <Route path="/categories" element={<CategoriesList/>}/>
+                                <Route path="/categories/:categoryId" element={<CategoryShow/>}/>
+                                <Route path="/categories/:categoryId/edit" element={<CategoryEdit/>}/>
+                                <Route path="/categories/create" element={<CategoryCreate/>}/>
+                                <Route path="/transactions" element={<TransactionsList/>}/>
+                                <Route path="/transactions/:transactionId" element={<TransactionShow/>}/>
+                                <Route path="/transactions/:transactionId/edit" element={<TransactionEdit/>}/>
+                                <Route path="/transactions/create" element={<TransactionCreate/>}/>
+                            </Route>
                             <Route path="/logout" element={<Logout/>}/>
                         </Route>
                         <Route element={<GuestGuard/>}>

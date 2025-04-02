@@ -57,7 +57,7 @@ export default function UserProfile() {
     const [_, submitAction, isPending] = useActionState(userEditHandler, {...userData});
 
     return (
-        <AdminPanelPage>
+        <>
             <Row>
                 <Col>
                     <form action={submitAction} autoComplete="off">
@@ -167,6 +167,6 @@ export default function UserProfile() {
                     </form>
                 </Col>
             </Row>
-        </AdminPanelPage>
+        </>
     );
 }

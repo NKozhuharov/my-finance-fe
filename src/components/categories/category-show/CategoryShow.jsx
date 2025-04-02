@@ -60,7 +60,7 @@ export default function CategoryShow() {
     }
 
     return (
-        <AdminPanelPage>
+        <>
             <Modal show={showDeleteModal} onHide={handleCloseModal}>
                 <form onSubmit={handleCategoryDelete}>
                     <Modal.Header closeButton>
@@ -162,6 +162,6 @@ export default function CategoryShow() {
                     </Card>
                 </Col>
             </Row>
-        </AdminPanelPage>
+        </>
     );
 }

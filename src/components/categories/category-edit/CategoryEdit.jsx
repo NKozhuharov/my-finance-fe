@@ -67,7 +67,7 @@ export default function CategoryEdit() {
     const [_, submitAction, isPending] = useActionState(submitHandler, {...category});
 
     return (
-        <AdminPanelPage>
+        <>
             <Row>
                 <Col>
                     <form action={submitAction}>
@@ -159,6 +159,6 @@ export default function CategoryEdit() {
                     </form>
                 </Col>
             </Row>
-        </AdminPanelPage>
+        </>
     );
 }

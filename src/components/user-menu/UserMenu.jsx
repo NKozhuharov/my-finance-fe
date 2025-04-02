@@ -1,11 +1,19 @@
 import {useState} from "react";
 import {Link} from "react-router";
+import {Button} from "react-bootstrap";
+import {useLogout} from "@api/authApi.js";
 
 export default function UserMenu({firstName, lastName}) {
     const [isShown, setIsShown] = useState(false);
 
+    const {logout} = useLogout();
+
     const showHandler = () => {
         setIsShown(!isShown)
+    }
+
+    const handleLogout = () => {
+        logout();
     }
 
     return <li className="nav-item dropdown user-menu">
@@ -17,8 +25,8 @@ export default function UserMenu({firstName, lastName}) {
                 {`${firstName} ${lastName}`}
             </li>
             <li className="user-footer">
-                <Link to="/user-profile" className="btn btn-default">Profile</Link>
-                <Link to="/logout" className="btn btn-default float-end">Sign out</Link>
+                <Link to="/user-profile" className="btn btn-primary">Profile</Link>
+                <Button to="/logout" className="btn-danger float-end" onClick={handleLogout}>Sign out</Button>
             </li>
         </ul>
     </li>

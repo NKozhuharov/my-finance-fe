@@ -49,7 +49,7 @@ export default function WalletsList() {
     ];
 
     return (
-        <AdminPanelPage>
+        <>
             <Row>
                 <Col>
                     <Card className="card-primary">
@@ -109,6 +109,6 @@ export default function WalletsList() {
                     </Card>
                 </Col>
             </Row>
-        </AdminPanelPage>
+        </>
     );
 }

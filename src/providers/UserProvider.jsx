@@ -4,14 +4,15 @@ import usePersistedState from "../hooks/usePersistedState";
 export default function UserProvider({
     children,
 }) {
-    const [authData, setAuthData] = usePersistedState('auth', {});
+    const [authData, setAuthData] = usePersistedState('auth', null);
 
     const userLoginHandler = (resultData) => {
         setAuthData(resultData);
     };
 
     const userLogoutHandler = () => {
-        setAuthData({});
+        console.log('User logged out');
+        setAuthData(null);
     };
 
     const userDataChangeHandler = (userData) => {

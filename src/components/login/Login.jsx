@@ -1,4 +1,4 @@
-import {Link, useNavigate} from "react-router";
+import {Link} from "react-router";
 import {useActionState, useContext, useEffect, useState} from "react";
 import {addBodyClass, removeBodyClass} from "@utils/helpers.js";
 import {useLogin} from "@api/authApi.js";
@@ -14,7 +14,6 @@ export default function Login() {
         password: '',
     });
     const [loginErrors, setLoginErrors] = useState({});
-    const navigate = useNavigate();
     const {userLoginHandler} = useContext(UserContext);
     const {login} = useLogin();
 
@@ -48,8 +47,6 @@ export default function Login() {
         authData.isLoggedIn = true;
 
         userLoginHandler(authData);
-
-        navigate('/dashboard');
     };
 
     const [_, loginAction, isPending] = useActionState(loginHandler, {email: '', password: ''});

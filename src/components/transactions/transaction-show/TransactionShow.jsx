@@ -64,7 +64,7 @@ export default function TransactionShow() {
     }
 
     return (
-        <AdminPanelPage>
+        <>
             <Modal show={showDeleteModal} onHide={handleCloseModal}>
                 <form onSubmit={handleTransactionDelete}>
                     <Modal.Header closeButton>
@@ -143,6 +143,6 @@ export default function TransactionShow() {
                     </Card>
                 </Col>
             </Row>
-        </AdminPanelPage>
+        </>
     );
 }

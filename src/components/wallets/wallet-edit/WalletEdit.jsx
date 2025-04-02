@@ -95,7 +95,7 @@ export default function WalletEdit() {
     }
 
     return (
-        <AdminPanelPage>
+        <>
             <Modal show={showDeleteModal} onHide={handleCloseModal}>
                 <form onSubmit={handleWalletDeletion}>
                     <Modal.Header closeButton>
@@ -202,6 +202,6 @@ export default function WalletEdit() {
                     </form>
                 </Col>
             </Row>
-        </AdminPanelPage>
+        </>
     );
 }

@@ -40,13 +40,12 @@ export default function TransactionsList() {
                 const responseData = response.data;
 
                 setTransactions(responseData.data);
-                console.log(responseData.meta.aggregate.totals);
-                setInflow(responseData.meta.aggregate.totals.income)
-                setOutflow(responseData.meta.aggregate.totals.expense)
-                setTotal(responseData.meta.aggregate.totals.balance)
-                setLoading(false);
+                setInflow(responseData.meta.aggregate.totals.income);
+                setOutflow(responseData.meta.aggregate.totals.expense);
+                setTotal(responseData.meta.aggregate.totals.balance);
             } catch (err) {
                 console.error("Error fetching transactions data: ", err);
+            } finally {
                 setLoading(false);
             }
         };
@@ -78,7 +77,7 @@ export default function TransactionsList() {
     }
 
     return (
-        <AdminPanelPage>
+        <>
             <Row>
                 <Col>
                     <Card className="card-primary">
@@ -170,6 +169,6 @@ export default function TransactionsList() {
                     </Card>
                 </Col>
             </Row>
-        </AdminPanelPage>
+        </>
     );
 }

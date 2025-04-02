@@ -52,7 +52,7 @@ export default function CategoriesList() {
     }, [api, user.data.active_wallet_id]); // Run once on component mount and if active wallet is changed
 
     return (
-        <AdminPanelPage>
+        <>
             <Row>
                 <Col>
                     <Card className="card-primary">
@@ -106,6 +106,6 @@ export default function CategoriesList() {
                     </Card>
                 </Col>
             </Row>
-        </AdminPanelPage>
+        </>
     );
 }

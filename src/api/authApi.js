@@ -1,4 +1,4 @@
-import {useContext, useEffect} from "react";
+import {useContext} from "react";
 import {UserContext} from "../contexts/UserContext";
 import axios from "axios";
 
@@ -39,9 +39,9 @@ export const useLogin = () => {
 export const useRegister = () => {
     const register = (first_name, last_name, email, password, password_confirmation) =>
         axiosInstance.post(`user/register`, {first_name, last_name, email, password, password_confirmation})
-        .then(function (response) {
-            return response.data;
-        }).catch(function (error) {
+            .then(function (response) {
+                return response.data;
+            }).catch(function (error) {
             if (error.response) {
                 return error.response.data;
             } else if (error.request) {
@@ -64,20 +64,14 @@ export const useRegister = () => {
 export const useLogout = () => {
     const {token, userLogoutHandler} = useContext(UserContext);
 
-    useEffect(() => {
-        if (!token) {
-            return;
-        }
-
-        //@todo - logout is called twice, probably because useEffect deps, investigate
-
+    const logout = () => {
         axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
         axiosInstance.post(`user/sign-out`)
             .then(userLogoutHandler)
             .catch(function (error) {
                 if (error.response) {
-                    return error.response.data;
+                    console.log(error.response.data);
                 } else if (error.request) {
                     // The request was made but no response was received
                     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
@@ -87,12 +81,11 @@ export const useLogout = () => {
                     // Something happened in setting up the request that triggered an Error
                     console.log('Error', error.message);
                 }
-                console.log(error.config);
             });
-
-    }, [token, userLogoutHandler]);
+    }
 
     return {
         isLoggedOut: true,
+        logout
     };
 };

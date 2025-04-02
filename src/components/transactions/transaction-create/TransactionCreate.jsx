@@ -50,7 +50,7 @@ export default function TransactionCreate() {
     const [_, submitAction, isPending] = useActionState(submitHandler, {...transaction});
 
     return (
-        <AdminPanelPage>
+        <>
             <Row>
                 <Col>
                     <form action={submitAction}>
@@ -131,6 +131,6 @@ export default function TransactionCreate() {
                     </form>
                 </Col>
             </Row>
-        </AdminPanelPage>
+        </>
     );
 }

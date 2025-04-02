@@ -7,7 +7,7 @@ export default function Dashboard() {
     });
 
     return (
-        <AdminPanelPage>
+        <>
             <div className="row">
                 {/* Replace or modify the content as needed for this page */}
                 <div className="col-lg-3 col-6">
@@ -40,6 +40,6 @@ export default function Dashboard() {
                 </div>
                 {/* Add more content as needed */}
             </div>
-        </AdminPanelPage>
+        </>
     );
 }
