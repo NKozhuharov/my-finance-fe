@@ -1,12 +1,20 @@
-# React + Vite
+# My Finance
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The application allows users to create an account and systematically record their daily financial transactions, including income sources such as salaries and expenses such as bills, groceries, and travel. By promoting transparency in personal finances, the platform aims to empower users with meaningful insights and analytical reports. These reports will help users better understand their spending habits, optimize their budgets, and make informed financial decisions to improve their overall financial well-being.  
 
-Currently, two official plugins are available:
+#### How to run the application
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Prerequisites**:
 
-## Expanding the ESLint configuration
+ * NodeJS > 20
+ * npm
+ * [yarn]( https://classic.yarnpkg.com/en/docs/install)
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Run the following commands:**
+
+```shell
+git clone https://github.com/NKozhuharov/my-finance-fe.git
+cd my-finance-fe
+yarn install
+yarn dev
+```
