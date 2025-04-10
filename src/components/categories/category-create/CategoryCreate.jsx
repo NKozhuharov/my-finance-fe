@@ -1,4 +1,4 @@
-import React, {useActionState, useEffect, useState} from "react";
+import React, {useActionState, useContext, useEffect, useState} from "react";
 import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate} from "react-router";
@@ -8,6 +8,7 @@ import {useCategoryIcons} from "@api/IconsApi.js";
 import {CustomSingleValue, IconOption} from "@utils/IconComponents.jsx";
 import CategorySelector from "@components/categories/category-selector/CategorySelector.jsx";
 import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, Row} from "react-bootstrap";
+import {UserContext} from "@contexts/UserContext.jsx";
 
 export default function CategoryCreate() {
     const [category, setCategory] = useState({
@@ -25,6 +26,8 @@ export default function CategoryCreate() {
 
     const [formErrors, setFormErrors] = useState({});
 
+    const {user} = useContext(UserContext);
+
     const api = useApiClient();
 
     const navigate = useNavigate();
@@ -32,6 +35,11 @@ export default function CategoryCreate() {
     const {setAlert} = useAlert();
 
     useEffect(() => {
+        //page not allowed for total wallet
+        if (user.active_wallet_id === 0) {
+            navigate(`/categories`);
+        }
+
         document.title = "Create Category";
     });
 

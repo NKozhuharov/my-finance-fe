@@ -84,9 +84,11 @@ export default function TransactionsList() {
                         <CardHeader>
                             Transactions
                             <div className="card-tools">
-                                <Link to="/transactions/create" className="btn btn-tool fw-bold" title="Create Transaction">
-                                    <i className="bi bi-plus"></i>
-                                </Link>
+                                {user.active_wallet_id > 0 ? (
+                                    <Link to="/transactions/create" className="btn btn-tool fw-bold" title="Create Transaction">
+                                        <i className="bi bi-plus"></i>
+                                    </Link>
+                                ) : ''}
                             </div>
                         </CardHeader>
                         <CardBody>
@@ -120,7 +122,7 @@ export default function TransactionsList() {
                             </Row>
 
                             {loading ? (
-                                <Spinner animation="border" variant="primary" />
+                                <Spinner animation="border" variant="primary"/>
                             ) : (
                                 <DataTable
                                     key={`${createdAtFrom}-${createdAtTo}-${inflow?.total}-${outflow?.total}`}

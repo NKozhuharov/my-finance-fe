@@ -145,7 +145,7 @@ export default function TransactionEdit() {
                                                 <textarea
                                                     className="form-control"
                                                     name="note"
-                                                    value={transaction.note}
+                                                    value={transaction.note ?? ''}
                                                     onChange={(e) => setTransaction({...transaction, note: e.target.value})}
                                                 />
                                             </Col>

@@ -77,7 +77,8 @@ export default function WalletCreate() {
         try {
             const response = await api.post(`/wallets`, values);
             if (!user.active_wallet_id) {
-                userDataChangeHandler({active_wallet_id: response.data.data.id});
+                const activeWallet = response.data.data;
+                userDataChangeHandler({active_wallet_id: activeWallet.id, active_wallet: activeWallet});
             }
             setAlert({variant: "success", text: "Wallet created successfully."});
             navigate(`/wallets`);

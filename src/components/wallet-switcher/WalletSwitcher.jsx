@@ -19,7 +19,12 @@ export default function WalletSwitcher() {
         setShow(true);
         try {
             const response = await api.get(`/wallets`);
-            setWallets(response.data.data);
+            const walletCollection = response.data.data;
+            if (walletCollection.length > 0) {
+                const totalWalletResponse = await api.get(`/wallets/total-wallet`);
+                walletCollection.push(totalWalletResponse.data.data);
+            }
+            setWallets(walletCollection);
         } catch (err) {
             if (err.name !== "AbortError") {
                 console.error(err);
@@ -42,7 +47,7 @@ export default function WalletSwitcher() {
             </Modal.Header>
             <Modal.Body>
                 {isLoading ? (
-                    <Spinner animation="border" variant="primary" />
+                    <Spinner animation="border" variant="primary"/>
                 ) : wallets.length > 0 ? (
                     wallets.map(wallet => (
                         <WalletSwitcherRow
@@ -59,7 +64,7 @@ export default function WalletSwitcher() {
 
         <li id="switch-wallet-button" className="nav-item">
             <a className="nav-link" href="#" onClick={handleShowModal} title="Switch Wallet">
-                <i className="bi bi-wallet"></i>&nbsp; {user.active_wallet_id ? `${user.active_wallet.name} ${user.active_wallet.total_formatted}` : 'Select Wallet'}
+                <i className="bi bi-wallet"></i>&nbsp; {`${user.active_wallet.name} ${user.active_wallet.total_formatted}`}
             </a>
         </li>
     </>;

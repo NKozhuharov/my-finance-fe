@@ -26,7 +26,11 @@ export default function TransactionCreate() {
     const {setAlert} = useAlert();
 
     useEffect(() => {
-        // Fetch data from the API
+        //page not allowed for total wallet
+        if (user.active_wallet_id === 0) {
+            navigate(`/transactions`);
+        }
+
         const fetchLastTransaction = async () => {
             try {
                 const dateFilter = subHours(new Date(), 1).toISOString();
@@ -91,7 +95,7 @@ export default function TransactionCreate() {
                                 </div>
                                 Create Transaction
                                 <div className="card-tools">
-                                    <Button className="btn-tool fw-bold" type="submit" title="Save" disabled={isPending}>SAVE</Button>
+                                    <Button className="btn-tool fw-bold" type="submit" title="Save" disabled={isPending || loading}>SAVE</Button>
                                 </div>
                             </CardHeader>
                             <CardBody>

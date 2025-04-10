@@ -65,7 +65,7 @@ export default function CategoriesList() {
                         </CardHeader>
                         <CardBody>
                             {loading ? (
-                                <Spinner animation="border" variant="primary" />
+                                <Spinner animation="border" variant="primary"/>
                             ) : (
                                 <DataTable
                                     className="table table-striped table-no-bordered table-hover w-100 datatable responsive clickable-table"
@@ -97,11 +97,13 @@ export default function CategoriesList() {
                                 </DataTable>
                             )}
                         </CardBody>
-                        <CardFooter>
-                            <Link to="/categories/create" className="btn btn-success float-end">
-                                Create Category
-                            </Link>
-                        </CardFooter>
+                        {user.active_wallet_id > 0 ? (
+                            <CardFooter>
+                                <Link to="/categories/create" className="btn btn-success float-end">
+                                    Create Category
+                                </Link>
+                            </CardFooter>
+                        ) : ''}
                     </Card>
                 </Col>
             </Row>

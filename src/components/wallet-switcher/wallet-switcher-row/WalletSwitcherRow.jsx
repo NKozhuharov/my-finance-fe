@@ -33,7 +33,7 @@ export default function WalletSwitcherRow(
     };
 
     return (
-        <Row className="pb-2 pt-2 border-bottom">
+        <Row className="pb-2 pt-2 border-bottom" key={id}>
             <Col>
                 <div
                     className="d-flex align-items-center justify-content-between text-decoration-none"

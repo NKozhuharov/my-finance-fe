@@ -55,7 +55,11 @@ export default function WalletEdit() {
         const values = Object.fromEntries(formData);
 
         try {
-            await api.patch(`/wallets/${walletId}`, values, {});
+            const response = await api.patch(`/wallets/${walletId}`, values, {});
+            if (parseInt(walletId) === parseInt(user.active_wallet_id)) {
+                const activeWallet = response.data.data;
+                userDataChangeHandler({active_wallet_id: activeWallet.id, active_wallet: activeWallet});
+            }
             setAlert({variant: "success", text: "Wallet edited successfully."});
         } catch (err) {
             setWalletFormErrors(err.response.data.details);
@@ -79,9 +83,6 @@ export default function WalletEdit() {
 
         api.delete(`/wallets/${walletId}`, {})
             .then(() => {
-                if (parseInt(walletId) === parseInt(user.active_wallet_id)) {
-                    userDataChangeHandler({active_wallet_id: null});
-                }
                 setAlert({variant: "success", text: "Wallet deleted successfully."});
                 setShowDeleteModal(false);
                 navigate(`/wallets`);
@@ -139,7 +140,7 @@ export default function WalletEdit() {
                             </CardHeader>
                             <CardBody>
                                 {loading ? (
-                                    <Spinner animation="border" variant="primary" />
+                                    <Spinner animation="border" variant="primary"/>
                                 ) : (
                                     <>
                                         <Row className="row mb-2">
@@ -193,7 +194,8 @@ export default function WalletEdit() {
                                 )}
                             </CardBody>
                             <div className="card-footer">
-                                <Button className="btn btn-danger float-end" title="Delete Wallet" onClick={handleShowModal} disabled={isPending || loading}>
+                                <Button className="btn btn-danger float-end" title="Delete Wallet" onClick={handleShowModal}
+                                        disabled={isPending || loading || parseInt(walletId) === parseInt(user.active_wallet_id)}>
                                     <i className="bi bi-trash"></i>&nbsp;Delete Wallet
                                 </Button>
                             </div>

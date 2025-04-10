@@ -1,7 +1,11 @@
 import {Link} from "react-router";
 import {Col, Container, FormText, Row} from "react-bootstrap";
+import {useContext} from "react";
+import {UserContext} from "@contexts/UserContext.jsx";
 
 export default function Footer() {
+    const {user} = useContext(UserContext);
+
     return <footer className="app-footer d-flex justify-content-between align-items-center sticky-bottom">
         <Container>
             <Row className="text-center">
@@ -22,9 +26,15 @@ export default function Footer() {
                     </Row>
                 </Col>
                 <Col xs={2}>
-                    <Link to="/transactions/create" className="btn btn-lg btn-success my-3" title="Create Transaction">
-                        <i className="bi bi-plus" style={{fontSize: "1.5rem"}}></i>
-                    </Link>
+                    {user.active_wallet_id === 0 ? (
+                        <button className="btn btn-lg btn-success my-3" disabled>
+                            <i className="bi bi-plus" style={{fontSize: "1.5rem"}}></i>
+                        </button>
+                    ) : (
+                        <Link to="/transactions/create" className="btn btn-lg btn-success my-3" title="Create Transaction">
+                            <i className="bi bi-plus" style={{fontSize: "1.5rem"}}></i>
+                        </Link>
+                    )}
                 </Col>
                 <Col xs={5}>
                     <Row>
