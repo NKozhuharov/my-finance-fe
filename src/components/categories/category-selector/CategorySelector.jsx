@@ -14,12 +14,16 @@ export default function CategorySelector({
                                              disabled = false,
                                              preSelectedCategory
                                          }) {
+    if (preSelectedCategory === undefined || Object.keys(preSelectedCategory).length === 0) {
+        preSelectedCategory = {
+            name: defaultTitle,
+            icon: `/images/icons/Category Select.png`,
+        };
+    }
+
     const [categories, setCategories] = useState([]);
     const [showCategorySelectModal, setShowCategorySelectModal] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState(preSelectedCategory || {
-        name: defaultTitle,
-        icon: `/images/icons/Category Select.png`,
-    });
+    const [selectedCategory, setSelectedCategory] = useState(preSelectedCategory);
 
     const api = useApiClient();
 
@@ -85,52 +89,49 @@ export default function CategorySelector({
                     <Modal.Title>Select Category</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Row>
-                        {categories.some(category => category.type === 'Expense') && (
-                            <>
-                                <Col>
-                                    <h4 className="expense-color">Expense</h4>
-                                </Col>
-                                <hr/>
-                            </>
-                        )}
-                        {categories.filter(category => category.type === 'Expense').map((category) => (
-                            <Row>
-                                <Col className="pb-1 mb-2 border-bottom" key={category.id}>
-                                    <div className="d-flex align-items-center cursor-pointer" title={`Select ${category.name}`} onClick={() => handleCategorySelect(category)}>
-                                        {category.parent_category_id &&
-                                            <i className="bi bi-arrow-return-right ps-3 pe-2 fw-bold"></i>
-                                        }
-                                        <CategoryNameAndIcon {...category} />
-                                        {selectedCategory.id === category.id && <i className="bi bi-check ps-2 pe-2 fw-bold ms-auto text-success" style={{fontSize: '1.5rem'}}></i>}
-                                    </div>
-                                </Col>
-                            </Row>
-                        ))}
-                    </Row>
-                    <Row>
-                        {categories.some(category => category.type === 'Income') && (
-                            <>
-                                <Col>
-                                    <h4 className="income-color">Income</h4>
-                                </Col>
-                                <hr/>
-                            </>
-                        )}
-                        {categories.filter(category => category.type === 'Income').map((category) => (
-                            <Row>
-                                <Col className="pb-1 mb-2 border-bottom" key={category.id}>
-                                    <div className="d-flex align-items-center cursor-pointer" title={`Select ${category.name}`} onClick={() => handleCategorySelect(category)}>
-                                        {category.parent_category_id &&
-                                            <i className="bi bi-arrow-return-right ps-3 pe-2 fw-bold"></i>
-                                        }
-                                        <CategoryNameAndIcon {...category} />
-                                        {selectedCategory.id === category.id && <i className="bi bi-check ps-2 pe-2 fw-bold ms-auto text-success" style={{fontSize: '1.5rem'}}></i>}
-                                    </div>
-                                </Col>
-                            </Row>
-                        ))}
-                    </Row>
+                    {categories.some(category => category.type === 'Expense') && (
+                        <Row>
+                            <Col>
+                                <h4 className="expense-color">Expense</h4>
+                            </Col>
+                            <hr/>
+                        </Row>
+                    )}
+                    {categories.filter(category => category.type === 'Expense').map((category) => (
+                        <Row key={category.id}>
+                            <Col className="pb-1 mb-2 border-bottom">
+                                <div className="d-flex align-items-center cursor-pointer" title={`Select ${category.name}`} onClick={() => handleCategorySelect(category)}>
+                                    {category.parent_category_id &&
+                                        <i className="bi bi-arrow-return-right ps-3 pe-2 fw-bold"></i>
+                                    }
+                                    <CategoryNameAndIcon {...category} />
+                                    {selectedCategory.id === category.id && <i className="bi bi-check ps-2 pe-2 fw-bold ms-auto text-success" style={{fontSize: '1.5rem'}}></i>}
+                                </div>
+                            </Col>
+                        </Row>
+                    ))}
+                    {categories.some(category => category.type === 'Income') && (
+                        <Row>
+                            <Col>
+                                <h4 className="income-color">Income</h4>
+                            </Col>
+                            <hr/>
+
+                        </Row>
+                    )}
+                    {categories.filter(category => category.type === 'Income').map((category) => (
+                        <Row key={category.id}>
+                            <Col className="pb-1 mb-2 border-bottom">
+                                <div className="d-flex align-items-center cursor-pointer" title={`Select ${category.name}`} onClick={() => handleCategorySelect(category)}>
+                                    {category.parent_category_id &&
+                                        <i className="bi bi-arrow-return-right ps-3 pe-2 fw-bold"></i>
+                                    }
+                                    <CategoryNameAndIcon {...category} />
+                                    {selectedCategory.id === category.id && <i className="bi bi-check ps-2 pe-2 fw-bold ms-auto text-success" style={{fontSize: '1.5rem'}}></i>}
+                                </div>
+                            </Col>
+                        </Row>
+                    ))}
                 </Modal.Body>
             </Modal>
         </>
