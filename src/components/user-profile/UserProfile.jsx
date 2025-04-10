@@ -29,7 +29,8 @@ export default function UserProfile() {
         const fetchUser = async () => {
             try {
                 const response = await api.get(`/user`);
-                setUserData(response.data.data || []);
+                //necessary to add the password defaults
+                setUserData((prevUserData) => ({...prevUserData, ...response.data.data}));
             } catch (err) {
                 console.error("Error fetching user data: ", err);
             } finally {
@@ -68,7 +69,7 @@ export default function UserProfile() {
                                         <i className="bi bi-arrow-left"></i>
                                     </Link>
                                 </div>
-                                Edit User {userData.first_name} {userData.last_name}
+                                Edit User
                                 <div className="card-tools">
                                     <Button className="btn-tool fw-bold" type="submit" title="Save" disabled={isPending || loading}>SAVE</Button>
                                 </div>
@@ -91,8 +92,8 @@ export default function UserProfile() {
                                                 />
                                                 {formErrors.first_name &&
                                                     <span className="text-danger" role="alert">
-                                                <strong>{formErrors.first_name}</strong>
-                                            </span>
+                                                        <strong>{formErrors.first_name}</strong>
+                                                    </span>
                                                 }
                                             </Col>
                                         </Row>
@@ -108,8 +109,8 @@ export default function UserProfile() {
                                                 />
                                                 {formErrors.last_name &&
                                                     <span className="text-danger" role="alert">
-                                                <strong>{formErrors.last_name}</strong>
-                                            </span>
+                                                        <strong>{formErrors.last_name}</strong>
+                                                    </span>
                                                 }
                                             </Col>
                                         </Row>
@@ -118,8 +119,8 @@ export default function UserProfile() {
                                                 <FormLabel htmlFor="email" className="fw-bold" column={true}>Email</FormLabel>
                                                 <FormControl
                                                     name="email"
-                                                    value={userData.email}
-                                                    className={`form-control`}
+                                                    value={userData.email }
+                                                    onChange={(e) => setUserData({...userData, email: e.target.value})}
                                                     disabled
                                                 />
                                             </Col>
@@ -137,8 +138,8 @@ export default function UserProfile() {
                                                 />
                                                 {formErrors.password &&
                                                     <span className="text-danger" role="alert">
-                                            <strong>{formErrors.password}</strong>
-                                        </span>
+                                                        <strong>{formErrors.password}</strong>
+                                                    </span>
                                                 }
                                             </Col>
                                         </Row>
@@ -155,8 +156,8 @@ export default function UserProfile() {
                                                 />
                                                 {formErrors.password_confirmation &&
                                                     <span className="text-danger" role="alert">
-                                            <strong>{formErrors.password_confirmation}</strong>
-                                        </span>
+                                                        <strong>{formErrors.password_confirmation}</strong>
+                                                    </span>
                                                 }
                                             </Col>
                                         </Row>
