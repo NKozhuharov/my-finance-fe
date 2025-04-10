@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState} from "react";
-import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "@hooks/useApiClient.js";
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-bs5';
@@ -7,7 +6,7 @@ import "datatables.net-rowgroup-bs5";
 import {Link, useNavigate} from "react-router";
 import CategoryNameCell from "@components/categories/category-name-cell/CategoryNameCell.jsx";
 import {UserContext} from "@contexts/UserContext.jsx";
-import {Card, CardBody, CardFooter, CardHeader, Col, FormText, Row} from "react-bootstrap";
+import {Card, CardBody, CardFooter, CardHeader, Col, Row, Spinner} from "react-bootstrap";
 
 export default function CategoriesList() {
     DataTable.use(DT);
@@ -66,7 +65,7 @@ export default function CategoriesList() {
                         </CardHeader>
                         <CardBody>
                             {loading ? (
-                                <FormText>Loading...</FormText>
+                                <Spinner animation="border" variant="primary" />
                             ) : (
                                 <DataTable
                                     className="table table-striped table-no-bordered table-hover w-100 datatable responsive clickable-table"

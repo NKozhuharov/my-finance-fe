@@ -1,9 +1,8 @@
 import React, {useContext, useEffect, useState} from "react";
-import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
 import Modal from "react-bootstrap/Modal";
-import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, FormText, InputGroup, Row} from "react-bootstrap";
+import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, InputGroup, Row, Spinner} from "react-bootstrap";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import CategoryNameAndIcon from "@components/categories/category-name-and-icon/CategoryNameAndIcon.jsx";
 import InputGroupText from "react-bootstrap/InputGroupText";
@@ -107,7 +106,7 @@ export default function TransactionShow() {
                         </CardHeader>
                         <CardBody>
                             {loading ? (
-                                <FormText>Loading...</FormText>
+                                <Spinner animation="border" variant="primary" />
                             ) : (
                                 <>
                                     <Row className="mb-2">

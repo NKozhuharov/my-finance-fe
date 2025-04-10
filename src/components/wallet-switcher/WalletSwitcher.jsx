@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import {useApiClient} from "@hooks/useApiClient.js";
 import {UserContext} from "@contexts/UserContext.jsx";
 import WalletSwitcherRow from "@components/wallet-switcher/wallet-switcher-row/WalletSwitcherRow.jsx";
-import {FormText} from "react-bootstrap";
+import {Spinner} from "react-bootstrap";
 
 export default function WalletSwitcher() {
     const [show, setShow] = useState(false);
@@ -42,7 +42,7 @@ export default function WalletSwitcher() {
             </Modal.Header>
             <Modal.Body>
                 {isLoading ? (
-                    <FormText>Loading...</FormText>
+                    <Spinner animation="border" variant="primary" />
                 ) : wallets.length > 0 ? (
                     wallets.map(wallet => (
                         <WalletSwitcherRow

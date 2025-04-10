@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from "react";
-import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "@hooks/useApiClient.js";
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-bs5';
 import {Link, useNavigate} from "react-router";
 import WalletNameCell from "@components/wallets/wallet-name-cell/WalletNameCell.jsx";
-import {Card, CardBody, CardFooter, CardHeader, Col, FormText, Row} from "react-bootstrap";
+import {Card, CardBody, CardFooter, CardHeader, Col, Row, Spinner} from "react-bootstrap";
 
 export default function WalletsList() {
     DataTable.use(DT);
@@ -58,7 +57,7 @@ export default function WalletsList() {
                         </CardHeader>
                         <CardBody>
                             {loading ? (
-                                <FormText>Loading...</FormText>
+                                <Spinner animation="border" variant="primary" />
                             ) : (
                                 <DataTable
                                     className="table table-striped table-no-bordered table-hover w-100 datatable responsive clickable-table"

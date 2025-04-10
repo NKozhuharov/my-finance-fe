@@ -3,7 +3,7 @@ import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate} from "react-router";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import CategorySelector from "@components/categories/category-selector/CategorySelector.jsx";
-import {Button, Card, CardBody, CardHeader, Col, FormControl, FormText, InputGroup, Row} from "react-bootstrap";
+import {Button, Card, CardBody, CardHeader, Col, FormControl, InputGroup, Row, Spinner} from "react-bootstrap";
 import InputGroupText from "react-bootstrap/InputGroupText";
 import {UserContext} from "@contexts/UserContext.jsx";
 import {subHours} from "date-fns";
@@ -96,7 +96,7 @@ export default function TransactionCreate() {
                             </CardHeader>
                             <CardBody>
                                 {loading ? (
-                                    <FormText>Loading...</FormText>
+                                    <Spinner animation="border" variant="primary" />
                                 ) : (
                                     <>
                                         <Row className="mb-2">

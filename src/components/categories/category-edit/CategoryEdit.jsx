@@ -1,12 +1,11 @@
 import React, {useActionState, useEffect, useState} from "react";
-import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useParams} from "react-router";
 import Select from "react-select";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import {useCategoryIcons} from "@api/IconsApi.js";
 import {CustomSingleValue, IconOption} from "@utils/IconComponents.jsx";
-import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, FormText, Row} from "react-bootstrap";
+import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, Row, Spinner} from "react-bootstrap";
 import CategorySelector from "@components/categories/category-selector/CategorySelector.jsx";
 
 export default function CategoryEdit() {
@@ -85,7 +84,7 @@ export default function CategoryEdit() {
                             </CardHeader>
                             <CardBody>
                                 {loading ? (
-                                    <FormText>Loading...</FormText>
+                                    <Spinner animation="border" variant="primary" />
                                 ) : (
                                     <>
                                         <Row>

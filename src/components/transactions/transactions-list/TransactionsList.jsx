@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState} from "react";
-import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "@hooks/useApiClient.js";
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-bs5';
@@ -9,7 +8,7 @@ import {UserContext} from "@contexts/UserContext.jsx";
 import CategoryNameCell from "@components/categories/category-name-cell/CategoryNameCell.jsx";
 import TransactionAmountCell from "@components/transactions/transaction-amount-cell/TransactionAmountCell.jsx";
 import {addMonths, endOfMonth, format, startOfMonth, subMonths} from 'date-fns';
-import {Button, Card, CardBody, CardHeader, Col, FormControl, FormGroup, FormText, InputGroup, Row} from "react-bootstrap";
+import {Button, Card, CardBody, CardHeader, Col, FormControl, FormGroup, InputGroup, Row, Spinner} from "react-bootstrap";
 import InputGroupText from "react-bootstrap/InputGroupText";
 
 export default function TransactionsList() {
@@ -121,7 +120,7 @@ export default function TransactionsList() {
                             </Row>
 
                             {loading ? (
-                                <FormText>Loading...</FormText>
+                                <Spinner animation="border" variant="primary" />
                             ) : (
                                 <DataTable
                                     key={`${createdAtFrom}-${createdAtTo}-${inflow?.total}-${outflow?.total}`}

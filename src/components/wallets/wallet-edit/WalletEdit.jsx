@@ -1,10 +1,9 @@
 import React, {useActionState, useContext, useEffect, useState} from "react";
-import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
 import Select from "react-select";
 import Modal from "react-bootstrap/Modal";
-import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, FormText, Row} from "react-bootstrap";
+import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, Row, Spinner} from "react-bootstrap";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import {useCurrencies} from "@api/CurrenciesApi.js";
 import {useWalletIcons} from "@api/IconsApi.js";
@@ -140,7 +139,7 @@ export default function WalletEdit() {
                             </CardHeader>
                             <CardBody>
                                 {loading ? (
-                                    <FormText>Loading...</FormText>
+                                    <Spinner animation="border" variant="primary" />
                                 ) : (
                                     <>
                                         <Row className="row mb-2">
