@@ -80,7 +80,7 @@ export default function WalletEdit() {
 
         api.delete(`/wallets/${walletId}`, {})
             .then(() => {
-                if (parseInt(walletId) === parseInt(user.data.active_wallet_id)) {
+                if (parseInt(walletId) === parseInt(user.active_wallet_id)) {
                     userDataChangeHandler({active_wallet_id: null});
                 }
                 setAlert({variant: "success", text: "Wallet deleted successfully."});

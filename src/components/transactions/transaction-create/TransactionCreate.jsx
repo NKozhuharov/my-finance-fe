@@ -54,7 +54,7 @@ export default function TransactionCreate() {
 
         fetchLastTransaction();
         document.title = "Create Transaction";
-    }, [api, user.data.active_wallet_id]);
+    }, [api, user.active_wallet_id]);
 
     const handleCategorySelect = (selectedCategory) => {
         transaction.category = selectedCategory;
@@ -103,7 +103,7 @@ export default function TransactionCreate() {
                                             <Col>
                                                 <InputGroup>
                                                     <div className="input-group-prepend">
-                                                        <InputGroupText>лв.</InputGroupText>
+                                                        <InputGroupText>{user.active_wallet.currency.symbol}</InputGroupText>
                                                     </div>
                                                     <FormControl
                                                         type="number"

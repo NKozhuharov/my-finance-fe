@@ -1,4 +1,4 @@
-import React, {useActionState, useEffect, useState} from "react";
+import React, {useActionState, useContext, useEffect, useState} from "react";
 import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
@@ -6,6 +6,7 @@ import {useAlert} from "@contexts/AlertContext.jsx";
 import CategorySelector from "@components/categories/category-selector/CategorySelector.jsx";
 import {Button, Card, CardBody, CardHeader, Col, FormControl, FormText, InputGroup, Row} from "react-bootstrap";
 import InputGroupText from "react-bootstrap/InputGroupText";
+import {UserContext} from "@contexts/UserContext.jsx";
 
 //possible date picker - https://www.npmjs.com/package/react-date-range
 export default function TransactionEdit() {
@@ -15,6 +16,8 @@ export default function TransactionEdit() {
     const [loading, setLoading] = useState(true);
 
     const [formErrors, setFormErrors] = useState({});
+
+    const {user} = useContext(UserContext);
 
     const api = useApiClient();
 
@@ -93,7 +96,7 @@ export default function TransactionEdit() {
                                             <Col>
                                                 <InputGroup>
                                                     <div className="input-group-prepend">
-                                                        <InputGroupText>лв.</InputGroupText>
+                                                        <InputGroupText>{user.active_wallet.currency.symbol}</InputGroupText>
                                                     </div>
                                                     <FormControl
                                                         type="number"

@@ -31,8 +31,9 @@ export default function TransactionsList() {
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
+                setLoading(true);
                 let url = `/transactions?resolve[]=category&limit=all&filters[date][gte]=${createdAtFrom}&filters[date][lte]=${createdAtTo}&aggregate[]=totals`;
-                if (!user.data.active_wallet_id) {
+                if (!user.active_wallet_id) {
                     //resolve wallet to show it in the list of categories
                     url += '&resolve[]=category-wallet';
                 }
@@ -52,7 +53,7 @@ export default function TransactionsList() {
 
         fetchTransactions();
         document.title = "Transactions";
-    }, [api, user.data.active_wallet_id, createdAtFrom, createdAtTo]);
+    }, [api, user.active_wallet_id, createdAtFrom, createdAtTo]);
 
     const handleSetPrevMonth = () => {
         setCreatedAtFrom((prevState) => {
@@ -107,12 +108,12 @@ export default function TransactionsList() {
                                         <FormControl type="date" name="created_at_to" value={createdAtTo} className="form-control" onChange={(e) => setCreatedAtTo(e.target.value)}/>
                                     </InputGroup>
                                 </FormGroup>
-                                <FormGroup className="col-6 col-md-3 col-lg-1">
+                                <FormGroup className="col-6 col-md-3 col-lg-2 col-xl-1 mt-3 mt-md-0 mt-lg-0">
                                     <Button className="btn-primary w-100" title="Previous month" onClick={handleSetPrevMonth}>
                                         <i className="bi bi-arrow-left"></i>
                                     </Button>
                                 </FormGroup>
-                                <FormGroup className="col-6 col-md-3 col-lg-1">
+                                <FormGroup className="col-6 col-md-3 col-lg-2 col-xl-1 mt-3 mt-md-0 mt-lg-0">
                                     <Button className="btn-primary w-100" title="Next month" onClick={handleSetNextMonth}>
                                         <i className="bi bi-arrow-right"></i>
                                     </Button>
@@ -123,6 +124,7 @@ export default function TransactionsList() {
                                 <FormText>Loading...</FormText>
                             ) : (
                                 <DataTable
+                                    key={`${createdAtFrom}-${createdAtTo}-${inflow?.total}-${outflow?.total}`}
                                     className="table table-striped table-no-bordered table-hover w-100 datatable responsive clickable-table"
                                     data={transactions}
                                     slots={{

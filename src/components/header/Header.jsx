@@ -18,7 +18,7 @@ export default function Header() {
             </ul>
             <ul className="navbar-nav ms-auto">
                 <WalletSwitcher/>
-                <UserMenu firstName={authData.user.data.first_name} lastName={authData.user.data.last_name}/>
+                <UserMenu firstName={authData.user.first_name} lastName={authData.user.last_name}/>
             </ul>
         </div>
     </nav>

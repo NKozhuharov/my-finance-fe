@@ -23,7 +23,7 @@ export default function CategoriesList() {
         const fetchCategories = async () => {
             try {
                 let url = `/categories?limit=all&filters[parent_category_id][is]=null&resolve[]=children&orderby=name&sort=asc`;
-                if (!user.data.active_wallet_id) {
+                if (!user.active_wallet_id) {
                     //resolve wallet to show it in the list of categories
                     url += '&resolve[]=wallet';
                 }
@@ -49,7 +49,7 @@ export default function CategoriesList() {
 
         fetchCategories();
         document.title = "Categories";
-    }, [api, user.data.active_wallet_id]); // Run once on component mount and if active wallet is changed
+    }, [api, user.active_wallet_id]); // Run once on component mount and if active wallet is changed
 
     return (
         <>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
@@ -7,6 +7,7 @@ import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, FormTex
 import {useAlert} from "@contexts/AlertContext.jsx";
 import CategoryNameAndIcon from "@components/categories/category-name-and-icon/CategoryNameAndIcon.jsx";
 import InputGroupText from "react-bootstrap/InputGroupText";
+import {UserContext} from "@contexts/UserContext.jsx";
 
 export default function TransactionShow() {
     const {transactionId} = useParams();
@@ -15,6 +16,8 @@ export default function TransactionShow() {
     const [loading, setLoading] = useState(true);
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+    const {user} = useContext(UserContext);
 
     const api = useApiClient();
 
@@ -119,7 +122,7 @@ export default function TransactionShow() {
                                             <FormLabel htmlFor="date" className="form-label fw-bold" column={true}>Amount</FormLabel>
                                             <InputGroup>
                                                 <div className="input-group-prepend">
-                                                    <InputGroupText>€</InputGroupText>
+                                                    <InputGroupText>{user.active_wallet.currency.symbol}</InputGroupText>
                                                 </div>
                                                 <FormControl name="amount" value={transaction.amount} disabled/>
                                             </InputGroup>

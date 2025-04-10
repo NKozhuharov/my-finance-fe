@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useState} from 'react';
 import Modal from 'react-bootstrap/Modal';
 import {useApiClient} from "@hooks/useApiClient.js";
 import {UserContext} from "@contexts/UserContext.jsx";
@@ -7,28 +7,12 @@ import {FormText} from "react-bootstrap";
 
 export default function WalletSwitcher() {
     const [show, setShow] = useState(false);
-    const [activeWallet, setActiveWallet] = useState(null);
     const [wallets, setWallets] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const {user, userDataChangeHandler} = useContext(UserContext);
 
     const api = useApiClient();
-
-    useEffect(() => {
-        const fetchActiveWallet = async () => {
-            try {
-                const response = await api.get(`/wallets/${user.data.active_wallet_id}`);
-                setActiveWallet(response.data.data);
-            } catch (err) {
-                console.error(err);
-            }
-        };
-
-        if (user.data.active_wallet_id) {
-            fetchActiveWallet();
-        }
-    }, [api, user.data.active_wallet_id]);
 
     const handleCloseModal = () => setShow(false);
     const handleShowModal = async () => {
@@ -45,8 +29,9 @@ export default function WalletSwitcher() {
         }
     };
 
-    const handleWalletSwitch = (activeWalletId) => {
-        userDataChangeHandler({active_wallet_id: activeWalletId});
+    const handleWalletSwitch = (activeWallet) => {
+        activeWallet.currency = activeWallet.currency.data;
+        userDataChangeHandler({active_wallet_id: activeWallet.id, active_wallet: activeWallet});
         setShow(false);
     }
 
@@ -74,7 +59,7 @@ export default function WalletSwitcher() {
 
         <li id="switch-wallet-button" className="nav-item">
             <a className="nav-link" href="#" onClick={handleShowModal} title="Switch Wallet">
-                <i className="bi bi-wallet"></i>&nbsp; {activeWallet ? `${activeWallet.name} ${activeWallet.total_formatted}` : 'Select Wallet'}
+                <i className="bi bi-wallet"></i>&nbsp; {user.active_wallet_id ? `${user.active_wallet.name} ${user.active_wallet.total_formatted}` : 'Select Wallet'}
             </a>
         </li>
     </>;

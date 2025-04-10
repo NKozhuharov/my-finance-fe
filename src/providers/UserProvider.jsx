@@ -7,11 +7,13 @@ export default function UserProvider({
     const [authData, setAuthData] = usePersistedState('auth', null);
 
     const userLoginHandler = (resultData) => {
+        resultData.user = resultData.user.data;
+        resultData.user.active_wallet = resultData.user.active_wallet.data;
+        resultData.user.active_wallet.currency = resultData.user.active_wallet.currency.data;
         setAuthData(resultData);
     };
 
     const userLogoutHandler = () => {
-        console.log('User logged out');
         setAuthData(null);
     };
 
@@ -20,10 +22,7 @@ export default function UserProvider({
             ...prevAuthData,
             user: {
                 ...prevAuthData.user,
-                data: {
-                    ...prevAuthData.user.data,
-                    ...userData
-                },
+                ...userData
             },
         }));
     }
