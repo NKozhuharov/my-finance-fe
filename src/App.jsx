@@ -22,6 +22,7 @@ import TransactionsList from "./components/transactions/transactions-list/Transa
 import TransactionShow from "./components/transactions/transaction-show/TransactionShow.jsx";
 import TransactionEdit from "./components/transactions/transaction-edit/TransactionEdit.jsx";
 import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage.jsx";
+import Report from "@components/reports/Report.jsx";
 
 function App() {
     return (
@@ -45,6 +46,7 @@ function App() {
                                 <Route path="/transactions/:transactionId" element={<TransactionShow/>}/>
                                 <Route path="/transactions/:transactionId/edit" element={<TransactionEdit/>}/>
                                 <Route path="/transactions/create" element={<TransactionCreate/>}/>
+                                <Route path="/reports" element={<Report/>}/>
                             </Route>
                             <Route path="/logout" element={<Logout/>}/>
                         </Route>
