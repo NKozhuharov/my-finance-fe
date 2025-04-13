@@ -96,7 +96,7 @@ export default function WalletEdit() {
 
     return (
         <>
-            <Modal show={showDeleteModal} onHide={handleCloseModal}>
+            <Modal show={showDeleteModal} onHide={handleCloseModal} fullscreen={"sm-down"}>
                 <form onSubmit={handleWalletDeletion}>
                     <Modal.Header closeButton>
                         <Modal.Title>Confirm Deletion</Modal.Title>

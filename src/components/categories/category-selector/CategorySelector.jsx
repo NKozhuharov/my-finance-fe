@@ -5,7 +5,6 @@ import Modal from "react-bootstrap/Modal";
 import CategoryNameAndIcon from "@components/categories/category-name-and-icon/CategoryNameAndIcon.jsx";
 import {Col, FormControl, Row, ToggleButton} from "react-bootstrap";
 
-//@todo - https://react-bootstrap.netlify.app/docs/components/modal#fullscreen-modal
 export default function CategorySelector({
                                              type,
                                              onlyParents,
@@ -97,7 +96,7 @@ export default function CategorySelector({
             <div className="d-flex align-items-center cursor-pointer" title="Select Category" onClick={handleOpenModal}>
                 <CategoryNameAndIcon {...selectedCategory}/>
             </div>
-            <Modal show={showCategorySelectModal} onHide={handleCloseModal}>
+            <Modal show={showCategorySelectModal} onHide={handleCloseModal} fullscreen={"sm-down"}>
                 <Modal.Header>
                     <a className="btn btn-tool" onClick={handleCloseModal}>
                         <i className="bi bi-arrow-left"></i>

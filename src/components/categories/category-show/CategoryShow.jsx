@@ -60,7 +60,7 @@ export default function CategoryShow() {
 
     return (
         <>
-            <Modal show={showDeleteModal} onHide={handleCloseModal}>
+            <Modal show={showDeleteModal} onHide={handleCloseModal} fullscreen={"sm-down"}>
                 <form onSubmit={handleCategoryDelete}>
                     <Modal.Header closeButton>
                         <Modal.Title>Confirm Deletion</Modal.Title>

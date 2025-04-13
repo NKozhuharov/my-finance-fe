@@ -41,7 +41,7 @@ export default function WalletSwitcher() {
     }
 
     return <>
-        <Modal show={show} onHide={handleCloseModal}>
+        <Modal show={show} onHide={handleCloseModal} fullscreen={"sm-down"}>
             <Modal.Header closeButton>
                 <Modal.Title>Select Wallet</Modal.Title>
             </Modal.Header>

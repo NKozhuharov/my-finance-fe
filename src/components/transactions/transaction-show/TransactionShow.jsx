@@ -67,7 +67,7 @@ export default function TransactionShow() {
 
     return (
         <>
-            <Modal show={showDeleteModal} onHide={handleCloseModal}>
+            <Modal show={showDeleteModal} onHide={handleCloseModal} fullscreen={"sm-down"}>
                 <form onSubmit={handleTransactionDelete}>
                     <Modal.Header closeButton>
                         <Modal.Title>Confirm Deletion</Modal.Title>
