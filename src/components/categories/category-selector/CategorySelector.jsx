@@ -3,8 +3,9 @@ import {useApiClient} from "@hooks/useApiClient.js";
 import "datatables.net-rowgroup-bs5";
 import Modal from "react-bootstrap/Modal";
 import CategoryNameAndIcon from "@components/categories/category-name-and-icon/CategoryNameAndIcon.jsx";
-import {Col, Row} from "react-bootstrap";
+import {Col, FormControl, Row, ToggleButton} from "react-bootstrap";
 
+//@todo - https://react-bootstrap.netlify.app/docs/components/modal#fullscreen-modal
 export default function CategorySelector({
                                              type,
                                              onlyParents,
@@ -24,6 +25,8 @@ export default function CategorySelector({
     const [categories, setCategories] = useState([]);
     const [showCategorySelectModal, setShowCategorySelectModal] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(preSelectedCategory);
+    const [searching, setSearching] = useState(false);
+    const [searchText, setSearchText] = useState('');
 
     const api = useApiClient();
 
@@ -63,12 +66,22 @@ export default function CategorySelector({
         fetchCategories();
     }, [api, type, onlyParents, withChildren]);
 
-    const handleCloseModal = () => setShowCategorySelectModal(false);
+    const handleCloseModal = () => {
+        setShowCategorySelectModal(false);
+        toggleSearch(false);
+    }
     const handleOpenModal = () => {
         if (disabled) {
             return;
         }
         setShowCategorySelectModal(true);
+    }
+
+    const toggleSearch = (value) => {
+        setSearching(value);
+        if (!value) {
+            setSearchText('');
+        }
     }
 
     const handleCategorySelect = (category) => {
@@ -85,11 +98,38 @@ export default function CategorySelector({
                 <CategoryNameAndIcon {...selectedCategory}/>
             </div>
             <Modal show={showCategorySelectModal} onHide={handleCloseModal}>
-                <Modal.Header closeButton>
+                <Modal.Header>
+                    <a className="btn btn-tool" onClick={handleCloseModal}>
+                        <i className="bi bi-arrow-left"></i>
+                    </a>
                     <Modal.Title>Select Category</Modal.Title>
+
+                    <ToggleButton
+                        id="toggle-search"
+                        type="checkbox"
+                        className="btn btn-tool ms-auto"
+                        variant="outline-secondary"
+                        checked={searching}
+                        value="1"
+                        onChange={(e) => toggleSearch(e.currentTarget.checked)}
+                    >
+                        <i className="bi bi-search"></i>
+                    </ToggleButton>
                 </Modal.Header>
                 <Modal.Body>
-                    {categories.some(category => category.type === 'Expense') && (
+                    {searching && (
+                        <Row>
+                            <Col className="mb-2">
+                                <FormControl
+                                    placeholder="Search..."
+                                    name="search-text"
+                                    onChange={(e) => setSearchText(e.target.value)}
+                                    value={searchText}
+                                />
+                            </Col>
+                        </Row>
+                    )}
+                    {categories.filter(category => category.name.toLowerCase().includes(searchText.toLowerCase())).some(category => category.type === 'Expense') && (
                         <Row>
                             <Col>
                                 <h4 className="expense-color">Expense</h4>
@@ -97,7 +137,7 @@ export default function CategorySelector({
                             <hr/>
                         </Row>
                     )}
-                    {categories.filter(category => category.type === 'Expense').map((category) => (
+                    {categories.filter(category => category.type === 'Expense' && category.name.toLowerCase().includes(searchText.toLowerCase())).map((category) => (
                         <Row key={category.id}>
                             <Col className="pb-1 mb-2 border-bottom">
                                 <div className="d-flex align-items-center cursor-pointer" title={`Select ${category.name}`} onClick={() => handleCategorySelect(category)}>
@@ -110,16 +150,15 @@ export default function CategorySelector({
                             </Col>
                         </Row>
                     ))}
-                    {categories.some(category => category.type === 'Income') && (
+                    {categories.filter(category => category.name.toLowerCase().includes(searchText.toLowerCase())).some(category => category.type === 'Income') && (
                         <Row>
                             <Col>
                                 <h4 className="income-color">Income</h4>
                             </Col>
                             <hr/>
-
                         </Row>
                     )}
-                    {categories.filter(category => category.type === 'Income').map((category) => (
+                    {categories.filter(category => category.type === 'Income' && category.name.toLowerCase().includes(searchText.toLowerCase())).map((category) => (
                         <Row key={category.id}>
                             <Col className="pb-1 mb-2 border-bottom">
                                 <div className="d-flex align-items-center cursor-pointer" title={`Select ${category.name}`} onClick={() => handleCategorySelect(category)}>
