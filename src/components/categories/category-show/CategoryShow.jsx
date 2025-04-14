@@ -157,7 +157,7 @@ export default function CategoryShow() {
                                     Create Sub-Category
                                 </Link>
                             }
-                            <Link to="#TODO" className="btn btn-success float-end">
+                            <Link to={`/categories/${category.id}/merge`} className="btn btn-success float-end">
                                 Merge Category
                             </Link>
                         </CardFooter>

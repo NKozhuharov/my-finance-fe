@@ -23,6 +23,7 @@ import TransactionShow from "./components/transactions/transaction-show/Transact
 import TransactionEdit from "./components/transactions/transaction-edit/TransactionEdit.jsx";
 import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage.jsx";
 import Report from "@components/reports/Report.jsx";
+import CategoryMerge from "@components/categories/category-merge/CategoryMerge.jsx";
 
 function App() {
     return (
@@ -41,6 +42,7 @@ function App() {
                                 <Route path="/categories" element={<CategoriesList/>}/>
                                 <Route path="/categories/:categoryId" element={<CategoryShow/>}/>
                                 <Route path="/categories/:categoryId/edit" element={<CategoryEdit/>}/>
+                                <Route path="/categories/:categoryId/merge" element={<CategoryMerge/>}/>
                                 <Route path="/categories/create" element={<CategoryCreate/>}/>
                                 <Route path="/transactions" element={<TransactionsList/>}/>
                                 <Route path="/transactions/:transactionId" element={<TransactionShow/>}/>
