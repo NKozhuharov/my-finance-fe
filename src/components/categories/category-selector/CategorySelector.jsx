@@ -33,7 +33,7 @@ export default function CategorySelector({
         const fetchCategories = async () => {
             let endpoint = `/categories?limit=all&orderby=name&sort=asc`;
             if (type) {
-                endpoint += `&filters[type]=${type}`;
+                endpoint += `&filters[type]=${type.toLowerCase()}`;
             }
             if (onlyParents) {
                 endpoint += `&filters[parent_category_id][is]=null`;
