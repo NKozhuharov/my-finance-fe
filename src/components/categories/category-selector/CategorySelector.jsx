@@ -93,7 +93,11 @@ export default function CategorySelector({
 
     return (
         <>
-            <div className="d-flex align-items-center cursor-pointer" title="Select Category" onClick={handleOpenModal}>
+            <div
+                className={`d-flex align-items-center category-select-button${disabled ? ' disabled' : ''}`}
+                title={`${disabled ? ' Select Category Type before selecting a Parent Category' : 'Select Parent Category'}`}
+                onClick={handleOpenModal}
+            >
                 <CategoryNameAndIcon {...selectedCategory}/>
             </div>
             <Modal show={showCategorySelectModal} onHide={handleCloseModal} fullscreen={"sm-down"}>

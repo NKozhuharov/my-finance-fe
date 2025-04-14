@@ -83,8 +83,20 @@
     color: #000 !important; /* Keeps text color black on hover */
 }
 
+.category-name {
+    font-weight: 700 !important;
+}
+
 .category-select-button {
     cursor: pointer;
+}
+
+.category-select-button.disabled {
+    cursor: not-allowed;
+}
+
+.category-select-button.disabled .category-name {
+    color: gray !important;
 }
 
 .category-select-button {
