@@ -1,6 +1,6 @@
 import React, {useActionState, useContext, useEffect, useState} from "react";
 import {useApiClient} from "@hooks/useApiClient.js";
-import {Link, useNavigate} from "react-router";
+import {Link, useNavigate, useParams} from "react-router";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import CategorySelector from "@components/categories/category-selector/CategorySelector.jsx";
 import {Button, Card, CardBody, CardHeader, Col, FormControl, InputGroup, Row, Spinner} from "react-bootstrap";
@@ -10,6 +10,8 @@ import {subHours} from "date-fns";
 
 //possible date picker - https://www.npmjs.com/package/react-date-range
 export default function TransactionCreate() {
+    const {copyTransactionId} = useParams();
+
     const transactionInitialState = {
         amount: '',
         category: {},
@@ -56,9 +58,35 @@ export default function TransactionCreate() {
             }
         };
 
-        fetchLastTransaction();
+        const fetchCopiedTransaction = async () => {
+            try {
+                const response = await api.get(`/transactions/${copyTransactionId}?resolve[]=category`);
+
+                let transactionData = response.data.data;
+                const dateParts = transactionData.date.split(".");
+                transactionData.date = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+                transactionData.amount = Math.abs(transactionData.amount);
+                transactionData.category = transactionData.category.data;
+                transactionData.note = transactionData.note ?? '';
+
+                setTransaction(transactionData);
+            } catch (err) {
+                console.error("Error fetching transaction data: ", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (copyTransactionId) {
+            document.title = "Copy Transaction";
+            fetchCopiedTransaction();
+            return;
+        }
+
         document.title = "Create Transaction";
-    }, [api, user.active_wallet_id]);
+        fetchLastTransaction();
+
+    }, [api, copyTransactionId, user.active_wallet_id]);
 
     const handleCategorySelect = (selectedCategory) => {
         transaction.category = selectedCategory;
@@ -93,14 +121,14 @@ export default function TransactionCreate() {
                                         <i className="bi bi-arrow-left"></i>
                                     </Link>
                                 </div>
-                                Create Transaction
+                                {copyTransactionId ? `Copy Transaction` : 'Create Transaction'}
                                 <div className="card-tools">
                                     <Button className="btn-tool fw-bold" type="submit" title="Save" disabled={isPending || loading}>SAVE</Button>
                                 </div>
                             </CardHeader>
                             <CardBody>
                                 {loading ? (
-                                    <Spinner animation="border" variant="primary" />
+                                    <Spinner animation="border" variant="primary"/>
                                 ) : (
                                     <>
                                         <Row className="mb-2">

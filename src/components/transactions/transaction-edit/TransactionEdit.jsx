@@ -35,6 +35,7 @@ export default function TransactionEdit() {
                 const dateParts = transactionData.date.split(".");
                 transactionData.date = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
                 transactionData.category = transactionData.category.data;
+                transactionData.note = transactionData.note ?? '';
 
                 setTransaction(transactionData);
             } catch (err) {

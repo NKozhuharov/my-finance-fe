@@ -98,6 +98,7 @@ export default function TransactionShow() {
                                 </Link>
                             </div>
                             <div className="card-tools">
+                                <Link className="btn btn-tool" to={`/transactions/${transaction.id}/copy`} title="Copy"><i className="bi bi-copy"></i></Link>
                                 <Link className="btn btn-tool" to={`/transactions/${transaction.id}/edit`} title="Edit"><i className="bi bi-pencil-fill"></i></Link>
                                 <Button className="btn-tool" title="Delete" onClick={handleShowModal} disabled={loading}>
                                     <i className="bi bi-trash"></i>

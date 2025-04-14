@@ -45,6 +45,7 @@ function App() {
                                 <Route path="/transactions" element={<TransactionsList/>}/>
                                 <Route path="/transactions/:transactionId" element={<TransactionShow/>}/>
                                 <Route path="/transactions/:transactionId/edit" element={<TransactionEdit/>}/>
+                                <Route path="/transactions/:copyTransactionId/copy" element={<TransactionCreate/>}/>
                                 <Route path="/transactions/create" element={<TransactionCreate/>}/>
                                 <Route path="/reports" element={<Report/>}/>
                             </Route>
