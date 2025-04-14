@@ -11,7 +11,7 @@ export default function CategoryNameAndIcon({name, icon, type, wallet}) {
                 />
             </div>
             <div className="ms-2">
-                <span className={`fw-bold ${getIncomeExpenseColorClassFromType(type)}`}>{name}</span>
+                <span className={`category-name ${getIncomeExpenseColorClassFromType(type)}`}>{name}</span>
                 {wallet && (
                     <p className="category-wallet">{wallet.data.name}</p>
                 )}

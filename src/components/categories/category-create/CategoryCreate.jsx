@@ -1,5 +1,4 @@
 import React, {useActionState, useContext, useEffect, useState} from "react";
-import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate} from "react-router";
 import Select from "react-select";
@@ -7,10 +6,13 @@ import {useAlert} from "@contexts/AlertContext.jsx";
 import {useCategoryIcons} from "@api/IconsApi.js";
 import {CustomSingleValue, IconOption} from "@utils/IconComponents.jsx";
 import CategorySelector from "@components/categories/category-selector/CategorySelector.jsx";
-import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, Row} from "react-bootstrap";
+import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, Row, Spinner} from "react-bootstrap";
 import {UserContext} from "@contexts/UserContext.jsx";
 
 export default function CategoryCreate() {
+    const parentId = new URLSearchParams(window.location.search).get('parentId');
+
+    const [loading, setLoading] = useState(true);
     const [category, setCategory] = useState({
         name: '',
         parent_category_id: '',
@@ -40,8 +42,27 @@ export default function CategoryCreate() {
             navigate(`/categories`);
         }
 
+        const fetchCategory = async () => {
+            try {
+                const response = await api.get(`/categories/${parentId}`);
+                let categoryData = response.data.data;
+                setCategory({...category, type: categoryData.type, parent_category_id: categoryData.id, parentCategory: categoryData});
+            } catch (err) {
+                console.error("Error fetching category data: ", err);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        if (parentId) {
+            document.title = "Create Sub-Category";
+            fetchCategory();
+            return;
+        }
+
+        setLoading(false);
         document.title = "Create Category";
-    });
+    }, [api, parentId]);
 
     const handleCategorySelect = (selectedCategory) => {
         category.parent_category_id = selectedCategory.id;
@@ -69,7 +90,7 @@ export default function CategoryCreate() {
                         <Card className="card-primary">
                             <CardHeader>
                                 <div className="card-tools-left">
-                                    <Link className="btn btn-tool" to={`/categories`} title="Back">
+                                    <Link className="btn btn-tool" to={`/categories${parentId ? `/${parentId}` : ''}`} title="Back">
                                         <i className="bi bi-arrow-left"></i>
                                     </Link>
                                 </div>
@@ -79,75 +100,82 @@ export default function CategoryCreate() {
                                 </div>
                             </CardHeader>
                             <CardBody>
-                                <Row>
-                                    <Col>
-                                        <FormLabel htmlFor="name" className="fw-bold" column={true}>Name</FormLabel>
-                                        <FormControl
-                                            name="name"
-                                            value={category.name}
-                                            onChange={(e) => setCategory({...category, name: e.target.value})}
-                                            className={formErrors.name ? ' is-invalid' : ''}
-                                            placeholder="Name"
-                                            required
-                                        />
-                                        {formErrors.name &&
-                                            <span className="text-danger" role="alert">
+                                {loading ? (
+                                    <Spinner animation="border" variant="primary"/>
+                                ) : (
+                                    <>
+                                        <Row>
+                                            <Col>
+                                                <FormLabel htmlFor="name" className="fw-bold" column={true}>Name</FormLabel>
+                                                <FormControl
+                                                    name="name"
+                                                    value={category.name}
+                                                    onChange={(e) => setCategory({...category, name: e.target.value})}
+                                                    className={formErrors.name ? ' is-invalid' : ''}
+                                                    placeholder="Name"
+                                                    required
+                                                />
+                                                {formErrors.name &&
+                                                    <span className="text-danger" role="alert">
                                                 <strong>{formErrors.name}</strong>
                                             </span>
-                                        }
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <FormLabel htmlFor="type" className="fw-bold" column={true}>Type</FormLabel>
-                                        <Select
-                                            name="type"
-                                            options={categoryTypes}
-                                            value={categoryTypes.find(option => option.value === category.type) || null}
-                                            onChange={(selectedOption) => setCategory({...category, type: selectedOption.value})}
-                                            isSearchable={true}
-                                            placeholder="Please select"
-                                            required
-                                        />
-                                        {formErrors.type &&
-                                            <span className="text-danger" role="alert">
+                                                }
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <FormLabel htmlFor="type" className="fw-bold" column={true}>Type</FormLabel>
+                                                <Select
+                                                    name="type"
+                                                    options={categoryTypes}
+                                                    value={categoryTypes.find(option => option.value === category.type) || null}
+                                                    onChange={(selectedOption) => setCategory({...category, type: selectedOption.value})}
+                                                    isSearchable={true}
+                                                    placeholder="Please select"
+                                                    required
+                                                />
+                                                {formErrors.type &&
+                                                    <span className="text-danger" role="alert">
                                                 <strong>{formErrors.type}</strong>
                                             </span>
-                                        }
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <FormLabel htmlFor="parent_category_id" className="fw-bold" column={true}>Parent Category</FormLabel>
-                                        <CategorySelector
-                                            onlyParents={true}
-                                            withChildren={false}
-                                            onCategorySelect={handleCategorySelect}
-                                            type={category.type}
-                                            disabled={category.type === null}
-                                        />
-                                        {formErrors.parent_category_id &&
-                                            <span className="text-danger" role="alert">
+                                                }
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <FormLabel htmlFor="parent_category_id" className="fw-bold" column={true}>Parent Category</FormLabel>
+                                                <CategorySelector
+                                                    onlyParents={true}
+                                                    withChildren={false}
+                                                    onCategorySelect={handleCategorySelect}
+                                                    type={category.type}
+                                                    disabled={category.type === null}
+                                                    preSelectedCategory={category.parentCategory}
+                                                />
+                                                {formErrors.parent_category_id &&
+                                                    <span className="text-danger" role="alert">
                                                 <strong>{formErrors.parent_category_id}</strong>
                                             </span>
-                                        }
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <FormLabel htmlFor="icon" className="fw-bold" column={true}>Icon</FormLabel>
-                                        <Select
-                                            name="icon"
-                                            options={categoryIcons}
-                                            value={categoryIcons.find(option => option.value === category.icon) || null}
-                                            onChange={(selectedOption) => setCategory({...category, icon: selectedOption.value})}
-                                            isSearchable={true}
-                                            placeholder="Please select"
-                                            components={{Option: IconOption, SingleValue: CustomSingleValue}}
-                                            required
-                                        />
-                                    </Col>
-                                </Row>
+                                                }
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <FormLabel htmlFor="icon" className="fw-bold" column={true}>Icon</FormLabel>
+                                                <Select
+                                                    name="icon"
+                                                    options={categoryIcons}
+                                                    value={categoryIcons.find(option => option.value === category.icon) || null}
+                                                    onChange={(selectedOption) => setCategory({...category, icon: selectedOption.value})}
+                                                    isSearchable={true}
+                                                    placeholder="Please select"
+                                                    components={{Option: IconOption, SingleValue: CustomSingleValue}}
+                                                    required
+                                                />
+                                            </Col>
+                                        </Row>
+                                    </>
+                                )}
                             </CardBody>
                         </Card>
                     </form>

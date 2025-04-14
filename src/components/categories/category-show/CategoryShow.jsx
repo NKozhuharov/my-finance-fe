@@ -100,7 +100,7 @@ export default function CategoryShow() {
                         </CardHeader>
                         <CardBody>
                             {loading ? (
-                                <Spinner animation="border" variant="primary" />
+                                <Spinner animation="border" variant="primary"/>
                             ) : (
                                 <>
                                     <Row>
@@ -151,9 +151,12 @@ export default function CategoryShow() {
                             )}
                         </CardBody>
                         <CardFooter>
-                            <Link to="#TODO" className="btn btn-success float-start">
-                                Create Sub-Category
-                            </Link>
+                            {!category.parent_category_id &&
+                                //only allowed for categories without parent, to discourage nesting
+                                <Link to={`/categories/create?parentId=${category.id}`} className="btn btn-success float-start">
+                                    Create Sub-Category
+                                </Link>
+                            }
                             <Link to="#TODO" className="btn btn-success float-end">
                                 Merge Category
                             </Link>
