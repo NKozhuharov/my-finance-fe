@@ -1,10 +1,9 @@
 import React, {useActionState, useContext, useEffect, useState} from "react";
-import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useParams} from "react-router";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import {UserContext} from "@contexts/UserContext.jsx";
-import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, FormText, Row} from "react-bootstrap";
+import {Button, Card, CardBody, CardHeader, Col, Form, FormLabel, FormText, Row} from "react-bootstrap";
 
 export default function UserProfile() {
     const {walletId} = useParams();
@@ -82,42 +81,42 @@ export default function UserProfile() {
                                         <Row>
                                             <Col>
                                                 <FormLabel htmlFor="first_name" className="fw-bold" column={true}>First Name</FormLabel>
-                                                <FormControl
+                                                <Form.Control
                                                     name="first_name"
                                                     value={userData.first_name}
                                                     onChange={(e) => setUserData({...userData, first_name: e.target.value})}
-                                                    className={formErrors.first_name ? ' is-invalid' : ''}
+                                                    className={formErrors.first_name ? 'is-invalid' : ''}
                                                     placeholder="First Name"
                                                     required
                                                 />
                                                 {formErrors.first_name &&
-                                                    <span className="text-danger" role="alert">
+                                                    <Form.Control.Feedback type="invalid">
                                                         <strong>{formErrors.first_name}</strong>
-                                                    </span>
+                                                    </Form.Control.Feedback>
                                                 }
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col>
                                                 <FormLabel htmlFor="last_name" className="fw-bold" column={true}>Last Name</FormLabel>
-                                                <FormControl
+                                                <Form.Control
                                                     name="last_name"
                                                     value={userData.last_name}
                                                     onChange={(e) => setUserData({...userData, last_name: e.target.value})}
-                                                    className={formErrors.last_name ? ' is-invalid' : ''}
+                                                    className={formErrors.last_name ? 'is-invalid' : ''}
                                                     placeholder="Last Name"
                                                 />
                                                 {formErrors.last_name &&
-                                                    <span className="text-danger" role="alert">
+                                                    <Form.Control.Feedback type="invalid">
                                                         <strong>{formErrors.last_name}</strong>
-                                                    </span>
+                                                    </Form.Control.Feedback>
                                                 }
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col>
                                                 <FormLabel htmlFor="email" className="fw-bold" column={true}>Email</FormLabel>
-                                                <FormControl
+                                                <Form.Control
                                                     name="email"
                                                     value={userData.email }
                                                     onChange={(e) => setUserData({...userData, email: e.target.value})}
@@ -128,36 +127,36 @@ export default function UserProfile() {
                                         <Row>
                                             <Col>
                                                 <FormLabel htmlFor="email" className="fw-bold" column={true}>Change Password</FormLabel>
-                                                <FormControl
+                                                <Form.Control
                                                     type="password"
                                                     name="password"
                                                     value={userData.password}
                                                     onChange={(e) => setUserData({...userData, password: e.target.value})}
-                                                    className={formErrors.password ? ' is-invalid' : ''}
+                                                    className={formErrors.password ? 'is-invalid' : ''}
                                                     placeholder="Password"
                                                 />
                                                 {formErrors.password &&
-                                                    <span className="text-danger" role="alert">
+                                                    <Form.Control.Feedback type="invalid">
                                                         <strong>{formErrors.password}</strong>
-                                                    </span>
+                                                    </Form.Control.Feedback>
                                                 }
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col>
                                                 <FormLabel htmlFor="email" className="fw-bold" column={true}>Password Confirmation</FormLabel>
-                                                <FormControl
+                                                <Form.Control
                                                     type="password"
                                                     name="password_confirmation"
                                                     value={userData.password_confirmation}
                                                     onChange={(e) => setUserData({...userData, password_confirmation: e.target.value})}
-                                                    className={formErrors.password_confirmation ? ' is-invalid' : ''}
+                                                    className={formErrors.password_confirmation ? 'is-invalid' : ''}
                                                     placeholder="Password Confirmation"
                                                 />
                                                 {formErrors.password_confirmation &&
-                                                    <span className="text-danger" role="alert">
+                                                    <Form.Control.Feedback type="invalid">
                                                         <strong>{formErrors.password_confirmation}</strong>
-                                                    </span>
+                                                    </Form.Control.Feedback>
                                                 }
                                             </Col>
                                         </Row>

@@ -3,7 +3,7 @@ import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import CategorySelector from "@components/categories/category-selector/CategorySelector.jsx";
-import {Button, Card, CardBody, CardHeader, Col, FormControl, InputGroup, Row, Spinner} from "react-bootstrap";
+import {Button, Card, CardBody, CardHeader, Col, Form, InputGroup, Row, Spinner} from "react-bootstrap";
 import InputGroupText from "react-bootstrap/InputGroupText";
 import {UserContext} from "@contexts/UserContext.jsx";
 
@@ -98,20 +98,20 @@ export default function TransactionEdit() {
                                                     <div className="input-group-prepend">
                                                         <InputGroupText>{user.active_wallet.currency.symbol}</InputGroupText>
                                                     </div>
-                                                    <FormControl
+                                                    <Form.Control
                                                         type="number"
                                                         name="amount"
                                                         value={transaction.amount}
                                                         onChange={(e) => setTransaction({...transaction, amount: e.target.value})}
-                                                        className={`form-control${formErrors.amount ? ' is-invalid' : ''}`}
+                                                        className={formErrors.amount ? 'is-invalid' : ''}
                                                         min="0"
                                                         step="0.1"
                                                         required
                                                     />
                                                     {formErrors.amount &&
-                                                        <span className="text-danger" role="alert">
+                                                        <Form.Control.Feedback type="invalid">
                                                             <strong>{formErrors.amount}</strong>
-                                                        </span>
+                                                        </Form.Control.Feedback>
                                                     }
                                                 </InputGroup>
                                             </Col>
@@ -124,27 +124,28 @@ export default function TransactionEdit() {
                                         </Row>
                                         <Row className="mb-2">
                                             <Col>
-                                                <label htmlFor="date" className="form-label fw-bold">Date</label>
-                                                <input
+                                                <Form.Label htmlFor="date" className="form-label fw-bold" column={true}>Date</Form.Label>
+                                                <Form.Control
                                                     type="date"
                                                     name="date"
                                                     value={transaction.date}
                                                     onChange={(e) => setTransaction({...transaction, date: e.target.value})}
-                                                    className={`form-control${formErrors.date ? ' is-invalid' : ''}`}
+                                                    className={formErrors.date ? 'is-invalid' : ''}
                                                     required
                                                 />
                                                 {formErrors.date &&
-                                                    <span className="text-danger" role="alert">
+                                                    <Form.Control.Feedback type="invalid">
                                                         <strong>{formErrors.date}</strong>
-                                                    </span>
+                                                    </Form.Control.Feedback>
                                                 }
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col>
-                                                <label htmlFor="note" className="form-label fw-bold">Note</label>
-                                                <textarea
-                                                    className="form-control"
+                                                <Form.Label htmlFor="note" className="form-label fw-bold" column={true}>Note</Form.Label>
+                                                <Form.Control
+                                                    as="textarea"
+                                                    rows="3"
                                                     name="note"
                                                     value={transaction.note ?? ''}
                                                     onChange={(e) => setTransaction({...transaction, note: e.target.value})}

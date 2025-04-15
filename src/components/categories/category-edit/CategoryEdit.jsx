@@ -5,7 +5,7 @@ import Select from "react-select";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import {useCategoryIcons} from "@api/IconsApi.js";
 import {CustomSingleValue, IconOption} from "@utils/IconComponents.jsx";
-import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, Row, Spinner} from "react-bootstrap";
+import {Button, Card, CardBody, CardHeader, Col, Form, Row, Spinner} from "react-bootstrap";
 import CategorySelector from "@components/categories/category-selector/CategorySelector.jsx";
 
 export default function CategoryEdit() {
@@ -89,31 +89,30 @@ export default function CategoryEdit() {
                                     <>
                                         <Row>
                                             <Col>
-                                                <FormLabel htmlFor="name" className="fw-bold" column={true}>Name</FormLabel>
-                                                <FormControl
+                                                <Form.Label htmlFor="name" className="fw-bold" column={true}>Name</Form.Label>
+                                                <Form.Control
                                                     name="name"
                                                     value={category.name}
                                                     onChange={(e) => setCategory({...category, name: e.target.value})}
-                                                    className={formErrors.name ? ' is-invalid' : ''}
+                                                    className={formErrors.name ? 'is-invalid' : ''}
                                                     placeholder="Name"
                                                     required
                                                 />
                                                 {formErrors.name &&
-                                                    <span className="text-danger" role="alert">
+                                                    <Form.Control.Feedback type="invalid">
                                                         <strong>{formErrors.name}</strong>
-                                                    </span>
+                                                    </Form.Control.Feedback>
                                                 }
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col>
-                                                <FormLabel htmlFor="type" className="fw-bold" column={true}>Type</FormLabel>
+                                                <Form.Label htmlFor="type" className="fw-bold" column={true}>Type</Form.Label>
                                                 <input
                                                     type="text"
                                                     name="type"
                                                     value={category.type}
                                                     onChange={(e) => setCategory({...category, type: e.target.value})}
-                                                    className={`form-control${formErrors.type ? ' is-invalid' : ''}`}
                                                     placeholder="Type"
                                                     disabled
                                                 />
@@ -121,7 +120,7 @@ export default function CategoryEdit() {
                                         </Row>
                                         <Row>
                                             <Col>
-                                                <FormLabel htmlFor="parent_category_id" className="fw-bold" column={true}>Parent Category</FormLabel>
+                                                <Form.Label htmlFor="parent_category_id" className="fw-bold" column={true}>Parent Category</Form.Label>
                                                 <CategorySelector
                                                     onlyParents={true}
                                                     withChildren={false}
@@ -131,15 +130,15 @@ export default function CategoryEdit() {
                                                     preSelectedCategory={category.parentCategory}
                                                 />
                                                 {formErrors.parent_category_id &&
-                                                    <span className="text-danger" role="alert">
+                                                    <Form.Control.Feedback type="invalid">
                                                         <strong>{formErrors.parent_category_id}</strong>
-                                                    </span>
+                                                    </Form.Control.Feedback>
                                                 }
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col>
-                                                <FormLabel htmlFor="icon" className="fw-bold" column={true}>Icon</FormLabel>
+                                                <Form.Label htmlFor="icon" className="fw-bold" column={true}>Icon</Form.Label>
                                                 <Select
                                                     name="icon"
                                                     options={categoryIcons}

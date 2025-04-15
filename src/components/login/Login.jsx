@@ -3,17 +3,15 @@ import {useActionState, useContext, useEffect, useState} from "react";
 import {addBodyClass, removeBodyClass} from "@utils/helpers.js";
 import {useLogin} from "@api/authApi.js";
 import {UserContext} from "@contexts/UserContext.jsx";
-import {Button, Card, CardBody, Col, FormCheck, FormControl, InputGroup, Row} from "react-bootstrap";
+import {Button, Card, CardBody, Col, Form, InputGroup, Row} from "react-bootstrap";
 import InputGroupText from "react-bootstrap/InputGroupText";
-import FormCheckInput from "react-bootstrap/FormCheckInput";
-import FormCheckLabel from "react-bootstrap/FormCheckLabel";
 
 export default function Login() {
     const [formValues, setFormValues] = useState({
         email: '',
         password: '',
     });
-    const [loginErrors, setLoginErrors] = useState({});
+    const [formErrors, setFormErrors] = useState({});
     const {userLoginHandler} = useContext(UserContext);
     const {login} = useLogin();
 
@@ -28,7 +26,7 @@ export default function Login() {
     }, []);
 
     const loginHandler = async (_, formData) => {
-        setLoginErrors({});
+        setFormErrors({});
         const values = Object.fromEntries(formData);
         setFormValues(values);
 
@@ -36,7 +34,7 @@ export default function Login() {
 
         if (authData.status === 'error') {
             if (authData.details) {
-                setLoginErrors(authData.details);
+                setFormErrors(authData.details);
             } else {
                 alert(authData.message);
             }
@@ -64,20 +62,20 @@ export default function Login() {
                         <Row>
                             <Col>
                                 <InputGroup className="mb-3">
-                                    <FormControl
+                                    <Form.Control
                                         type="email"
                                         name="email"
                                         value={formValues.email}
                                         onChange={(e) => setFormValues({...formValues, email: e.target.value})}
-                                        className={loginErrors.email ? ' is-invalid' : ''}
+                                        className={formErrors.email ? 'is-invalid' : ''}
                                         placeholder="Email"
                                         required
                                     />
                                     <InputGroupText><i className="bi bi-envelope"></i></InputGroupText>
-                                    {loginErrors.email &&
-                                        <span className="text-danger" role="alert">
-                                            <strong>{loginErrors.email}</strong>
-                                        </span>
+                                    {formErrors.email &&
+                                        <Form.Control.Feedback type="invalid">
+                                            <strong>{formErrors.email}</strong>
+                                        </Form.Control.Feedback>
                                     }
                                 </InputGroup>
                             </Col>
@@ -85,30 +83,30 @@ export default function Login() {
                         <Row>
                             <Col>
                                 <InputGroup className="mb-3">
-                                    <FormControl
+                                    <Form.Control
                                         type="password"
                                         name="password"
                                         value={formValues.password}
                                         onChange={(e) => setFormValues({...formValues, password: e.target.value})}
-                                        className={loginErrors.password ? ' is-invalid' : ''}
+                                        className={formErrors.password ? 'is-invalid' : ''}
                                         placeholder="Password"
                                         required
                                     />
                                     <InputGroupText><i className="bi bi-lock-fill"></i></InputGroupText>
-                                    {loginErrors.password &&
-                                        <span className="text-danger" role="alert">
-                                            <strong>{loginErrors.password}</strong>
-                                        </span>
+                                    {formErrors.password &&
+                                        <Form.Control.Feedback type="invalid">
+                                            <strong>{formErrors.password}</strong>
+                                        </Form.Control.Feedback>
                                     }
                                 </InputGroup>
                             </Col>
                         </Row>
                         <Row>
                             <Col sm={8}>
-                                <FormCheck>
-                                    <FormCheckInput name="rembember" value="" id="flexCheckDefault"/>
-                                    <FormCheckLabel htmlFor="rembember">Remember Me</FormCheckLabel>
-                                </FormCheck>
+                                <Form.Check>
+                                    <Form.Check.Input name="rembember" value="" id="flexCheckDefault"/>
+                                    <Form.Check.Label htmlFor="rembember">Remember Me</Form.Check.Label>
+                                </Form.Check>
                             </Col>
                             <Col sm={4}>
                                 <div className="d-grid gap-2">

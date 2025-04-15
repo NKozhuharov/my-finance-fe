@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
 import {useAlert} from "@contexts/AlertContext.jsx";
-import {Button, Card, CardBody, CardHeader, Col, FormLabel, Row, Spinner} from "react-bootstrap";
+import {Button, Card, CardBody, CardHeader, Col, Form, Row, Spinner} from "react-bootstrap";
 import CategorySelector from "@components/categories/category-selector/CategorySelector.jsx";
 import Modal from "react-bootstrap/Modal";
 
@@ -119,7 +119,7 @@ export default function CategoryMerge() {
                                 <>
                                     <Row>
                                         <Col>
-                                            <FormLabel htmlFor="target_category_id" className="fw-bold" column={true}>Target Category</FormLabel>
+                                            <Form.Label htmlFor="target_category_id" className="fw-bold" column={true}>Target Category</Form.Label>
                                             <CategorySelector
                                                 onlyParents={true}
                                                 withChildren={false}
@@ -128,24 +128,24 @@ export default function CategoryMerge() {
                                                 disabled={true}
                                             />
                                             {formErrors.target_category_id &&
-                                                <span className="text-danger" role="alert">
-                                                        <strong>{formErrors.target_category_id}</strong>
-                                                    </span>
+                                                <Form.Control.Feedback type="invalid">
+                                                    <strong>{formErrors.target_category_id}</strong>
+                                                </Form.Control.Feedback>
                                             }
                                         </Col>
                                     </Row>
                                     <Row>
                                         <Col>
-                                            <FormLabel htmlFor="selected_for_merge_category_id" className="fw-bold" column={true}>Select Category</FormLabel>
+                                            <Form.Label htmlFor="selected_for_merge_category_id" className="fw-bold" column={true}>Select Category</Form.Label>
                                             <CategorySelector
                                                 withChildren={true}
                                                 type={targetCategory.type}
                                                 onCategorySelect={handleCategorySelect}
                                             />
                                             {formErrors.selected_for_merge_category_id &&
-                                                <span className="text-danger" role="alert">
-                                                        <strong>{formErrors.selected_for_merge_category_id}</strong>
-                                                    </span>
+                                                <Form.Control.Feedback type="invalid">
+                                                    <strong>{formErrors.selected_for_merge_category_id}</strong>
+                                                </Form.Control.Feedback>
                                             }
                                         </Col>
                                     </Row>

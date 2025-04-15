@@ -1,5 +1,4 @@
 import React, {useActionState, useContext, useEffect, useState} from "react";
-import AdminPanelPage from "@layouts/admin-panel-page/AdminPanelPage";
 import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate} from "react-router";
 import {useCurrencies} from "@api/CurrenciesApi.js";
@@ -9,7 +8,7 @@ import Select from "react-select";
 import {CustomSingleValue, IconOption} from "@utils/IconComponents.jsx";
 import {UserContext} from "@contexts/UserContext.jsx";
 import CategoryNameAndIcon from "@components/categories/category-name-and-icon/CategoryNameAndIcon.jsx";
-import {Button, Card, CardBody, CardHeader, Col, FormCheck, FormControl, FormLabel, FormText, Row} from "react-bootstrap";
+import {Button, Card, CardBody, CardHeader, Col, Form, FormCheck, Row} from "react-bootstrap";
 import FormCheckInput from "react-bootstrap/FormCheckInput";
 import FormCheckLabel from "react-bootstrap/FormCheckLabel";
 
@@ -28,7 +27,7 @@ export default function WalletCreate() {
     const {currencies} = useCurrencies();
     const {walletIcons} = useWalletIcons();
 
-    const [walletFormErrors, setWalletFormErrors] = useState({});
+    const [formErrors, setFormErrors] = useState({});
 
     const api = useApiClient();
 
@@ -61,7 +60,7 @@ export default function WalletCreate() {
     }, [api]);
 
     const walletCreateHandler = async () => {
-        setWalletFormErrors({});
+        setFormErrors({});
         const values = {...wallet}; // Create a shallow copy to avoid mutating state
         values.categories = [
             ...values.income_categories.map(categoryKey =>
@@ -83,7 +82,7 @@ export default function WalletCreate() {
             setAlert({variant: "success", text: "Wallet created successfully."});
             navigate(`/wallets`);
         } catch (err) {
-            setWalletFormErrors(err.response.data.details);
+            setFormErrors(err.response.data.details);
             setAlert({variant: "danger", text: err.response.data.message});
         }
     }
@@ -110,64 +109,73 @@ export default function WalletCreate() {
                             <CardBody>
                                 <Row>
                                     <Col>
-                                        <FormLabel htmlFor="name" className="fw-bold" column={true}>Name</FormLabel>
-                                        <FormControl
+                                        <Form.Label htmlFor="name" className="fw-bold" column={true}>Name</Form.Label>
+                                        <Form.Control
                                             name="name"
                                             value={wallet.name}
                                             onChange={(e) => setWallet((currentWallet) => ({...currentWallet, name: e.target.value}))}
-                                            className={walletFormErrors.name ? ' is-invalid' : ''}
+                                            className={formErrors.name ? 'is-invalid' : ''}
                                             placeholder="Name"
                                             required
                                         />
-                                        {walletFormErrors.name &&
-                                            <span className="text-danger" role="alert">
-                                                <strong>{walletFormErrors.name}</strong>
-                                            </span>
+                                        {formErrors.name &&
+                                            <Form.Control.Feedback type="invalid">
+                                                <strong>{formErrors.name}</strong>
+                                            </Form.Control.Feedback>
                                         }
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <FormLabel htmlFor="currency_id" className="fw-bold" column={true}>Currency</FormLabel>
+                                        <Form.Label htmlFor="currency_id" className="fw-bold" column={true}>Currency</Form.Label>
                                         <Select
                                             name="currency_id"
                                             options={currencies}
                                             value={currencies.find(option => option.value === wallet.currency_id) || null}
                                             onChange={(selectedOption) => setWallet((currentWallet) => ({...currentWallet, currency_id: selectedOption.value}))}
-                                            className={`${walletFormErrors.currency_id ? ' is-invalid' : ''}`}
+                                            className={formErrors.currency_id ? 'is-invalid' : ''}
                                             isSearchable={true}
                                             placeholder="Please select"
                                             required
                                         />
-                                        {walletFormErrors.currency_id &&
-                                            <span className="text-danger" role="alert">
-                                                <strong>{walletFormErrors.currency_id}</strong>
-                                            </span>
+                                        {formErrors.currency_id &&
+                                            <Form.Control.Feedback type="invalid">
+                                                <strong>{formErrors.currency_id}</strong>
+                                            </Form.Control.Feedback>
                                         }
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <FormLabel htmlFor="icon" className="fw-bold" column={true}>Icon</FormLabel>
+                                        <Form.Label htmlFor="icon" className="fw-bold" column={true}>Icon</Form.Label>
                                         <Select
                                             name="icon"
                                             options={walletIcons}
                                             value={walletIcons.find(option => option.value === wallet.icon) || null}
                                             onChange={(selectedOption) => setWallet((currentWallet) => ({...currentWallet, icon: selectedOption.value}))}
-                                            className={`${walletFormErrors.currency_id ? ' is-invalid' : ''}`}
+                                            className={formErrors.icon ? 'is-invalid' : ''}
                                             isSearchable={true}
                                             placeholder="Please select"
                                             components={{Option: IconOption, SingleValue: CustomSingleValue}}
                                             required
                                         />
-                                        {walletFormErrors.icon &&
-                                            <span className="text-danger" role="alert">
-                                                <strong>{walletFormErrors.icon}</strong>
-                                            </span>
+                                        {formErrors.icon &&
+                                            <Form.Control.Feedback type="invalid">
+                                                <strong>{formErrors.icon}</strong>
+                                            </Form.Control.Feedback>
                                         }
                                     </Col>
                                 </Row>
                                 <hr/>
+                                {formErrors.categories &&
+                                    <Row className="mb-2">
+                                        <Col className="text-center">
+                                            <span className="text-danger mt-2">
+                                                <strong>{formErrors.categories}</strong>
+                                            </span>
+                                        </Col>
+                                    </Row>
+                                }
                                 <Row>
                                     <Col lg={6} sm={12}>
                                         <Card className="card-secondary">
@@ -179,7 +187,7 @@ export default function WalletCreate() {
                                             </CardHeader>
                                             <CardBody>
                                                 {loading ? (
-                                                    <FormText>Loading income categories...</FormText>
+                                                    <Form.Text>Loading income categories...</Form.Text>
                                                 ) : (
                                                     defaultWalletCategories
                                                         .filter(category => category.type === 'Income')
@@ -208,13 +216,8 @@ export default function WalletCreate() {
                                                 )}
                                             </CardBody>
                                         </Card>
-                                        {walletFormErrors.categories &&
-                                            <span className="text-danger" role="alert">
-                                                <strong>{walletFormErrors.categories}</strong>
-                                            </span>
-                                        }
                                     </Col>
-                                   <Col lg={6} sm={12}>
+                                    <Col lg={6} sm={12}>
                                         <Card className="card-secondary">
                                             <CardHeader className="expense-background-color">
                                                 Select Expense Categories
@@ -224,7 +227,7 @@ export default function WalletCreate() {
                                             </CardHeader>
                                             <CardBody>
                                                 {loading ? (
-                                                    <FormText>Loading expense categories...</FormText>
+                                                    <Form.Text>Loading expense categories...</Form.Text>
                                                 ) : (
                                                     defaultWalletCategories
                                                         .filter(category => category.type === 'Expense')

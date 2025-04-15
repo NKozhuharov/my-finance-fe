@@ -3,9 +3,7 @@ import {useActionState, useContext, useEffect, useState} from "react";
 import {addBodyClass, removeBodyClass} from "@utils/helpers.js";
 import {UserContext} from "@contexts/UserContext.jsx";
 import {useRegister} from "@api/authApi.js";
-import {Card, CardBody, Col, FormCheck, FormControl, InputGroup, Row} from "react-bootstrap";
-import FormCheckInput from "react-bootstrap/FormCheckInput";
-import FormCheckLabel from "react-bootstrap/FormCheckLabel";
+import {Card, CardBody, Col, Form, InputGroup, Row} from "react-bootstrap";
 import InputGroupText from "react-bootstrap/InputGroupText";
 
 export default function Register() {
@@ -17,7 +15,7 @@ export default function Register() {
         password_confirmation: '',
     });
 
-    const [registerErrors, setRegisterErrors] = useState({});
+    const [formErrors, setFormErrors] = useState({});
     const navigate = useNavigate();
     const {userLoginHandler} = useContext(UserContext);
     const {register} = useRegister();
@@ -33,7 +31,7 @@ export default function Register() {
     }, []);
 
     const registerHandler = async (_, formData) => {
-        setRegisterErrors({});
+        setFormErrors({});
         const values = Object.fromEntries(formData);
         setFormValues(values);
 
@@ -47,7 +45,7 @@ export default function Register() {
 
         if (authData.status === 'error') {
             if (authData.details) {
-                setRegisterErrors(authData.details);
+                setFormErrors(authData.details);
             } else {
                 alert(authData.message);
             }
@@ -76,19 +74,19 @@ export default function Register() {
                         <Row>
                             <Col>
                                 <InputGroup className="mb-3">
-                                    <FormControl
+                                    <Form.Control
                                         name="first_name"
                                         value={formValues.first_name}
                                         onChange={(e) => setFormValues({...formValues, first_name: e.target.value})}
-                                        className={registerErrors.first_name ? ' is-invalid' : ''}
+                                        className={formErrors.first_name ? 'is-invalid' : ''}
                                         placeholder="First Name"
                                         required
                                     />
                                     <InputGroupText><i className="bi bi-person"></i></InputGroupText>
-                                    {registerErrors.first_name &&
-                                        <span className="text-danger" role="alert">
-                                            <strong>{registerErrors.first_name}</strong>
-                                        </span>
+                                    {formErrors.first_name &&
+                                        <Form.Control.Feedback type="invalid">
+                                            <strong>{formErrors.first_name}</strong>
+                                        </Form.Control.Feedback>
                                     }
                                 </InputGroup>
                             </Col>
@@ -96,18 +94,18 @@ export default function Register() {
                         <Row>
                             <Col>
                                 <InputGroup className="mb-3">
-                                    <FormControl
+                                    <Form.Control
                                         name="last_name"
                                         value={formValues.last_name}
                                         onChange={(e) => setFormValues({...formValues, last_name: e.target.value})}
-                                        className={registerErrors.last_name ? ' is-invalid' : ''}
+                                        className={formErrors.last_name ? 'is-invalid' : ''}
                                         placeholder="Last Name"
                                     />
                                     <InputGroupText><i className="bi bi-person"></i></InputGroupText>
-                                    {registerErrors.last_name &&
-                                        <span className="text-danger" role="alert">
-                                            <strong>{registerErrors.last_name}</strong>
-                                        </span>
+                                    {formErrors.last_name &&
+                                        <Form.Control.Feedback type="invalid">
+                                            <strong>{formErrors.last_name}</strong>
+                                       </Form.Control.Feedback>
                                     }
                                 </InputGroup>
                             </Col>
@@ -115,20 +113,20 @@ export default function Register() {
                         <Row>
                             <Col>
                                 <InputGroup className="mb-3">
-                                    <FormControl
+                                    <Form.Control
                                         type="email"
                                         name="email"
                                         value={formValues.email}
                                         onChange={(e) => setFormValues({...formValues, email: e.target.value})}
-                                        className={registerErrors.email ? ' is-invalid' : ''}
+                                        className={formErrors.email ? 'is-invalid' : ''}
                                         placeholder="Email"
                                         required
                                     />
                                     <InputGroupText><i className="bi bi-envelope"></i></InputGroupText>
-                                    {registerErrors.email &&
-                                        <span className="text-danger" role="alert">
-                                            <strong>{registerErrors.email}</strong>
-                                        </span>
+                                    {formErrors.email &&
+                                        <Form.Control.Feedback type="invalid">
+                                            <strong>{formErrors.email}</strong>
+                                       </Form.Control.Feedback>
                                     }
                                 </InputGroup>
                             </Col>
@@ -136,20 +134,20 @@ export default function Register() {
                         <Row>
                             <Col>
                                 <InputGroup className="mb-3">
-                                    <FormControl
+                                    <Form.Control
                                         type="password"
                                         name="password"
                                         value={formValues.password}
                                         onChange={(e) => setFormValues({...formValues, password: e.target.value})}
-                                        className={registerErrors.password ? ' is-invalid' : ''}
+                                        className={formErrors.password ? 'is-invalid' : ''}
                                         placeholder="Password"
                                         required
                                     />
                                     <InputGroupText><i className="bi bi-lock-fill"></i></InputGroupText>
-                                    {registerErrors.password &&
-                                        <span className="text-danger" role="alert">
-                                            <strong>{registerErrors.password}</strong>
-                                        </span>
+                                    {formErrors.password &&
+                                        <Form.Control.Feedback type="invalid">
+                                            <strong>{formErrors.password}</strong>
+                                       </Form.Control.Feedback>
                                     }
                                 </InputGroup>
                             </Col>
@@ -157,32 +155,37 @@ export default function Register() {
                         <Row>
                             <Col>
                                 <InputGroup className="mb-3">
-                                    <FormControl
+                                    <Form.Control
                                         type="password"
                                         name="password_confirmation"
                                         value={formValues.password_confirmation}
                                         onChange={(e) => setFormValues({...formValues, password_confirmation: e.target.value})}
-                                        className={registerErrors.password_confirmation ? ' is-invalid' : ''}
+                                        className={formErrors.password_confirmation ? 'is-invalid' : ''}
                                         placeholder="Password Confirmation"
                                         required
                                     />
                                     <InputGroupText><i className="bi bi-lock-fill"></i></InputGroupText>
-                                    {registerErrors.password_confirmation &&
-                                        <span className="text-danger" role="alert">
-                                            <strong>{registerErrors.password_confirmation}</strong>
-                                        </span>
+                                    {formErrors.password_confirmation &&
+                                        <Form.Control.Feedback type="invalid">
+                                            <strong>{formErrors.password_confirmation}</strong>
+                                       </Form.Control.Feedback>
                                     }
                                 </InputGroup>
                             </Col>
                         </Row>
                         <Row>
                             <Col sm={8}>
-                                <FormCheck>
-                                    <FormCheckInput name="terms" value="" id="flexCheckDefault" required/>
-                                    <FormCheckLabel htmlFor="terms">
+                                <Form.Check>
+                                    <Form.Check.Input
+                                        name="terms"
+                                        value=""
+                                        id="flexCheckDefault"
+                                        required
+                                    />
+                                    <Form.Check.Label htmlFor="terms">
                                         I agree to the <Link to={"/terms"}>terms</Link>
-                                    </FormCheckLabel>
-                                </FormCheck>
+                                    </Form.Check.Label>
+                                </Form.Check>
                             </Col>
                             <Col sm={4}>
                                 <div className="d-grid gap-2">

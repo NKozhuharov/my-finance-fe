@@ -3,7 +3,7 @@ import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
 import Select from "react-select";
 import Modal from "react-bootstrap/Modal";
-import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, Row, Spinner} from "react-bootstrap";
+import {Button, Card, CardBody, CardHeader, Col, Form, Row, Spinner} from "react-bootstrap";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import {useCurrencies} from "@api/CurrenciesApi.js";
 import {useWalletIcons} from "@api/IconsApi.js";
@@ -19,7 +19,7 @@ export default function WalletEdit() {
         icon: '',
     });
 
-    const [walletFormErrors, setWalletFormErrors] = useState({});
+    const [formErrors, setFormErrors] = useState({});
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [loading, setLoading] = useState(true);
 
@@ -51,7 +51,7 @@ export default function WalletEdit() {
     }, [api, walletId]);
 
     const walletEditHandler = async (_, formData) => {
-        setWalletFormErrors({});
+        setFormErrors({});
         const values = Object.fromEntries(formData);
 
         try {
@@ -62,7 +62,7 @@ export default function WalletEdit() {
             }
             setAlert({variant: "success", text: "Wallet edited successfully."});
         } catch (err) {
-            setWalletFormErrors(err.response.data.details);
+            setFormErrors(err.response.data.details);
             setAlert({variant: "danger", text: err.response.data.message});
         }
     }
@@ -105,9 +105,8 @@ export default function WalletEdit() {
                         <div className="alert alert-danger">
                             Are you sure you want to delete this wallet? This action cannot be undone.
                         </div>
-                        <FormControl
+                        <Form.Control
                             name="confirmation"
-                            className="form-control"
                             placeholder="Please type 'DELETE' to confirm"
                             required
                         />
@@ -145,25 +144,25 @@ export default function WalletEdit() {
                                     <>
                                         <Row className="row mb-2">
                                             <Col>
-                                                <FormLabel htmlFor="name" className="fw-bold" column={true}>Name</FormLabel>
-                                                <FormControl
+                                                <Form.Label htmlFor="name" className="fw-bold" column={true}>Name</Form.Label>
+                                                <Form.Control
                                                     name="name"
                                                     value={wallet.name}
                                                     onChange={(e) => setWallet({...wallet, name: e.target.value})}
-                                                    className={`form-control${walletFormErrors.name ? ' is-invalid' : ''}`}
+                                                    className={formErrors.name ? 'is-invalid' : ''}
                                                     placeholder="Name"
                                                     required
                                                 />
-                                                {walletFormErrors.name &&
-                                                    <span className="text-danger" role="alert">
-                                                        <strong>{walletFormErrors.name}</strong>
-                                                    </span>
+                                                {formErrors.name &&
+                                                    <Form.Control.Feedback type="invalid">
+                                                        <strong>{formErrors.name}</strong>
+                                                    </Form.Control.Feedback>
                                                 }
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col>
-                                                <FormLabel htmlFor="currency_id" className="fw-bold" column={true}>Currency</FormLabel>
+                                                <Form.Label htmlFor="currency_id" className="fw-bold" column={true}>Currency</Form.Label>
                                                 <Select
                                                     name="currency_id"
                                                     options={currencies}
@@ -177,7 +176,7 @@ export default function WalletEdit() {
                                         </Row>
                                         <Row>
                                             <Col>
-                                                <FormLabel htmlFor="currency_id" className="fw-bold" column={true}>Icon</FormLabel>
+                                                <Form.Label htmlFor="currency_id" className="fw-bold" column={true}>Icon</Form.Label>
                                                 <Select
                                                     name="icon"
                                                     options={walletIcons}

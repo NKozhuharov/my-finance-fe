@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {useApiClient} from "@hooks/useApiClient.js";
 import {Link, useNavigate, useParams} from "react-router";
 import Modal from "react-bootstrap/Modal";
-import {Button, Card, CardBody, CardHeader, Col, FormControl, FormLabel, InputGroup, Row, Spinner} from "react-bootstrap";
+import {Button, Card, CardBody, CardHeader, Col, Form, InputGroup, Row, Spinner} from "react-bootstrap";
 import {useAlert} from "@contexts/AlertContext.jsx";
 import CategoryNameAndIcon from "@components/categories/category-name-and-icon/CategoryNameAndIcon.jsx";
 import InputGroupText from "react-bootstrap/InputGroupText";
@@ -119,25 +119,25 @@ export default function TransactionShow() {
                                     </Row>
                                     <Row>
                                         <Col className="mb-2">
-                                            <FormLabel htmlFor="date" className="form-label fw-bold" column={true}>Amount</FormLabel>
+                                            <Form.Label htmlFor="date" className="form-label fw-bold" column={true}>Amount</Form.Label>
                                             <InputGroup>
                                                 <div className="input-group-prepend">
                                                     <InputGroupText>{user.active_wallet.currency.symbol}</InputGroupText>
                                                 </div>
-                                                <FormControl name="amount" value={transaction.amount} disabled/>
+                                                <Form.Control name="amount" value={transaction.amount} disabled/>
                                             </InputGroup>
                                         </Col>
                                     </Row>
                                     <Row>
                                         <Col className="mb-2">
-                                            <FormLabel htmlFor="date" className="form-label fw-bold" column={true}>Date</FormLabel>
-                                            <FormControl type="date" name="date" value={transaction.date} disabled/>
+                                            <Form.Label htmlFor="date" className="form-label fw-bold" column={true}>Date</Form.Label>
+                                            <Form.Control type="date" name="date" value={transaction.date} disabled/>
                                         </Col>
                                     </Row>
                                     <Row>
                                         <Col>
-                                            <FormLabel htmlFor="note" className="form-label fw-bold" column={true}>Note</FormLabel>
-                                            <textarea className="form-control" name="note" value={transaction.note ?? ''} disabled></textarea>
+                                            <Form.Label htmlFor="note" className="form-label fw-bold" column={true}>Note</Form.Label>
+                                            <Form.Control as="textarea" rows="3" name="note" value={transaction.note ?? ''} disabled />
                                         </Col>
                                     </Row>
                                 </>

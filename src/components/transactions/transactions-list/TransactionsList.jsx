@@ -98,7 +98,7 @@ export default function TransactionsList() {
                                         <div className="input-group-prepend">
                                             <InputGroupText>From</InputGroupText>
                                         </div>
-                                        <FormControl type="date" name="created_at_from" value={createdAtFrom} className="form-control" onChange={(e) => setCreatedAtFrom(e.target.value)}/>
+                                        <FormControl type="date" name="created_at_from" value={createdAtFrom} onChange={(e) => setCreatedAtFrom(e.target.value)}/>
                                     </InputGroup>
                                 </FormGroup>
                                 <FormGroup className="col-6 col-md-3 col-lg-2">
@@ -106,7 +106,7 @@ export default function TransactionsList() {
                                         <div className="input-group-prepend">
                                             <InputGroupText>To</InputGroupText>
                                         </div>
-                                        <FormControl type="date" name="created_at_to" value={createdAtTo} className="form-control" onChange={(e) => setCreatedAtTo(e.target.value)}/>
+                                        <FormControl type="date" name="created_at_to" value={createdAtTo} onChange={(e) => setCreatedAtTo(e.target.value)}/>
                                     </InputGroup>
                                 </FormGroup>
                                 <FormGroup className="col-6 col-md-3 col-lg-2 col-xl-1 mt-3 mt-md-0 mt-lg-0">
