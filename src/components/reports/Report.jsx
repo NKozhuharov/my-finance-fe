@@ -73,7 +73,7 @@ export default function Report() {
 
         fetchBarChartData();
         document.title = "Reports";
-    }, [api, selectedCategoryId, createdAtFrom, createdAtTo]);
+    }, [api, selectedCategoryId, createdAtFrom, createdAtTo, user.active_wallet_id]);
 
     const handleSetPrevMonth = () => {
         setCreatedAtFrom((prevState) => {
