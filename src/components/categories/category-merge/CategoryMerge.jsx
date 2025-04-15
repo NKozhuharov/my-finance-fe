@@ -80,24 +80,22 @@ export default function CategoryMerge() {
     return (
         <>
             <Modal show={showConfirmModal} onHide={handleCloseModal} fullscreen={"sm-down"}>
-                <form onSubmit={handleCategoryMerge}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Confirm Merge</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="alert alert-danger">
-                            Are you sure you want to merge those categories? This action cannot be undone.
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseModal}>
-                            Close
-                        </Button>
-                        <Button type="submit" variant="danger">
-                            Confirm
-                        </Button>
-                    </Modal.Footer>
-                </form>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm Merge</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="alert alert-danger">
+                        Are you sure you want to merge those categories? This action cannot be undone.
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                        Close
+                    </Button>
+                    <Button variant="danger" onClick={handleCategoryMerge}>
+                        Confirm
+                    </Button>
+                </Modal.Footer>
             </Modal>
 
             <Row>
@@ -111,7 +109,7 @@ export default function CategoryMerge() {
                             </div>
                             Merge Category
                             <div className="card-tools">
-                                <Button className="btn-tool fw-bold" type="submit" title="Save" disabled={loading || selectedForMergeCategory.id === null} onClick={handleShowModal}>CONFIRM MERGE</Button>
+                                <Button className="btn-tool fw-bold"  disabled={loading || selectedForMergeCategory.id === null} onClick={handleShowModal}>CONFIRM MERGE</Button>
                             </div>
                         </CardHeader>
                         <CardBody>
