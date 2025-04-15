@@ -127,6 +127,7 @@ export default function CategoryEdit() {
                                                     withChildren={false}
                                                     onCategorySelect={handleCategorySelect}
                                                     type={category.type}
+                                                    deselect={true}
                                                     preSelectedCategory={category.parentCategory}
                                                 />
                                                 {formErrors.parent_category_id &&

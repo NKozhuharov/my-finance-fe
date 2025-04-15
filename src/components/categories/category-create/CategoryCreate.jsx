@@ -150,6 +150,7 @@ export default function CategoryCreate() {
                                                     onCategorySelect={handleCategorySelect}
                                                     type={category.type}
                                                     disabled={category.type === null}
+                                                    deselect={true}
                                                     preSelectedCategory={category.parentCategory}
                                                 />
                                                 {formErrors.parent_category_id &&

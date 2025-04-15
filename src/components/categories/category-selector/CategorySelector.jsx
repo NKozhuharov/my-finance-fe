@@ -12,13 +12,16 @@ export default function CategorySelector({
                                              onCategorySelect,
                                              defaultTitle = 'Select Category',
                                              disabled = false,
+                                             deselect = false,
                                              preSelectedCategory
                                          }) {
+    const defaultPreSelectedCategory = {
+        name: defaultTitle,
+        icon: `/images/icons/Category Select.png`,
+    }
+
     if (preSelectedCategory === undefined || Object.keys(preSelectedCategory).length === 0) {
-        preSelectedCategory = {
-            name: defaultTitle,
-            icon: `/images/icons/Category Select.png`,
-        };
+        preSelectedCategory = defaultPreSelectedCategory;
     }
 
     const [categories, setCategories] = useState([]);
@@ -84,6 +87,9 @@ export default function CategorySelector({
     }
 
     const handleCategorySelect = (category) => {
+        if (category.id === selectedCategory.id && deselect) {
+            category = defaultPreSelectedCategory;
+        }
         setSelectedCategory(category); // Update selected category state
         if (onCategorySelect) {
             onCategorySelect(category); // Notify parent about the selection
